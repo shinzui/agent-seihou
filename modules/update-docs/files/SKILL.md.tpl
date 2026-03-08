@@ -1,14 +1,14 @@
 ---
-name: \{{project.name}}-update-docs
-description: Update \{{project.name}} documentation after code changes. Checks \{{changelog.path}} for the last reviewed commit, analyzes git changes since then, and ensures new features and commands are documented.
+name: {{project.name}}-update-docs
+description: Update {{project.name}} documentation after code changes. Checks {{changelog.path}} for the last reviewed commit, analyzes git changes since then, and ensures new features and commands are documented.
 allowed-tools: Bash, Read, Edit, Write, Grep, Glob
 ---
 
-# Update \{{project.name}} Documentation
+# Update {{project.name}} Documentation
 
-This skill helps keep \{{project.name}} documentation in sync with code changes by analyzing commits since the last documentation review.
+This skill helps keep {{project.name}} documentation in sync with code changes by analyzing commits since the last documentation review.
 
-**Project:** \{{project.name}} — \{{project.description}}
+**Project:** {{project.name}} — {{project.description}}
 
 ## When to Use
 
@@ -26,7 +26,7 @@ Activate when the user says things like:
 Read the changelog to find the last reviewed commit:
 
 ```bash
-cat \{{changelog.path}}
+cat {{changelog.path}}
 ```
 
 Look for the "Last Reviewed Commit" section which contains the commit hash that documentation was last synced to.
@@ -45,9 +45,9 @@ If there are no new commits, inform the user that documentation is up to date.
 
 For each commit, examine the changes to identify:
 
-1. **New features** — Look for changes in source directories: `\{{source.dirs}}`
+1. **New features** — Look for changes in source directories: `{{source.dirs}}`
 2. **Changed behavior** — Look at commit messages and code changes
-3. **New CLI commands** — Look for changes in `\{{cli.commands.dir}}`
+3. **New CLI commands** — Look for changes in `{{cli.commands.dir}}`
 4. **Modified command options** — Look for parser/flag changes
 
 ```bash
@@ -55,19 +55,19 @@ For each commit, examine the changes to identify:
 git diff --name-only LAST_COMMIT..HEAD
 
 # See detailed changes for source directories
-git diff LAST_COMMIT..HEAD -- \{{source.dirs}}
+git diff LAST_COMMIT..HEAD -- {{source.dirs}}
 ```
 
 ### Step 4: Identify Documentation Gaps
 
 Compare changes against existing documentation:
 
-**User Documentation** (`\{{docs.user.dir}}/`):
+**User Documentation** (`{{docs.user.dir}}/`):
 1. **CLI docs** — Command reference and usage guides
 2. **Quickstart/README** — Getting started guide
 3. **Feature docs** — Individual feature documentation
 
-**Developer Documentation** (`\{{docs.dev.dir}}/`):
+**Developer Documentation** (`{{docs.dev.dir}}/`):
 1. **Module docs** — Per-module documentation (domain model, business rules)
 2. **Architecture** — System design and patterns
 3. **Design decisions** — ADRs and design documents
@@ -97,11 +97,11 @@ For each identified gap:
 
 4. **Behavioral changes**: Update relevant documentation to reflect new behavior
 
-5. **Skills**: If the change affects a skill workflow, update the skill in `\{{skills.dir}}/`
+5. **Skills**: If the change affects a skill workflow, update the skill in `{{skills.dir}}/`
 
 ### Step 6: Update Changelog
 
-After updating documentation, update `\{{changelog.path}}`:
+After updating documentation, update `{{changelog.path}}`:
 
 1. Update the "Last Reviewed Commit" section with the latest commit hash
 2. Add a new dated entry summarizing what was documented
@@ -147,8 +147,8 @@ After completing the documentation update:
 ...
 
 ### Documentation Changes
-- Updated `\{{docs.user.dir}}/...`: Added new feature documentation
-- Updated `\{{docs.dev.dir}}/...`: Updated module documentation
+- Updated `{{docs.user.dir}}/...`: Added new feature documentation
+- Updated `{{docs.dev.dir}}/...`: Updated module documentation
 
 ### Changelog Updated
 - Last reviewed commit: `NEW_COMMIT`
@@ -182,7 +182,7 @@ Update module documentation for new feature
 
 Add feature rules and subscription documentation to module docs.
 
-Module-Doc: \{{docs.dev.dir}}/modules/<module>/README.md
+Module-Doc: {{docs.dev.dir}}/modules/<module>/README.md
 Module: <module-name>
 Change-Type: docs
 ```
@@ -211,11 +211,11 @@ Change-Type: docs
 
 | Change Type | Documentation Files |
 |-------------|---------------------|
-| New CLI command | `\{{docs.user.dir}}/cli/README.md`, `\{{docs.user.dir}}/cli/<command>.md` |
-| New command option | `\{{docs.user.dir}}/cli/<command>.md` |
-| New domain feature | `\{{docs.user.dir}}/` and `\{{docs.dev.dir}}/modules/<module>/README.md` |
-| New business rules | `\{{docs.dev.dir}}/modules/<module>/README.md` |
-| Changed behavior | Relevant files in `\{{docs.user.dir}}/` and `\{{docs.dev.dir}}/` |
-| New workflow | `\{{skills.dir}}/*/SKILL.md` if affects skills |
-| Architecture change | `\{{docs.dev.dir}}/architecture/*.md` |
-| Design decision | `\{{docs.dev.dir}}/design/*.md` |
+| New CLI command | `{{docs.user.dir}}/cli/README.md`, `{{docs.user.dir}}/cli/<command>.md` |
+| New command option | `{{docs.user.dir}}/cli/<command>.md` |
+| New domain feature | `{{docs.user.dir}}/` and `{{docs.dev.dir}}/modules/<module>/README.md` |
+| New business rules | `{{docs.dev.dir}}/modules/<module>/README.md` |
+| Changed behavior | Relevant files in `{{docs.user.dir}}/` and `{{docs.dev.dir}}/` |
+| New workflow | `{{skills.dir}}/*/SKILL.md` if affects skills |
+| Architecture change | `{{docs.dev.dir}}/architecture/*.md` |
+| Design decision | `{{docs.dev.dir}}/design/*.md` |
