@@ -11,5 +11,10 @@
     , description = Some "Claude skill to update project documentation after code changes"
     , tags = [ "claude", "skill", "docs" ]
     }
+  , { name = "exec-plan"
+    , path = "modules/exec-plan"
+    , description = Some "Claude skill for creating and managing execution plans (ExecPlans)"
+    , tags = [ "claude", "skill", "planning" ]
+    }
   ]
 }
