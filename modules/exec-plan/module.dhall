@@ -28,5 +28,9 @@
     }
   ]
 , commands = [] : List { run : Text, workDir : Optional Text, when : Optional Text }
-, dependencies = [ "claude-skill-link" ]
+, dependencies =
+  [ { module = "claude-skill-link"
+    , vars = [ { name = "skill.name", value = "exec-plan" } ]
+    }
+  ]
 }
