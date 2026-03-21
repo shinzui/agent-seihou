@@ -16,6 +16,24 @@ You are managing execution plans (ExecPlans) — self-contained living documents
 ExecPlans live in the `docs/plans/` directory at the repository root. Each plan is a single Markdown file named with a slug derived from its title (e.g., `docs/plans/add-template-engine.md`).
 
 
+## Git Trailers
+
+Every commit made while working on an ExecPlan **must** include a git trailer linking back to the plan:
+
+    ExecPlan: docs/plans/<slug>.md
+
+Add the trailer to the end of the commit message body, separated by a blank line:
+
+    Implement health-check endpoint
+
+    Add GET /health route that returns 200 OK with uptime info.
+    Wire into the existing router module.
+
+    ExecPlan: docs/plans/add-health-check.md
+
+If a single commit spans multiple plans (rare — prefer not to), include one trailer per plan.
+
+
 ## Modes of Operation
 
 Determine the mode from the first argument. If no argument is given, ask the user what they want to do.
@@ -59,7 +77,7 @@ Implement an existing ExecPlan. The argument is the plan file path (e.g., `docs/
 
 5. Resolve ambiguities autonomously. When you make a judgment call, record it in the Decision Log.
 
-6. Commit frequently. Each commit should leave the codebase in a working state.
+6. Commit frequently. Each commit should leave the codebase in a working state. Every commit must include an `ExecPlan:` git trailer linking to the plan file (see Git Trailers above).
 
 7. After completing each milestone, run the validation steps described in the plan and record the results.
 
