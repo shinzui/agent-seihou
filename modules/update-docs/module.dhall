@@ -1,4 +1,9 @@
-{ name = "update-docs"
+let S =
+      https://raw.githubusercontent.com/shinzui/seihou-schema/6df1496a7ce06a693d8b63bd4cf2c5d4a136670c/package.dhall
+        sha256:4946704e8c2dd295179003832428b82273fb0a0cff8eae9282b64ae7e18b89f4
+
+in  S.Module::{ name = "update-docs"
+, version = None Text
 , description = Some "Claude skill to update project documentation after code changes. Analyzes commits since last review and ensures docs stay in sync."
 , vars =
   [ { name = "project.name"
@@ -124,5 +129,5 @@
     }
   ]
 , commands = [] : List { run : Text, workDir : Optional Text, when : Optional Text }
-, dependencies = [ "claude-skill-link" ]
+, dependencies = [ { module = "claude-skill-link", vars = [] : List { name : Text, value : Text } } ]
 }

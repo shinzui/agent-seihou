@@ -1,4 +1,9 @@
-{ name = "exec-plan"
+let S =
+      https://raw.githubusercontent.com/shinzui/seihou-schema/6df1496a7ce06a693d8b63bd4cf2c5d4a136670c/package.dhall
+        sha256:4946704e8c2dd295179003832428b82273fb0a0cff8eae9282b64ae7e18b89f4
+
+in  S.Module::{ name = "exec-plan"
+, version = None Text
 , description = Some "Claude skill for creating, implementing, and managing execution plans (ExecPlans) — self-contained design documents that guide implementation of features and system changes."
 , vars =
   [ { name = "skill.name"
