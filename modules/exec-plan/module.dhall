@@ -13,11 +13,24 @@ in  S.Module::{ name = "exec-plan"
     , required = True
     , validation = Some "[a-z][a-z0-9-]*"
     }
+  , { name = "intentions.enabled"
+    , type = "bool"
+    , default = Some "false"
+    , description = Some "Enable intention tracking — prompts the user for an Intention ID and adds an Intention: trailer to commits"
+    , required = False
+    , validation = None Text
+    }
   ]
 , exports =
   [ { var = "skill.name", alias = None Text }
   ]
-, prompts = [] : List { var : Text, text : Text, when : Optional Text, choices : Optional (List Text) }
+, prompts =
+  [ { var = "intentions.enabled"
+    , text = "Enable intention tracking for commits?"
+    , when = None Text
+    , choices = None (List Text)
+    }
+  ]
 , steps =
   [ { strategy = "copy"
     , src = "SKILL.md"
@@ -30,6 +43,12 @@ in  S.Module::{ name = "exec-plan"
     , dest = "claude/skills/{{skill.name}}/PLANS.md"
     , when = None Text
     , patch = None Text
+    }
+  , { strategy = "copy"
+    , src = "INTENTIONS-SECTION.md"
+    , dest = "claude/skills/{{skill.name}}/SKILL.md"
+    , when = Some "Eq intentions.enabled true"
+    , patch = Some "append-section"
     }
   ]
 , commands = [] : List { run : Text, workDir : Optional Text, when : Optional Text }
