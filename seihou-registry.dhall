@@ -2,7 +2,7 @@
 , repoDescription = Some "Seihou modules for Claude skills and agent recipes"
 , modules =
   [ { name = "claude-gitignore"
-    , path = "claude-gitignore"
+    , path = "modules/claude-gitignore"
     , description = Some "Ensure .claude/ and CLAUDE.local.md are in .gitignore"
     , tags = [ "claude", "gitignore", "infrastructure" ]
     }
