@@ -1,6 +1,6 @@
 let S =
-      https://raw.githubusercontent.com/shinzui/seihou-schema/6df1496a7ce06a693d8b63bd4cf2c5d4a136670c/package.dhall
-        sha256:4946704e8c2dd295179003832428b82273fb0a0cff8eae9282b64ae7e18b89f4
+      https://raw.githubusercontent.com/shinzui/seihou-schema/2b4035b/package.dhall
+        sha256:21716b4aee783d8eb8b12c754050880fa710e881ecda85925f855ef34cc34a55
 
 in  S.Module::{ name = "exec-plan"
 , version = Some "0.1.0"

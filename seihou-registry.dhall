@@ -1,7 +1,12 @@
 { repoName = "agent-seihou"
 , repoDescription = Some "Seihou modules for Claude skills and agent recipes"
 , modules =
-  [ { name = "claude-skill-link"
+  [ { name = "claude-gitignore"
+    , path = "claude-gitignore"
+    , description = Some "Ensure .claude/ and CLAUDE.local.md are in .gitignore"
+    , tags = [ "claude", "gitignore", "infrastructure" ]
+    }
+  , { name = "claude-skill-link"
     , path = "modules/claude-skill-link"
     , description = Some "Symlink a Claude skill from claude/skills/ into .claude/skills/"
     , tags = [ "claude", "skill", "infrastructure" ]
