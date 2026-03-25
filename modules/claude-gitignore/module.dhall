@@ -4,7 +4,7 @@ let S =
 
 in  S.Module::{
     , name = "claude-gitignore"
-    , version = Some "0.1.0"
+    , version = Some "0.2.0"
     , description = Some
         "Ensure .claude/ and CLAUDE.local.md are in .gitignore. Shared base module for Claude-related modules."
     , steps =
@@ -12,15 +12,8 @@ in  S.Module::{
         , strategy = "template"
         , src = "gitignore.tpl"
         , dest = ".gitignore"
-        , patch = Some "append-section"
+        , patch = Some "append-line-if-absent"
         }
       ]
-    , removal = Some S.Removal::{
-        steps =
-          [ S.RemovalStep::{
-            , action = "remove-section"
-            , dest = ".gitignore"
-            }
-          ]
-        }
+    , removal = None S.Removal.Type
     }
