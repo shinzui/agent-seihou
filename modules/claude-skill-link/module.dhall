@@ -3,7 +3,7 @@ let S =
         sha256:21716b4aee783d8eb8b12c754050880fa710e881ecda85925f855ef34cc34a55
 
 in  S.Module::{ name = "claude-skill-link"
-, version = None Text
+, version = Some "0.1.0"
 , description = Some "Symlink a Claude skill from claude/skills/ into .claude/skills/. Ensures .claude/skills/ exists and creates a relative symlink so the skill is discoverable by Claude Code."
 , vars =
   [ { name = "skill.name"

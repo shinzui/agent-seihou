@@ -3,7 +3,7 @@ let S =
         sha256:21716b4aee783d8eb8b12c754050880fa710e881ecda85925f855ef34cc34a55
 
 in  S.Module::{ name = "update-docs"
-, version = None Text
+, version = Some "0.1.0"
 , description = Some "Claude skill to update project documentation after code changes. Analyzes commits since last review and ensures docs stay in sync."
 , vars =
   [ { name = "project.name"
