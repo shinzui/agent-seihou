@@ -2,9 +2,12 @@
 
 ## Intention Tracking
 
-When starting work in **create** or **implement** mode, use the `AskUserQuestion` tool to ask the user if they want to associate this work with an intention:
+When starting work in **create** or **implement** mode, use the `AskUserQuestion` tool to ask the user if they want to associate this work with an intention. Provide two options:
 
-    Would you like to associate this work with an intention? If so, provide the Intention ID (or press enter to skip).
+- **Yes** — "I have an Intention ID to associate with this work"
+- **Skip** — "Proceed without linking an intention"
+
+If the user selects "Yes", they will provide the Intention ID via the "Other" free-text input or as a follow-up.
 
 If the user provides an Intention ID, store it for the duration of the session and:
 

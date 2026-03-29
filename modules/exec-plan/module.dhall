@@ -3,7 +3,7 @@ let S =
         sha256:21716b4aee783d8eb8b12c754050880fa710e881ecda85925f855ef34cc34a55
 
 in  S.Module::{ name = "exec-plan"
-, version = Some "0.1.2"
+, version = Some "0.1.3"
 , description = Some "Claude skill for creating, implementing, and managing execution plans (ExecPlans) — self-contained design documents that guide implementation of features and system changes."
 , vars =
   [ { name = "skill.name"
