@@ -21,5 +21,10 @@
     , description = Some "Claude skill for creating and managing execution plans (ExecPlans)"
     , tags = [ "claude", "skill", "planning" ]
     }
+  , { name = "master-plan"
+    , path = "modules/master-plan"
+    , description = Some "Claude skill for creating and managing master plans (MasterPlans) — coordination documents that decompose large initiatives into multiple ExecPlans"
+    , tags = [ "claude", "skill", "planning" ]
+    }
   ]
 }
