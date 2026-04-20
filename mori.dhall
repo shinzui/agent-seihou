@@ -75,5 +75,30 @@ in  Schema.Project::{
         , dependencies = [ "exec-plan", "claude-skill-link" ]
         , requiredVars = [ "mp.skill.name", "exec-plan.skill.name" ]
         }
+      , Schema.SeihouTemplate::{
+        , name = "exec-plan-digest"
+        , version = Some "0.1.0"
+        , description = Some
+            "Claude skill that produces a standardized JSON digest of ExecPlans — extracts status, progress, discoveries, decisions, and outcomes; cross-references git commit trailers; and surfaces issues a human skimming the plan would miss."
+        , modulePath = "modules/exec-plan-digest"
+        , tags = [ "claude", "skill", "planning", "digest" ]
+        , dependencies = [ "exec-plan", "claude-skill-link" ]
+        , requiredVars = [ "digest.skill.name", "exec-plan.skill.name" ]
+        }
+      , Schema.SeihouTemplate::{
+        , name = "master-plan-digest"
+        , version = Some "0.1.0"
+        , description = Some
+            "Claude skill that emits a standardized JSON digest of MasterPlans — parses the Exec-Plan Registry, computes the dependency graph, embeds per-child exec-plan-digest output, cross-references git commit trailers, and surfaces coordination issues."
+        , modulePath = "modules/master-plan-digest"
+        , tags = [ "claude", "skill", "planning", "digest" ]
+        , dependencies =
+          [ "master-plan", "exec-plan-digest", "claude-skill-link" ]
+        , requiredVars =
+          [ "mp-digest.skill.name"
+          , "master-plan.skill.name"
+          , "exec-plan-digest.skill.name"
+          ]
+        }
       ]
     }
