@@ -1,87 +1,57 @@
 # agent-seihou
 
-A [Seihou](https://github.com/shinzui/seihou) registry of modules for scaffolding Claude skills and agent recipes.
+A [Seihou](https://github.com/shinzui/seihou) registry of modules for scaffolding Claude
+skills and agent recipes.
 
 ## Modules
 
-| Module | Description |
-|--------|-------------|
-| `claude-skill-link` | Symlink a Claude skill from `claude/skills/` into `.claude/skills/` so it's discoverable by Claude Code |
-| `update-docs` | Generate a Claude skill that keeps project documentation in sync with code changes |
+| Module | Version | Description |
+|--------|---------|-------------|
+| [`claude-gitignore`](modules/claude-gitignore) | `0.2.0` | Ensure `.claude/` and `CLAUDE.local.md` are in `.gitignore` |
+| [`claude-skill-link`](modules/claude-skill-link) | `0.1.0` | Symlink a Claude skill from `claude/skills/` into `.claude/skills/` |
+| [`update-docs`](modules/update-docs) | `0.1.0` | Claude skill that keeps project documentation in sync with code changes |
+| [`exec-plan`](modules/exec-plan) | `0.1.3` | Claude skill for creating and managing execution plans (ExecPlans) |
+| [`exec-plan-digest`](modules/exec-plan-digest) | `0.1.0` | Claude skill that emits a standardized JSON digest of ExecPlans |
+| [`master-plan`](modules/master-plan) | `0.1.0` | Claude skill for creating and managing master plans (MasterPlans) |
+| [`master-plan-digest`](modules/master-plan-digest) | `0.1.0` | Claude skill that emits a standardized JSON digest of MasterPlans |
+
+Each module directory contains its own `README.md` (where present) with full variable,
+prompt, dependency, and generated-file reference. `module.dhall` is the authoritative
+source.
 
 ## Usage
 
-### Browse available modules
+Browse:
 
 ```sh
 seihou browse https://github.com/shinzui/agent-seihou.git
 ```
 
-### Install
+Install:
 
 ```sh
-# Install all modules
+# All modules
 seihou install https://github.com/shinzui/agent-seihou.git --all
 
-# Install a specific module
+# A specific module
 seihou install https://github.com/shinzui/agent-seihou.git --module update-docs
 ```
 
-### Run
+Run (with overrides):
 
 ```sh
-seihou run update-docs \
-  --var project.name=myapp \
-  --var "project.description=My awesome project" \
-  --var skill.name=myapp-update-docs \
-  --var changelog.path=CHANGELOG.md \
-  --var source.dirs=src/
+seihou run <module> --var key=value
 ```
 
-This generates:
-- `claude/skills/myapp-update-docs/SKILL.md` — the skill definition with all paths customized
-- `.claude/skills/myapp-update-docs` — symlink so Claude Code discovers the skill
-
-## Module Details
-
-### claude-skill-link
-
-Infrastructure module that creates a symlink from `.claude/skills/<name>` to `claude/skills/<name>`. This lets you keep skill source files in a tracked `claude/skills/` directory while making them visible to Claude Code via `.claude/skills/`.
-
-**Variables:**
-
-| Variable | Required | Description |
-|----------|----------|-------------|
-| `skill.name` | yes | Skill directory name (e.g. `myapp-update-docs`) |
-
-### update-docs
-
-Generates a Claude skill that analyzes git commits since the last documentation review and identifies gaps. Depends on `claude-skill-link` to wire up the symlink.
-
-**Variables:**
-
-| Variable | Required | Default | Description |
-|----------|----------|---------|-------------|
-| `project.name` | yes | | Project name |
-| `project.description` | yes | | Short project description |
-| `skill.name` | yes | | Skill directory name |
-| `changelog.path` | yes | `docs/user/CHANGELOG.md` | Changelog with last reviewed commit |
-| `docs.user.dir` | yes | `docs/user` | User documentation directory |
-| `docs.dev.dir` | yes | `docs/dev` | Developer documentation directory |
-| `source.dirs` | yes | `src/` | Source directories to analyze (comma-separated) |
-| `cli.commands.dir` | no | | CLI command modules directory |
-| `skills.dir` | no | `claude/skills` | Claude skills directory |
+See `seihou run --help` and the target module's README for available variables.
 
 ## Repository Layout
 
 ```
 agent-seihou/
-├── seihou-registry.dhall
-└── modules/
-    ├── claude-skill-link/
-    │   └── module.dhall
-    └── update-docs/
-        ├── module.dhall
-        └── files/
-            └── SKILL.md.tpl
+├── seihou-registry.dhall   # module + recipe index
+└── modules/<name>/
+    ├── module.dhall        # module definition
+    ├── README.md           # per-module reference (where present)
+    └── files/              # template sources
 ```
