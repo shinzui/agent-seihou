@@ -2,29 +2,36 @@
 , repoDescription = Some "Seihou modules for Claude skills and agent recipes"
 , modules =
   [ { name = "claude-gitignore"
+    , version = Some "0.2.0"
     , path = "modules/claude-gitignore"
     , description = Some "Ensure .claude/ and CLAUDE.local.md are in .gitignore"
     , tags = [ "claude", "gitignore", "infrastructure" ]
     }
   , { name = "claude-skill-link"
+    , version = Some "0.1.0"
     , path = "modules/claude-skill-link"
     , description = Some "Symlink a Claude skill from claude/skills/ into .claude/skills/"
     , tags = [ "claude", "skill", "infrastructure" ]
     }
   , { name = "update-docs"
+    , version = Some "0.1.0"
     , path = "modules/update-docs"
     , description = Some "Claude skill to update project documentation after code changes"
     , tags = [ "claude", "skill", "docs" ]
     }
   , { name = "exec-plan"
+    , version = Some "0.1.3"
     , path = "modules/exec-plan"
     , description = Some "Claude skill for creating and managing execution plans (ExecPlans)"
     , tags = [ "claude", "skill", "planning" ]
     }
   , { name = "master-plan"
+    , version = Some "0.1.0"
     , path = "modules/master-plan"
     , description = Some "Claude skill for creating and managing master plans (MasterPlans) — coordination documents that decompose large initiatives into multiple ExecPlans"
     , tags = [ "claude", "skill", "planning" ]
     }
   ]
+, recipes =
+  [] : List { name : Text, version : Optional Text, path : Text, description : Optional Text, tags : List Text }
 }
