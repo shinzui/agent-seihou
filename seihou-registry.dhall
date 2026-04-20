@@ -31,6 +31,12 @@
     , description = Some "Claude skill for creating and managing master plans (MasterPlans) — coordination documents that decompose large initiatives into multiple ExecPlans"
     , tags = [ "claude", "skill", "planning" ]
     }
+  , { name = "exec-plan-digest"
+    , version = Some "0.1.0"
+    , path = "modules/exec-plan-digest"
+    , description = Some "Claude skill that emits a standardized JSON digest of ExecPlans — status, progress, discoveries, decisions, commit-trailer coverage, and prioritized findings for things a human skimming would miss"
+    , tags = [ "claude", "skill", "planning" ]
+    }
   ]
 , recipes =
   [] : List { name : Text, version : Optional Text, path : Text, description : Optional Text, tags : List Text }
