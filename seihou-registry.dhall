@@ -37,6 +37,12 @@
     , description = Some "Claude skill that emits a standardized JSON digest of ExecPlans — status, progress, discoveries, decisions, commit-trailer coverage, and prioritized findings for things a human skimming would miss"
     , tags = [ "claude", "skill", "planning" ]
     }
+  , { name = "master-plan-digest"
+    , version = Some "0.1.0"
+    , path = "modules/master-plan-digest"
+    , description = Some "Claude skill that emits a standardized JSON digest of MasterPlans — registry, dependency graph (ready/blocked/critical path), per-child exec-plan digests, trailer coverage, and coordination findings (registry drift, cascade gaps, integration-point violations)"
+    , tags = [ "claude", "skill", "planning" ]
+    }
   ]
 , recipes =
   [] : List { name : Text, version : Optional Text, path : Text, description : Optional Text, tags : List Text }
