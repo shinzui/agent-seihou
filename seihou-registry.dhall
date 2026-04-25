@@ -13,6 +13,12 @@
     , description = Some "Symlink a Claude skill from claude/skills/ into .claude/skills/"
     , tags = [ "claude", "skill", "infrastructure" ]
     }
+  , { name = "link-skill"
+    , version = Some "0.1.0"
+    , path = "modules/link-skill"
+    , description = Some "Symlink a skill from claude/skills/ into both .claude/skills/ and .agents/skills/"
+    , tags = [ "claude", "agents", "skill", "infrastructure" ]
+    }
   , { name = "update-docs"
     , version = Some "0.1.0"
     , path = "modules/update-docs"
