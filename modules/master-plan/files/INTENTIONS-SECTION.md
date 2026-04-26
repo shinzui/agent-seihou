@@ -10,19 +10,9 @@ When starting work in **create** or **implement** mode, use the `AskUserQuestion
 
 If the user provides an Intention ID, store it for the duration of the session and:
 
-1. **Add it to the top of the MasterPlan.** When creating a new MasterPlan, include the Intention ID immediately after the title heading:
+1. **Pass it to the init scripts.** When creating a new MasterPlan, pass `--intention <IntentionId>` to `init-masterplan.ts`; when creating each child ExecPlan in the same session, pass the same `--intention <IntentionId>` to `init-plan.ts`. Both scripts write it into the plan's YAML frontmatter (`intention: <IntentionId>`); do not add a body line for it. When working with an existing plan whose frontmatter does not yet have an `intention` field, add it directly to the frontmatter block.
 
-        # <Initiative Title>
-
-        Intention: <IntentionId>
-
-        This MasterPlan is a living document. ...
-
-    When working with an existing MasterPlan that does not yet have an `Intention:` line, insert it in the same position (after the title, before the living-document preamble).
-
-2. **Propagate it to every child ExecPlan** created during this session. Each child plan gets the same `Intention:` line after its title heading.
-
-3. **Include an `Intention:` git trailer on every commit** alongside the other trailers:
+2. **Include an `Intention:` git trailer on every commit** alongside the other trailers:
 
         Implement consumer group rebalance handling
 

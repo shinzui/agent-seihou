@@ -4,7 +4,7 @@
 > self-contained design documents that guide implementation of features and system
 > changes.
 
-**Version:** `0.2.0`
+**Version:** `0.3.0`
 
 ## Overview
 
@@ -45,13 +45,17 @@ Variables this module exposes to parent modules:
 
 When run, this module writes:
 
-- `agents/skills/{{skill.name}}/SKILL.md` — strategy: `copy`
+- `agents/skills/{{skill.name}}/SKILL.md` — strategy: `template`
 - `agents/skills/{{skill.name}}/PLANS.md` — strategy: `copy`
+- `agents/skills/{{skill.name}}/init-plan.ts` — strategy: `copy`
 - `agents/skills/{{skill.name}}/SKILL.md` — strategy: `copy`
   - Applied when: `Eq intentions.enabled true`
   - Patch mode: `append-section`
 
-`dest` may contain `{{var}}` placeholders; they are resolved at run time.
+`dest` may contain `{{var}}` placeholders; they are resolved at run time. The
+`init-plan.ts` script is invoked by the skill at plan-creation time (via Bun) to
+deterministically pick the next sequential number, slugify the title, and emit the
+plan file with YAML frontmatter and the canonical skeleton.
 
 ## Migrations
 

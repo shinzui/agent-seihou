@@ -4,7 +4,7 @@
 > documents that decompose large initiatives into multiple ExecPlans with dependencies
 > and integration points.
 
-**Version:** `0.2.0`
+**Version:** `0.3.0`
 
 ## Overview
 
@@ -50,11 +50,16 @@ When run, this module writes:
 
 - `agents/skills/{{mp.skill.name}}/SKILL.md` — strategy: `template`
 - `agents/skills/{{mp.skill.name}}/MASTERPLAN.md` — strategy: `template`
+- `agents/skills/{{mp.skill.name}}/init-masterplan.ts` — strategy: `copy`
 - `agents/skills/{{mp.skill.name}}/SKILL.md` — strategy: `copy`
   - Applied when: `Eq intentions.enabled true`
   - Patch mode: `append-section`
 
-`dest` may contain `{{var}}` placeholders; they are resolved at run time.
+`dest` may contain `{{var}}` placeholders; they are resolved at run time. The
+`init-masterplan.ts` script is invoked by the skill at MasterPlan creation time
+(via Bun) to deterministically pick the next sequential number, slugify the title,
+and emit the plan file with YAML frontmatter and the canonical skeleton. Child
+ExecPlans are created via the exec-plan skill's own `init-plan.ts`.
 
 ## Migrations
 
