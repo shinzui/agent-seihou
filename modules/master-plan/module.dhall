@@ -1,10 +1,10 @@
 let S =
-      https://raw.githubusercontent.com/shinzui/seihou-schema/2b4035b7e720a9b30642a8a27551592175732ee5/package.dhall
-        sha256:21716b4aee783d8eb8b12c754050880fa710e881ecda85925f855ef34cc34a55
+      https://raw.githubusercontent.com/shinzui/seihou-schema/b83079d377f22c77292ad5ccf88d1061a58f0c1c/package.dhall
+        sha256:1d46697ed3e7ca1b0d9922020e2da034ae6e33f7b482ee454c68d94b536e8c2a
 
 in  S.Module::{
     , name = "master-plan"
-    , version = Some "0.1.0"
+    , version = Some "0.2.0"
     , description = Some
         "Claude skill for creating and managing master plans (MasterPlans) — coordination documents that decompose large initiatives into multiple ExecPlans with dependencies and integration points."
     , vars =
@@ -45,17 +45,17 @@ in  S.Module::{
       [ S.Step::{
         , strategy = "template"
         , src = "SKILL.md"
-        , dest = "claude/skills/{{mp.skill.name}}/SKILL.md"
+        , dest = "agents/skills/{{mp.skill.name}}/SKILL.md"
         }
       , S.Step::{
         , strategy = "template"
         , src = "MASTERPLAN.md"
-        , dest = "claude/skills/{{mp.skill.name}}/MASTERPLAN.md"
+        , dest = "agents/skills/{{mp.skill.name}}/MASTERPLAN.md"
         }
       , S.Step::{
         , strategy = "copy"
         , src = "INTENTIONS-SECTION.md"
-        , dest = "claude/skills/{{mp.skill.name}}/SKILL.md"
+        , dest = "agents/skills/{{mp.skill.name}}/SKILL.md"
         , when = Some "Eq intentions.enabled true"
         , patch = Some "append-section"
         }
@@ -66,8 +66,42 @@ in  S.Module::{
         , vars = [ { name = "skill.name", value = "exec-plan" } ]
         }
       , S.Dependency::{
-        , module = "claude-skill-link"
+        , module = "link-skill"
         , vars = [ { name = "skill.name", value = "master-plan" } ]
+        }
+      ]
+    , migrations =
+      [ S.Migration::{
+        , from = "0.1.0"
+        , to = "0.2.0"
+        , ops =
+          [ S.MigrationOp.MoveFile
+              { src = "claude/skills/master-plan/SKILL.md"
+              , dest = "agents/skills/master-plan/SKILL.md"
+              }
+          , S.MigrationOp.MoveFile
+              { src = "claude/skills/master-plan/MASTERPLAN.md"
+              , dest = "agents/skills/master-plan/MASTERPLAN.md"
+              }
+          , S.MigrationOp.RunCommand
+              { run = "rm -f .claude/skills/master-plan"
+              , workDir = None Text
+              }
+          , S.MigrationOp.RunCommand
+              { run = "mkdir -p .claude/skills .agents/skills"
+              , workDir = None Text
+              }
+          , S.MigrationOp.RunCommand
+              { run =
+                  "ln -sfn ../../agents/skills/master-plan .claude/skills/master-plan"
+              , workDir = None Text
+              }
+          , S.MigrationOp.RunCommand
+              { run =
+                  "ln -sfn ../../agents/skills/master-plan .agents/skills/master-plan"
+              , workDir = None Text
+              }
+          ]
         }
       ]
     }

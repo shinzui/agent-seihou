@@ -1,18 +1,18 @@
 # link-skill
 
-> Symlink a skill from `claude/skills/` into both `.claude/skills/` and `.agents/skills/`.
+> Symlink a skill from `agents/skills/` into both `.claude/skills/` and `.agents/skills/`.
 > Ensures the target directories exist and creates relative symlinks so the skill is
 > discoverable by Claude Code and other agent harnesses that read `.agents/skills/`.
 
-**Version:** `0.1.0`
+**Version:** `0.2.0`
 
 ## Overview
 
-Infrastructure module for skill modules that want to be visible to both Claude Code and
-agent harnesses that look under `.agents/skills/`. It does not generate any project
-files of its own beyond a one-line `.gitignore` patch — its real work is `mkdir` plus
-two `ln -sfn` commands per target. Pulls in `claude-gitignore` so `.claude/` is also
-ignored, and adds `.agents/` to `.gitignore` itself.
+Infrastructure module for skill modules that want their `agents/skills/<name>/` content
+visible to both Claude Code (which reads `.claude/skills/`) and other agent harnesses
+(which read `.agents/skills/`). It does not generate skill files of its own — its real
+work is `mkdir` plus two `ln -sfn` commands per target. Pulls in `claude-gitignore` so
+`.claude/` is ignored, and adds `.agents/` to `.gitignore` itself.
 
 ## Variables
 
@@ -44,9 +44,9 @@ When run, this module writes:
 After file generation, this module runs:
 
 - `mkdir -p .claude/skills`
-- `ln -sfn ../../claude/skills/{{skill.name}} .claude/skills/{{skill.name}}`
+- `ln -sfn ../../agents/skills/{{skill.name}} .claude/skills/{{skill.name}}`
 - `mkdir -p .agents/skills`
-- `ln -sfn ../../claude/skills/{{skill.name}} .agents/skills/{{skill.name}}`
+- `ln -sfn ../../agents/skills/{{skill.name}} .agents/skills/{{skill.name}}`
 
 ## Removal
 
@@ -66,6 +66,9 @@ Preview without writing files:
 ```bash
 seihou run link-skill --var skill.name=my-skill --dry-run
 ```
+
+Typically pulled in transitively by skill modules (e.g. `master-plan`, `exec-plan`)
+rather than applied directly.
 
 ## See Also
 
