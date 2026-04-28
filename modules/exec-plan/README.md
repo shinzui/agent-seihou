@@ -4,7 +4,7 @@
 > self-contained design documents that guide implementation of features and system
 > changes.
 
-**Version:** `0.3.0`
+**Version:** `0.4.0`
 
 ## Overview
 
@@ -31,6 +31,9 @@ The following values are asked interactively (unless supplied via `--var`):
 
 This module pulls in:
 
+- **`agent-gitignore`** — ensures `.claude/`, `.agents/`, and `CLAUDE.local.md` are
+  ignored. Replaces the older transitive `claude-gitignore` dep with a single
+  superset that covers both agent-harness directories.
 - **`link-skill`**
   - Variable bindings:
     - `skill.name` = `exec-plan`
@@ -113,3 +116,4 @@ seihou migrate exec-plan             # apply
 - `files/` — template sources
 - `master-plan` — coordination skill that depends on this module
 - `link-skill` — symlink infrastructure (transitive dependency)
+- `agent-gitignore` — gitignore rules for `.claude/` and `.agents/`

@@ -4,7 +4,7 @@
 > documents that decompose large initiatives into multiple ExecPlans with dependencies
 > and integration points.
 
-**Version:** `0.3.0`
+**Version:** `0.4.0`
 
 ## Overview
 
@@ -31,6 +31,9 @@ The following values are asked interactively (unless supplied via `--var`):
 
 This module pulls in:
 
+- **`agent-gitignore`** — ensures `.claude/`, `.agents/`, and `CLAUDE.local.md` are
+  ignored. Replaces the older transitive `claude-gitignore` dep with a single
+  superset that covers both agent-harness directories.
 - **`exec-plan`**
   - Variable bindings:
     - `skill.name` = `exec-plan`
@@ -117,3 +120,4 @@ seihou migrate master-plan             # apply
 - `files/` — template sources
 - `exec-plan` — companion ExecPlan skill (transitive dependency)
 - `link-skill` — symlink infrastructure (transitive dependency)
+- `agent-gitignore` — gitignore rules for `.claude/` and `.agents/`

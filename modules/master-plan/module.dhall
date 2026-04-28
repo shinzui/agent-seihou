@@ -4,7 +4,7 @@ let S =
 
 in  S.Module::{
     , name = "master-plan"
-    , version = Some "0.3.0"
+    , version = Some "0.4.0"
     , description = Some
         "Claude skill for creating and managing master plans (MasterPlans) — coordination documents that decompose large initiatives into multiple ExecPlans with dependencies and integration points."
     , vars =
@@ -66,7 +66,8 @@ in  S.Module::{
         }
       ]
     , dependencies =
-      [ S.Dependency::{
+      [ S.Dependency::{ module = "agent-gitignore" }
+      , S.Dependency::{
         , module = "exec-plan"
         , vars = [ { name = "skill.name", value = "exec-plan" } ]
         }

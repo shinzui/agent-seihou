@@ -7,6 +7,12 @@
     , description = Some "Ensure .claude/ and CLAUDE.local.md are in .gitignore"
     , tags = [ "claude", "gitignore", "infrastructure" ]
     }
+  , { name = "agent-gitignore"
+    , version = Some "0.1.0"
+    , path = "modules/agent-gitignore"
+    , description = Some "Ensure .claude/, .agents/, and CLAUDE.local.md are in .gitignore"
+    , tags = [ "claude", "agents", "gitignore", "infrastructure" ]
+    }
   , { name = "claude-skill-link"
     , version = Some "0.1.0"
     , path = "modules/claude-skill-link"
@@ -26,13 +32,13 @@
     , tags = [ "claude", "skill", "docs" ]
     }
   , { name = "exec-plan"
-    , version = Some "0.3.0"
+    , version = Some "0.4.0"
     , path = "modules/exec-plan"
     , description = Some "Claude skill for creating and managing execution plans (ExecPlans)"
     , tags = [ "claude", "skill", "planning" ]
     }
   , { name = "master-plan"
-    , version = Some "0.3.0"
+    , version = Some "0.4.0"
     , path = "modules/master-plan"
     , description = Some "Claude skill for creating and managing master plans (MasterPlans) — coordination documents that decompose large initiatives into multiple ExecPlans"
     , tags = [ "claude", "skill", "planning" ]
