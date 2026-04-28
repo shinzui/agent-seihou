@@ -89,7 +89,8 @@ in  S.Module::{
               , dest = "agents/skills/master-plan/MASTERPLAN.md"
               }
           , S.MigrationOp.RunCommand
-              { run = "rm -f .claude/skills/master-plan"
+              { run =
+                  "rm -rf .claude/skills/master-plan claude/skills/master-plan"
               , workDir = None Text
               }
           , S.MigrationOp.RunCommand
