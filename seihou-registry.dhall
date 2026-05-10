@@ -32,13 +32,13 @@
     , tags = [ "claude", "skill", "docs" ]
     }
   , { name = "exec-plan"
-    , version = Some "0.4.0"
+    , version = Some "0.5.0"
     , path = "modules/exec-plan"
     , description = Some "Claude skill for creating and managing execution plans (ExecPlans)"
     , tags = [ "claude", "skill", "planning" ]
     }
   , { name = "master-plan"
-    , version = Some "0.4.0"
+    , version = Some "0.5.0"
     , path = "modules/master-plan"
     , description = Some "Claude skill for creating and managing master plans (MasterPlans) — coordination documents that decompose large initiatives into multiple ExecPlans"
     , tags = [ "claude", "skill", "planning" ]

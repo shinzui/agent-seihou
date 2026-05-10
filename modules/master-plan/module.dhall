@@ -4,7 +4,7 @@ let S =
 
 in  S.Module::{
     , name = "master-plan"
-    , version = Some "0.4.0"
+    , version = Some "0.5.0"
     , description = Some
         "Claude skill for creating and managing master plans (MasterPlans) — coordination documents that decompose large initiatives into multiple ExecPlans with dependencies and integration points."
     , vars =

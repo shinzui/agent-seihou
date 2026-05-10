@@ -14,12 +14,14 @@ If the user provides an Intention ID, store it for the duration of the session a
 
 2. **Include an `Intention:` git trailer on every commit** alongside the other trailers:
 
-        Implement consumer group rebalance handling
+    ```text
+    Implement consumer group rebalance handling
 
-        Add consumer group module with cooperative rebalance protocol.
+    Add consumer group module with cooperative rebalance protocol.
 
-        MasterPlan: docs/masterplans/1-kafka-consumer-pipeline.md
-        ExecPlan: docs/plans/3-add-consumer-group.md
-        Intention: INTENT-42
+    MasterPlan: docs/masterplans/1-kafka-consumer-pipeline.md
+    ExecPlan: docs/plans/3-add-consumer-group.md
+    Intention: INTENT-42
+    ```
 
 Ask once at the start of a session. Do not ask again on subsequent operations within the same session. If the user skips or declines, proceed without the trailer.

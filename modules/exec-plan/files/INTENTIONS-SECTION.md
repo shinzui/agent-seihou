@@ -15,15 +15,19 @@ If the user provides an Intention ID, store it for the duration of the session a
 
 2. **Include an `Intention:` git trailer on every commit:**
 
-        Intention: <IntentionId>
+    ```text
+    Intention: <IntentionId>
+    ```
 
 When both an ExecPlan and an Intention are active, commits must include both trailers:
 
-    Implement health-check endpoint
+```text
+Implement health-check endpoint
 
-    Add GET /health route that returns 200 OK with uptime info.
+Add GET /health route that returns 200 OK with uptime info.
 
-    ExecPlan: docs/plans/3-add-health-check.md
-    Intention: INTENT-42
+ExecPlan: docs/plans/3-add-health-check.md
+Intention: INTENT-42
+```
 
 Ask once at the start of a session. Do not ask again on subsequent commits within the same session. If the user skips or declines, proceed without the trailer.

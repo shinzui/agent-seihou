@@ -4,7 +4,7 @@ let S =
 
 in  S.Module::{
     , name = "exec-plan"
-    , version = Some "0.4.0"
+    , version = Some "0.5.0"
     , description = Some
         "Claude skill for creating, implementing, and managing execution plans (ExecPlans) — self-contained design documents that guide implementation of features and system changes."
     , vars =
