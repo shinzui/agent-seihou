@@ -19,6 +19,17 @@ Each module directory contains its own `README.md` (where present) with full var
 prompt, dependency, and generated-file reference. `module.dhall` is the authoritative
 source.
 
+## Blueprints
+
+Blueprints are agent-driven runnables: instead of producing deterministic output from a
+fixed set of variables, they capture authoring intent in a prompt and let a coding agent
+tailor the result to the target repository. Run them with `seihou agent run`, not
+`seihou run`.
+
+| Blueprint | Version | Description |
+|-----------|---------|-------------|
+| [`hackage-release`](blueprints/hackage-release) | `0.1.0` | Generate a project-specific `release` skill that publishes Haskell packages to Hackage (PVP versioning, changelogs, dependency-ordered publishing, GitHub releases), tailored to the repo's actual package layout and linked into both `.claude/skills` and `.agents/skills` |
+
 ## Usage
 
 Browse:
@@ -37,10 +48,16 @@ seihou install https://github.com/shinzui/agent-seihou.git --all
 seihou install https://github.com/shinzui/agent-seihou.git --module update-docs
 ```
 
-Run (with overrides):
+Run a module (with overrides):
 
 ```sh
 seihou run <module> --var key=value
+```
+
+Run a blueprint (launches an agent in the current project):
+
+```sh
+seihou agent run hackage-release
 ```
 
 See `seihou run --help` and the target module's README for available variables.
@@ -49,9 +66,13 @@ See `seihou run --help` and the target module's README for available variables.
 
 ```
 agent-seihou/
-├── seihou-registry.dhall   # module + recipe index
-└── modules/<name>/
-    ├── module.dhall        # module definition
-    ├── README.md           # per-module reference (where present)
-    └── files/              # template sources
+├── seihou-registry.dhall   # module, recipe, and blueprint index
+├── modules/<name>/
+│   ├── module.dhall        # module definition
+│   ├── README.md           # per-module reference (where present)
+│   └── files/              # template sources
+└── blueprints/<name>/
+    ├── blueprint.dhall     # blueprint definition
+    ├── prompt.md           # agent task prompt
+    └── files/              # read-only reference material
 ```
