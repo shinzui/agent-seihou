@@ -72,17 +72,25 @@ Inspect the repo before writing anything. Determine:
 - **Commit conventions** — check for Conventional Commits usage and any
   `CLAUDE.md` / contributing docs that pin the release commit message style.
 
-### 2. Resolve the ambiguous decisions with the user
+### 2. Resolve the decisions with the user
 
-Use `AskUserQuestion` for choices you cannot infer with confidence. Typically:
+**Always** confirm the **publishable package set** with the user via
+`AskUserQuestion` before writing the skill — never assume it. Present every
+package you found, your inferred publish/internal classification *and the
+reason* for each (e.g. "internal: test-support library", "internal: example
+app", "internal: split out to its own repo"), and the dependency-ordered
+publish list you derived, then let the user correct it. Publishing to Hackage
+is irreversible, so this split is the one decision that must be explicitly
+ratified, even if you are confident.
 
-- The exact **publishable package set** (and the publish order you derived).
+Also use `AskUserQuestion` for any of these you cannot infer with confidence:
+
 - **Shared vs independent versioning** for multi-package repos.
 - **Tag format** and whether to create a **GitHub release**.
 - Which **check gates** are mandatory before publishing.
 
-Ask only what changes the generated skill. Don't quiz the user on things the
-repo already answers.
+Beyond the publishable set, don't quiz the user on things the repo already
+answers.
 
 ### 3. Write `agents/skills/{{skill.name}}/SKILL.md`
 
