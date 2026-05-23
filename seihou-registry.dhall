@@ -20,7 +20,7 @@
     , tags = [ "claude", "skill", "infrastructure" ]
     }
   , { name = "link-skill"
-    , version = Some "0.1.0"
+    , version = Some "0.2.0"
     , path = "modules/link-skill"
     , description = Some "Symlink a skill from claude/skills/ into both .claude/skills/ and .agents/skills/"
     , tags = [ "claude", "agents", "skill", "infrastructure" ]
@@ -58,4 +58,12 @@
   ]
 , recipes =
   [] : List { name : Text, version : Optional Text, path : Text, description : Optional Text, tags : List Text }
+, blueprints =
+  [ { name = "hackage-release"
+    , version = Some "0.1.0"
+    , path = "blueprints/hackage-release"
+    , description = Some "Agent-driven blueprint that generates a project-specific 'release' skill for publishing Haskell packages to Hackage (PVP versioning, changelog updates, dependency-ordered publishing, GitHub release), tailored to the repo's actual package layout and linked into both .claude/skills and .agents/skills"
+    , tags = [ "haskell", "hackage", "release", "skill", "claude", "agents" ]
+    }
+  ]
 }
