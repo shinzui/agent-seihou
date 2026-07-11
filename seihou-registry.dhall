@@ -66,4 +66,12 @@
     , tags = [ "haskell", "hackage", "release", "skill", "claude", "agents" ]
     }
   ]
+, prompts =
+  [ { name = "fix-prelude-import-conflicts"
+    , version = Some "0.1.0"
+    , path = "prompts/fix-prelude-import-conflicts"
+    , description = Some "Reusable agent-session prompt that fixes custom-prelude import-conflict violations in a Haskell repo — hide clashing names from the prelude import (never the other import) and never qualify operators. Tunable per project via first-class guidance blocks (prelude module, build tool/command, free-form guidance)."
+    , tags = [ "haskell", "refactoring", "prelude", "imports" ]
+    }
+  ]
 }
