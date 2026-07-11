@@ -4,7 +4,7 @@
 > self-contained design documents that guide implementation of features and system
 > changes.
 
-**Version:** `0.4.0`
+**Version:** `0.6.0`
 
 ## Overview
 

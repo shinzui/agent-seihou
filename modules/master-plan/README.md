@@ -4,7 +4,7 @@
 > documents that decompose large initiatives into multiple ExecPlans with dependencies
 > and integration points.
 
-**Version:** `0.4.0`
+**Version:** `0.6.0`
 
 ## Overview
 
