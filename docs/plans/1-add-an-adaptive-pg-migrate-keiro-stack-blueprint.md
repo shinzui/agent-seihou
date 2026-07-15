@@ -55,8 +55,11 @@ application` plan plus the correct safety behavior for each database class.
   generated its README with the blueprint README skill, updated the root catalog and usage examples,
   and reconciled pre-existing `exec-plan`/`master-plan` registry drift from `0.5.0` to `0.6.0`.
   Blueprint lint, registry sync check, registry validation, and `git diff --check` all pass.
-- [ ] Milestone 4: Prove all policy renders and scenarios, run final validation, distill durable
-  context, and complete the retrospective.
+- [x] (2026-07-15T21:56:24Z) Milestone 4: Proved all policy renders and both database
+  scenarios in disposable temporary copies, confirmed the v0.4 invalid-policy stop guard, found no
+  configured repository formatter, ran the complete Seihou/Git validation suite, distilled durable
+  context into ADR 1, and completed the retrospective. No live database or external deployment was
+  contacted.
 
 
 ## Surprises & Discoveries
@@ -218,22 +221,45 @@ implementation. Provide concise evidence.
 
 ## Outcomes & Retrospective
 
-Summarize outcomes, gaps, and lessons learned at major milestones or at completion.
-Compare the result against the original purpose. Before marking the plan complete,
-distill durable project context from the Decision Log, Surprises & Discoveries, and
-this section into docs/adr/. Keep task-local execution details here.
+The registry now publishes `migrate-keiro-stack` version `0.1.0`. Its four portable references
+cover cohort/runtime selection, pg-migrate application authoring, a guarded disposable fast path,
+and a fail-closed persistent cutover. The blueprint prompt duplicates every safety-critical fact:
+the 2026-07-14 cohort baseline, Mori-first source discovery, Cabal/Nix alignment, runtime API
+anchors, the `pgmq -> kiroku -> keiro -> kioku -> application` order, both database branches,
+history evidence rules, forbidden actions, verification, no-op reapply, live assertions, and smoke
+testing. The README and root catalog expose the default and explicit policy invocations, provider
+requirements, reference files, no-baseline behavior, and destructive/persistent guardrails.
 
-(To be filled during and after implementation.)
+Seihou validation, registry sync checking, registry validation, and Git whitespace checking pass.
+Fresh temporary debug renders prove `ask`, `disposable`, and `preserve` substitution, all four
+reference descriptions, both safety branches, the component order, and an inline task body without
+author-machine paths. Text-level scenarios prove that a confirmed empty local service skips history
+rehearsal but still confirms/reset/applies/verifies/reapplies/smokes, while a shared Codd/hasql/PGMQ
+state stops before writes and requires backup, restored clone, component-aware imports, restore
+rollback, and delayed cleanup. No live PostgreSQL service was contacted.
+
+The main gap is upstream rather than blueprint-local: Seihou v0.4.0.0 does not enforce arbitrary
+`ValPattern` values, so an invalid policy debug render exits zero. The first rendered task
+instruction now checks the exact value and stops before inspection or tools, while validation-
+capable versions still reject at launch. This limitation and the v0.3/v0.4 reference/tool/debug
+differences were promoted to
+[`docs/adr/1-keep-safety-critical-blueprints-self-contained.md`](../adr/1-keep-safety-critical-blueprints-self-contained.md).
+
+The implementation confirmed two reusable lessons. Safety-critical agent behavior must not depend
+on supplementary reference delivery, and debug probes must be isolated when the tool records
+provenance. Keeping tool approvals interactive also gives this destructive workflow a useful final
+operator gate.
 
 
 ## Context and Orientation
 
 Work from `/Users/shinzui/Keikaku/bokuno/agent-seihou`. The repository is a Seihou registry:
 `seihou-registry.dhall` is its public module, recipe, blueprint, and prompt index, while the
-root `README.md` explains how consumers browse, install, and run entries. There is no
-`docs/adr/` directory and therefore no relevant ADR yet. If implementation produces a
-durable repository convention beyond this blueprint, create an ADR during the final
-distillation pass rather than placing task-local detail there.
+root `README.md` explains how consumers browse, install, and run entries. No relevant ADR existed
+when implementation began. The final distillation created
+[`docs/adr/1-keep-safety-critical-blueprints-self-contained.md`](../adr/1-keep-safety-critical-blueprints-self-contained.md)
+for the durable cross-blueprint Seihou v0.3/v0.4 compatibility and safety conventions; task-local
+execution detail remains in this plan.
 
 The only current blueprint is `blueprints/hackage-release/`. Its `blueprint.dhall` shows the
 schema import and `S.Blueprint` record shape; its `prompt.md` shows variable interpolation
@@ -864,3 +890,12 @@ Mori ecosystem; an absent registry entry is a recorded limitation, not a reason 
   CLI prompt for interactive approval. Recorded this as a required interactive-provider dependency
   and a deliberate safety gate, and specified omitting `allowedTools` (dead metadata) and omitting
   `baseModules` (schema default; a bare `[]` will not type-check).
+
+- 2026-07-15 — Implementation-time toolchain revision. The installed Seihou CLI is now
+  `v0.4.0.0 (2aa69ce)`: it mounts blueprint references, honors declared tools, records debug-run
+  provenance, and does not enforce arbitrary validation patterns. Updated Progress, Surprises,
+  Decision Log, Outcomes, Context, Concrete Steps, Validation, and Interfaces to describe the
+  version-aware behavior. Kept the prompt self-sufficient, kept extra tools interactive, moved
+  render probes into a disposable registry copy, and added an immediate exact-value policy guard.
+  Promoted these durable cross-blueprint conventions into
+  `docs/adr/1-keep-safety-critical-blueprints-self-contained.md`.
