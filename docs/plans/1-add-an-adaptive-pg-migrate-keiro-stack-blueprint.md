@@ -41,8 +41,13 @@ application` plan plus the correct safety behavior for each database class.
 - [x] (2026-07-15T21:42:36Z) Milestone 1: Authored and validated the four-file portable
   reference corpus. The files synthesize the recorded upstream and field-tested sources without
   operational dependence on author-machine paths, and `git diff --check` passes.
-- [ ] Milestone 2: Define and validate the adaptive blueprint and operationally self-sufficient
-  prompt.
+- [x] (2026-07-15T21:46:46Z) Milestone 2 implementation: Defined the adaptive blueprint and its
+  operationally self-sufficient prompt. `seihou validate-blueprint
+  blueprints/migrate-keiro-stack --lint` passes with one variable, no base modules, four reference
+  files, and no declared tools.
+- [ ] Milestone 2 render proof: After the registry entry exists in Milestone 3, render all policy
+  modes in a temporary registry copy and confirm substitution, references, component order, and
+  both safety branches. This is separated because Seihou resolves `agent run` by registry name.
 - [ ] Milestone 3: Publish the registry entry and human-readable documentation, including the
   pre-existing registry version reconciliation.
 - [ ] Milestone 4: Prove all policy renders and scenarios, run final validation, distill durable
@@ -72,6 +77,14 @@ implementation. Provide concise evidence.
   `a99aa369701a76278ca33d83f8416dee443fa645`, Mori
   `d39cae1d8321ae5916152ac17cf3732ad0344f8b`, and Rei
   `edee58368afc3e5589d045f87ac9ec30d36943e1`.
+
+- Discovery: The installed Seihou CLI has advanced from the plan-authoring toolchain to
+  `v0.4.0.0 (2aa69ce)` and changes two blueprint-runtime facts.
+  Evidence: `seihou --version` reports v0.4.0.0. Current source passes a readable blueprint
+  `files/` directory through `--add-dir`, renders its location, and merges declared
+  `allowedTools` with the setup allow-list. Debug runs also record a successful applied-blueprint
+  entry in `.seihou/manifest.json`, so render proofs must run in a disposable temporary registry
+  copy rather than this worktree.
 
 
 ## Decision Log
@@ -172,6 +185,15 @@ implementation. Provide concise evidence.
   maintainers to record and revalidate any deliberate refresh.
   Date: 2026-07-15
 
+- Decision: Retain the operationally self-sufficient prompt and omit `allowedTools` even though
+  Seihou v0.4.0.0 can mount reference files and honor declared tools.
+  Rationale: The same blueprint remains safe on v0.3.0.0, where references were not delivered and
+  the field was ignored, while v0.4 users gain readable appendices automatically. Omitting the
+  declaration on v0.4 keeps database, backup, build, and migration commands behind interactive
+  approval, which is appropriate for this destructive workflow. The prompt conditionally reads a
+  mounted reference directory and otherwise never depends on it.
+  Date: 2026-07-15
+
 
 ## Outcomes & Retrospective
 
@@ -232,6 +254,16 @@ other command the migration needs — `mori`, `cabal`, `nix`, `psql`, `pg_dump`,
 operator must accept. Treat that prompting as a safety gate, not an obstacle. `database.policy`
 validation is a full-match regex (confirmed: `abc.def` is rejected against `[a-z][a-z0-9-]*`), so
 `(ask|disposable|preserve)` accepts only those three exact values and rejects near-misses.
+
+Current implementation environment update: the installed CLI is now Seihou `v0.4.0.0 (2aa69ce)`.
+It mounts an existing blueprint `files/` directory into claude-cli/codex-cli sessions, renders the
+readable path beneath `## Reference Files`, and honors `allowedTools` by merging declarations into
+the fixed setup list. This blueprint deliberately remains compatible with the v0.3 behavior above:
+the prompt is still self-sufficient, reads references only when the rendered prompt says they are
+reachable, and declares no extra tools so migration/database commands remain interactive. Seihou
+v0.4 also writes `.seihou/manifest.json` after a successful debug render, so all implementation
+render probes must execute in a disposable temporary copy of this registry, not in the working
+tree.
 
 Finally, the registry is already drifted before this plan begins: `seihou registry validate` and
 `seihou registry sync-versions --check` both exit 1 today because `modules.exec-plan` and
