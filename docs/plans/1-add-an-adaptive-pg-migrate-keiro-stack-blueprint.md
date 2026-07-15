@@ -4,6 +4,7 @@ slug: add-an-adaptive-pg-migrate-keiro-stack-blueprint
 title: "Add an adaptive pg-migrate Keiro stack blueprint"
 kind: exec-plan
 created_at: 2026-07-15T03:03:42Z
+intention: intention_01kxkv7rx0ettt9q270jh1kby1
 ---
 
 # Add an adaptive pg-migrate Keiro stack blueprint
@@ -34,7 +35,18 @@ application` plan plus the correct safety behavior for each database class.
 
 ## Progress
 
-(No implementation work has started.)
+- [x] (2026-07-15T21:36:01Z) Read the full ExecPlan and PLANS.md, recorded the clean
+  worktree baseline, resolved the repository identity with `mori show --full`, and discovered
+  the registered pg-migrate/Keiro/Kiroku/Kioku/Shibuya/PGMQ sources and documentation.
+- [x] (2026-07-15T21:42:36Z) Milestone 1: Authored and validated the four-file portable
+  reference corpus. The files synthesize the recorded upstream and field-tested sources without
+  operational dependence on author-machine paths, and `git diff --check` passes.
+- [ ] Milestone 2: Define and validate the adaptive blueprint and operationally self-sufficient
+  prompt.
+- [ ] Milestone 3: Publish the registry entry and human-readable documentation, including the
+  pre-existing registry version reconciliation.
+- [ ] Milestone 4: Prove all policy renders and scenarios, run final validation, distill durable
+  context, and complete the retrospective.
 
 
 ## Surprises & Discoveries
@@ -42,7 +54,24 @@ application` plan plus the correct safety behavior for each database class.
 Document unexpected behaviors, bugs, optimizations, or insights discovered during
 implementation. Provide concise evidence.
 
-(None yet.)
+- Discovery: The Mori registry is no longer sparse for this cohort. All seven primary dependency
+  projects resolved on 2026-07-15: `shinzui/pg-migrate`, `shinzui/keiro`, `shinzui/kiroku`,
+  `shinzui/kioku`, `shinzui/shibuya`, `shinzui/shibuya-pgmq-adapter`, and
+  `shinzui/pgmq-hs`.
+  Evidence: `mori registry search` found each project, and `mori registry show <project> --full`
+  returned its local source path, package list, and documentation metadata. The blueprint still
+  needs the absent-registration fallback because it must work against other registries and future
+  dependencies.
+
+- Discovery: The planned pg-migrate, Keiro, Kioku, and Mori provenance revisions still match the
+  registered checkout HEADs; the Rei checkout has advanced beyond the recorded field-report
+  revision.
+  Evidence: `git rev-parse HEAD` returned pg-migrate
+  `f39d64e354818999667d345a1452f33eb4857fc1`, Keiro
+  `29bd7952fa5201adf789bbb21427b2cffe228d4b`, Kioku
+  `a99aa369701a76278ca33d83f8416dee443fa645`, Mori
+  `d39cae1d8321ae5916152ac17cf3732ad0344f8b`, and Rei
+  `edee58368afc3e5589d045f87ac9ec30d36943e1`.
 
 
 ## Decision Log
@@ -133,6 +162,15 @@ implementation. Provide concise evidence.
   with Mori, inspect current source and documentation, and select a coherent successor cohort when
   one exists; the pinned table remains a reproducible fallback and an API-migration checklist.
   Date: 2026-07-14
+
+- Decision: Keep Rei's recorded `d17fcad24bdbd69765849c07c692615c58450872` revision as the
+  provenance boundary for the portable field reports instead of silently refreshing to the newer
+  local checkout.
+  Rationale: The plan's extracted cutover lessons were reviewed against that recorded revision. A
+  refresh would require revalidating the source plans and could change facts unrelated to this
+  blueprint implementation. The reference corpus identifies the boundary and instructs future
+  maintainers to record and revalidate any deliberate refresh.
+  Date: 2026-07-15
 
 
 ## Outcomes & Retrospective
