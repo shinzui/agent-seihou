@@ -45,11 +45,16 @@ application` plan plus the correct safety behavior for each database class.
   operationally self-sufficient prompt. `seihou validate-blueprint
   blueprints/migrate-keiro-stack --lint` passes with one variable, no base modules, four reference
   files, and no declared tools.
-- [ ] Milestone 2 render proof: After the registry entry exists in Milestone 3, render all policy
-  modes in a temporary registry copy and confirm substitution, references, component order, and
-  both safety branches. This is separated because Seihou resolves `agent run` by registry name.
-- [ ] Milestone 3: Publish the registry entry and human-readable documentation, including the
-  pre-existing registry version reconciliation.
+- [x] (2026-07-15T21:52:31Z) Milestone 2 render proof: Rendered `ask`, `disposable`, and
+  `preserve` from a temporary v0.4 registry copy. All three substitute the selected policy, list
+  four readable references, retain the inline cohort/order/runtime guidance and both safety
+  branches, and contain no author-machine path in `## Your Task`. The invalid-policy probe exposed
+  v0.4's permissive unknown-pattern behavior; the prompt now rejects any non-enumerated value before
+  its first repository inspection or tool call.
+- [x] (2026-07-15T21:53:38Z) Milestone 3: Published the `migrate-keiro-stack` registry entry,
+  generated its README with the blueprint README skill, updated the root catalog and usage examples,
+  and reconciled pre-existing `exec-plan`/`master-plan` registry drift from `0.5.0` to `0.6.0`.
+  Blueprint lint, registry sync check, registry validation, and `git diff --check` all pass.
 - [ ] Milestone 4: Prove all policy renders and scenarios, run final validation, distill durable
   context, and complete the retrospective.
 
@@ -85,6 +90,12 @@ implementation. Provide concise evidence.
   `allowedTools` with the setup allow-list. Debug runs also record a successful applied-blueprint
   entry in `.seihou/manifest.json`, so render proofs must run in a disposable temporary registry
   copy rather than this worktree.
+
+- Discovery: Seihou v0.4.0.0 no longer enforces the blueprint's arbitrary validation expression.
+  Evidence: `--var database.policy=production` exited 0 and rendered `Database policy:
+  production`. The Mori-located v0.4 source in `Seihou.Core.Variable.simplePatternMatch` recognizes
+  only the literal `[a-z][a-z0-9-]*` pattern and returns `True` for every other pattern, including
+  `(ask|disposable|preserve)`. This is an upstream limitation, not a Dhall-definition error.
 
 
 ## Decision Log
@@ -194,6 +205,16 @@ implementation. Provide concise evidence.
   mounted reference directory and otherwise never depends on it.
   Date: 2026-07-15
 
+- Decision: Keep the declarative `(ask|disposable|preserve)` interface for Seihou versions that
+  implement it, and add a first-instruction prompt guard for v0.4.0.0.
+  Rationale: The current CLI cannot express exact three-value validation in the Blueprint schema:
+  unknown patterns pass, its only recognized pattern accepts many other slugs, and decoded `choice`
+  variables carry no membership options. Changing the public values or patching another repository
+  would exceed this blueprint's scope. The prompt guard preserves the safety property by stopping
+  an invalid run before repository inspection, tool calls, or writes; validation-capable versions
+  still reject before rendering.
+  Date: 2026-07-15
+
 
 ## Outcomes & Retrospective
 
@@ -263,7 +284,10 @@ the prompt is still self-sufficient, reads references only when the rendered pro
 reachable, and declares no extra tools so migration/database commands remain interactive. Seihou
 v0.4 also writes `.seihou/manifest.json` after a successful debug render, so all implementation
 render probes must execute in a disposable temporary copy of this registry, not in the working
-tree.
+tree. Its `simplePatternMatch` also recognizes only the single literal
+`[a-z][a-z0-9-]*` pattern and treats every other validation pattern as passing. Therefore
+`(ask|disposable|preserve)` remains the public declaration for validation-capable versions, while
+`prompt.md` must perform an immediate exact-value guard for v0.4 before any inspection or tool use.
 
 Finally, the registry is already drifted before this plan begins: `seihou registry validate` and
 `seihou registry sync-versions --check` both exit 1 today because `modules.exec-plan` and
@@ -637,14 +661,17 @@ For the `--var database.policy=disposable` and `--var database.policy=preserve` 
 branch prose is present in the task body. Confirm the reference-file basenames and descriptions
 match `blueprint.dhall`.
 
-Reject an invalid policy to prove the validation expression is active:
+Probe an invalid policy to prove the version-appropriate guard is active:
 
 ```bash
 seihou agent --debug run migrate-keiro-stack --no-baseline --var database.policy=production
 ```
 
-Expected output contains a validation error and the process exits nonzero; no agent should
-launch.
+On Seihou v0.3.0.0, expected output contains a validation error and the process exits nonzero. On
+Seihou v0.4.0.0, arbitrary patterns are not enforced, so the debug render exits zero but the first
+lines of `## Your Task` must say that a policy other than `ask`, `disposable`, or `preserve` is
+invalid and requires stopping before repository inspection, tool calls, or changes. In either case,
+an invalid policy must not reach migration work.
 
 Reconcile the registry, then validate it and the working tree. The first `sync-versions` run
 writes the new blueprint's version and also clears the pre-existing `exec-plan`/`master-plan`
@@ -705,9 +732,11 @@ references, the safety split, the interactive-provider requirement, and the invo
 Finally, all of the following must exit zero after the registry reconciliation step (`seihou
 registry sync-versions`) has run: `seihou validate-blueprint blueprints/migrate-keiro-stack
 --lint`, `seihou registry sync-versions --check`, `seihou registry validate`, and `git diff
---check`. The invalid `database.policy=production` probe must exit nonzero (verified: Seihou
-enforces the full-match `validation` regex and exits 1 on a mismatch). Debug rendering must not
-modify a target repository or connect to a database.
+--check`. The invalid `database.policy=production` probe must either exit nonzero before rendering
+(validation-capable Seihou) or render the immediate prompt-level stop guard documented above
+(Seihou v0.4.0.0). Run debug rendering in a disposable temporary registry copy because v0.4 writes
+successful debug provenance; the render must not modify the real target repository or connect to a
+database.
 
 
 ## Idempotence and Recovery
@@ -744,6 +773,10 @@ default: ask
 required: true
 validation: (ask|disposable|preserve)
 ```
+
+Validation-capable Seihou versions reject other values before rendering. Seihou v0.4.0.0 treats
+this arbitrary pattern as unknown and therefore permissive, so the rendered prompt repeats the
+three-value check as its first instruction and forbids inspection or tool calls on any other value.
 
 The blueprint files interface is four `S.Blueprint.BlueprintFile` records whose `src`
 values exactly match the basenames in `blueprints/migrate-keiro-stack/files/`. The prompt

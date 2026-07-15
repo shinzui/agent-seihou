@@ -2,6 +2,11 @@
 
 Database policy: {{database.policy}}
 
+Before any repository inspection or tool call, verify that the rendered database policy is exactly
+`ask`, `disposable`, or `preserve`. If it is any other value, stop immediately, report that
+`database.policy` is invalid, and make no changes or external calls. This prompt-level guard is
+required even when the launching Seihou version claims to validate the variable.
+
 Inspect and migrate the current Haskell/PostgreSQL project to one coherent released pg-migrate,
 PGMQ, Kiroku, Keiro, Kioku, and Shibuya cohort. Adapt the runtime APIs, compose the production
 migration plan, and prove the database path selected from evidence. Work autonomously through safe,

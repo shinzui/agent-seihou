@@ -32,13 +32,13 @@
     , tags = [ "claude", "skill", "docs" ]
     }
   , { name = "exec-plan"
-    , version = Some "0.5.0"
+    , version = Some "0.6.0"
     , path = "modules/exec-plan"
     , description = Some "Claude skill for creating and managing execution plans (ExecPlans)"
     , tags = [ "claude", "skill", "planning" ]
     }
   , { name = "master-plan"
-    , version = Some "0.5.0"
+    , version = Some "0.6.0"
     , path = "modules/master-plan"
     , description = Some "Claude skill for creating and managing master plans (MasterPlans) — coordination documents that decompose large initiatives into multiple ExecPlans"
     , tags = [ "claude", "skill", "planning" ]
@@ -64,6 +64,12 @@
     , path = "blueprints/hackage-release"
     , description = Some "Agent-driven blueprint that generates a project-specific 'release' skill for publishing Haskell packages to Hackage (PVP versioning, changelog updates, dependency-ordered publishing, GitHub release), tailored to the repo's actual package layout and linked into both .claude/skills and .agents/skills"
     , tags = [ "haskell", "hackage", "release", "skill", "claude", "agents" ]
+    }
+  , { name = "migrate-keiro-stack"
+    , version = Some "0.1.0"
+    , path = "blueprints/migrate-keiro-stack"
+    , description = Some "Agent-driven workflow that migrates a Haskell/PostgreSQL project to a coherent pg-migrate, PGMQ, Kiroku, Keiro, Kioku, and Shibuya cohort, selecting a guarded disposable reset or a backup-and-restored-clone persistent cutover from database evidence"
+    , tags = [ "haskell", "postgresql", "pg-migrate", "keiro", "kiroku", "kioku", "shibuya", "pgmq" ]
     }
   ]
 , prompts =
