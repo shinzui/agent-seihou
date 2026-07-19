@@ -4,7 +4,7 @@ let S =
 
 in  S.Module::{
     , name = "exec-plan"
-    , version = Some "0.6.0"
+    , version = Some "0.7.0"
     , description = Some
         "Claude skill for creating, implementing, and managing execution plans (ExecPlans) — self-contained design documents that guide implementation of features and system changes."
     , vars =
@@ -21,7 +21,7 @@ in  S.Module::{
         , type = "bool"
         , default = Some "false"
         , description = Some
-            "Enable intention tracking — prompts the user for an Intention ID and adds an Intention: trailer to commits"
+            "Enable intention tracking — reuses an existing plan Intention ID or prompts when missing, and adds an Intention: trailer to commits"
         , required = False
         }
       ]

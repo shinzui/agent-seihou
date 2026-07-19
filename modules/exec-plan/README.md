@@ -4,7 +4,7 @@
 > self-contained design documents that guide implementation of features and system
 > changes.
 
-**Version:** `0.6.0`
+**Version:** `0.7.0`
 
 ## Overview
 
@@ -19,7 +19,7 @@ dependency exposes the skill under `.claude/skills/` (for Claude Code) and
 | Name | Type | Default | Required | Validation | Description |
 |------|------|---------|----------|------------|-------------|
 | `skill.name` | `text` | `exec-plan` | yes | `[a-z][a-z0-9-]*` | Name of the skill directory |
-| `intentions.enabled` | `bool` | `false` | no | — | Enable intention tracking — prompts the user for an Intention ID and adds an `Intention:` trailer to commits |
+| `intentions.enabled` | `bool` | `false` | no | — | Enable intention tracking — reuses an existing plan Intention ID or prompts when missing, and adds an `Intention:` trailer to commits |
 
 ## Prompts
 

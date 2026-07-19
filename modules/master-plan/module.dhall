@@ -4,7 +4,7 @@ let S =
 
 in  S.Module::{
     , name = "master-plan"
-    , version = Some "0.6.0"
+    , version = Some "0.7.0"
     , description = Some
         "Claude skill for creating and managing master plans (MasterPlans) — coordination documents that decompose large initiatives into multiple ExecPlans with dependencies and integration points."
     , vars =
@@ -30,7 +30,7 @@ in  S.Module::{
         , type = "bool"
         , default = Some "false"
         , description = Some
-            "Enable intention tracking — prompts the user for an Intention ID and adds an Intention: trailer to commits"
+            "Enable intention tracking — reuses an existing plan Intention ID or prompts when missing, and adds an Intention: trailer to commits"
         , required = False
         }
       ]

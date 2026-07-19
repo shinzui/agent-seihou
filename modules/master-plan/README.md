@@ -4,7 +4,7 @@
 > documents that decompose large initiatives into multiple ExecPlans with dependencies
 > and integration points.
 
-**Version:** `0.6.0`
+**Version:** `0.7.0`
 
 ## Overview
 
@@ -19,7 +19,7 @@ agent harnesses) via relative symlinks.
 |------|------|---------|----------|------------|-------------|
 | `mp.skill.name` | `text` | `master-plan` | yes | `[a-z][a-z0-9-]*` | Name of the master-plan skill directory |
 | `exec-plan.skill.name` | `text` | `exec-plan` | yes | `[a-z][a-z0-9-]*` | Name of the exec-plan skill directory (for cross-references in templates) |
-| `intentions.enabled` | `bool` | `false` | no | — | Enable intention tracking — prompts the user for an Intention ID and adds an `Intention:` trailer to commits |
+| `intentions.enabled` | `bool` | `false` | no | — | Enable intention tracking — reuses an existing plan Intention ID or prompts when missing, and adds an `Intention:` trailer to commits |
 
 ## Prompts
 
