@@ -29,7 +29,7 @@ tailor the result to the target repository. Run them with `seihou agent run`, no
 | Blueprint | Version | Description |
 |-----------|---------|-------------|
 | [`hackage-release`](blueprints/hackage-release) | `0.1.0` | Generate a project-specific `release` skill that publishes Haskell packages to Hackage (PVP versioning, changelogs, dependency-ordered publishing, GitHub releases), tailored to the repo's actual package layout and linked into both `.claude/skills` and `.agents/skills` |
-| [`migrate-keiro-stack`](blueprints/migrate-keiro-stack) | `0.1.0` | Migrate a Haskell/PostgreSQL project to a coherent pg-migrate, PGMQ, Kiroku, Keiro, Kioku, and Shibuya cohort through either a confirmed disposable reset or a backup-and-restored-clone persistent cutover |
+| [`migrate-keiro-stack`](blueprints/migrate-keiro-stack) | `0.2.0` | Migrate a Haskell/PostgreSQL project to the current runtime cohort, adopting shared haskell-nix when active, the fleet vertical structure, and Settei configuration before a guarded disposable or restored-clone persistent database cutover |
 
 ## Usage
 

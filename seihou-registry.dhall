@@ -66,10 +66,10 @@
     , tags = [ "haskell", "hackage", "release", "skill", "claude", "agents" ]
     }
   , { name = "migrate-keiro-stack"
-    , version = Some "0.1.0"
+    , version = Some "0.2.0"
     , path = "blueprints/migrate-keiro-stack"
-    , description = Some "Agent-driven workflow that migrates a Haskell/PostgreSQL project to a coherent pg-migrate, PGMQ, Kiroku, Keiro, Kioku, and Shibuya cohort, selecting a guarded disposable reset or a backup-and-restored-clone persistent cutover from database evidence"
-    , tags = [ "haskell", "postgresql", "pg-migrate", "keiro", "kiroku", "kioku", "shibuya", "pgmq" ]
+    , description = Some "Agent-driven workflow that migrates a Haskell/PostgreSQL project to a coherent pg-migrate, PGMQ, Kiroku, Keiro, Kioku, and Shibuya cohort, adopts the shared haskell-nix package set when the target already uses Nix, and selects a guarded disposable reset or a backup-and-restored-clone persistent cutover from database evidence"
+    , tags = [ "haskell", "postgresql", "pg-migrate", "keiro", "kiroku", "kioku", "shibuya", "pgmq", "nix" ]
     }
   ]
 , prompts =

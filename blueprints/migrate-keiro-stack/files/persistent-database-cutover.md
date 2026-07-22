@@ -134,6 +134,13 @@ selected rows should be the entire Codd ledger; otherwise report and preserve un
 
 Quiesce every Codd process. Its processes may not honor the adapter's cooperating source lock.
 
+For the Kiroku component, prefer the selected release's public
+`Kiroku.Store.Migrations.History.Codd` values: `kirokuCoddHistoryMappings`,
+`kirokuCoddManifestText`, `kirokuCoddSourceConfig`, `kirokuCoddSourcePayloads`, and
+`kirokuLegacyMigrationNames`. They encode the canonical seven-file prefix and payload evidence.
+Do not duplicate that mapping in application code; still inspect the selected source and audit the
+resolved mapping before import.
+
 ### hasql-migration sources
 
 Use a validated schema-qualified source table, commonly `public.schema_migrations`; do not rely on
@@ -159,13 +166,21 @@ framework tables into the `keiro` schema or reconciling a documented filename se
 checked-in, idempotent, reviewed script bound to the selected profile. Run it first on the restored
 clone and assert its preconditions and postconditions.
 
+When available, prefer the `cohort-migrate` skill for the known fleet transition. It discovers the
+target evidence, composes the checked remediation, and proves it on a restored clone while retaining
+these backup, quiescence, oracle, and audit gates. The manual procedure in this file remains the
+fallback and review standard. The worked service example is Danwa's
+`danwa-migrations/remediation/` together with
+`docs/user/upgrading-a-persistent-danwa-database.md`; locate Danwa with Mori and adapt its profile,
+never its literal database identity or ledger counts.
+
 When history is equivalent rather than byte-identical, the read-only validator must cover the live
 objects and invariants on which the application depends. Examples include schema-qualified table
 locations, columns, primary/foreign keys, indexes, workflow backfills, and PGMQ catalog contracts.
 Do not generalize another service's table list.
 
 After the native plan succeeds, reconcile Kioku's compiled read-model registry once at migration
-time. In the 2026-07-14 cohort, `reconcileReadModelRegistry` is idempotent and derives identities
+time. In the 2026-07-22 cohort, `reconcileReadModelRegistry` is idempotent and derives identities
 from the same `ReadModel` values queries use. Read-only commands do not perform this mutation.
 
 ## Phase 7: Apply, verify, and prove the clone
@@ -231,7 +246,8 @@ context required to explain the durable ledger.
 This runbook synthesizes pg-migrate revision
 `f39d64e354818999667d345a1452f33eb4857fc1`, especially the history-import, Codd,
 hasql-migration, deployment, locking, and repair runbooks; Keiro revision
-`29bd7952fa5201adf789bbb21427b2cffe228d4b`; and Kioku revision
+`c68dcc7b9cea8d9c180d1c04254a72aa43804cac`; Kiroku migrations revision
+`58aff77b3a6d6093e3613753a0543aab62db9fac`; and Kioku revision
 `a99aa369701a76278ca33d83f8416dee443fa645`, whose upgrading guide is one exact profile
 rather than a reusable count oracle.
 

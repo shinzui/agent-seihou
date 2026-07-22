@@ -92,7 +92,7 @@ applicationPlan = do
 ```
 
 The placeholder names above express ownership, not guaranteed imports. Read the selected packages
-for the actual exported values; the 2026-07-14 baseline uses `pgmqMigrations`,
+for the actual exported values; the 2026-07-22 baseline uses `pgmqMigrations`,
 `kirokuMigrations`, `keiroMigrations`, and `kiokuMigrations`. Keiro depends on Kiroku,
 Kioku depends on Keiro, and application dependencies must match the objects its SQL consumes.
 
@@ -204,6 +204,14 @@ verifying selected PGMQ evidence. Do not replace this with a generic “ignore u
 
 See `persistent-database-cutover.md` before any import into a data-bearing database.
 
+For the Kiroku component, inspect `Kiroku.Store.Migrations.History.Codd` first. Kiroku
+`0.3.0.0`'s migrations package ships the canonical seven-file mapping and its exact manifest,
+source configuration, source payloads, and legacy names as
+`kirokuCoddHistoryMappings`, `kirokuCoddManifestText`, `kirokuCoddSourceConfig`,
+`kirokuCoddSourcePayloads`, and `kirokuLegacyMigrationNames`. Use those release-owned values
+rather than copying the mapping into the application. Application-owned history remains a separate
+component and still needs evidence derived from the target repository's preserved bytes.
+
 ## Recovery rules
 
 pg-migrate is forward-only. Once a native or imported row is recorded, treat it as an audit fact.
@@ -224,8 +232,9 @@ This reference is based on pg-migrate revision
 `codd-import.md`, `hasql-migration-import.md`, `deployment.md`,
 `locking-and-timeouts.md`, and `nontransactional-repair.md`.
 
-The component ordering and runtime boundary are cross-checked against Keiro revision
-`29bd7952fa5201adf789bbb21427b2cffe228d4b`, Kioku revision
+The component ordering and runtime boundary are cross-checked against Keiro release revision
+`c68dcc7b9cea8d9c180d1c04254a72aa43804cac`, Kiroku migrations revision
+`58aff77b3a6d6093e3613753a0543aab62db9fac`, Kioku revision
 `a99aa369701a76278ca33d83f8416dee443fa645`, and PGMQ `0.4.0.1`'s
 `docs/user/schema-migration.md`. Locate all of them with Mori and read the selected release before
 using exact imports.

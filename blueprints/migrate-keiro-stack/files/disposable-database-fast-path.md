@@ -48,14 +48,18 @@ persistent/ambiguous and use `persistent-database-cutover.md`.
 
 Complete all database-free implementation before asking to erase anything:
 
-1. Select one coherent cohort and make Cabal and Nix resolve it.
+1. Select one coherent cohort and make Cabal and an active Nix build resolve it.
 2. Adapt Kiroku, Keiro, Shibuya, PGMQ, and Kioku runtime APIs from selected source.
-3. Preserve existing SQL evidence and author strict manifests/components.
-4. Compose and render `pgmq -> kiroku -> keiro -> kioku -> application`.
-5. Mount an explicit CLI whose bare invocation cannot mean `up`.
-6. Compile, run unit tests, validate manifests, and inspect `plan` and `list` without database
+3. Move modules into the six-package vertical structure without behavior change and prove the
+   existing tests pass before and after.
+4. Migrate configuration to Settei without changing resolved values; prove the redacted
+   before/after diff and `--check-config` gate.
+5. Preserve existing SQL evidence and author strict manifests/components.
+6. Compose and render `pgmq -> kiroku -> keiro -> kioku -> application`.
+7. Mount an explicit CLI whose bare invocation cannot mean `up`.
+8. Compile, run unit tests, validate manifests, and inspect `plan` and `list` without database
    writes.
-7. Remove implicit framework schema initialization from runtime startup, but do not remove the
+9. Remove implicit framework schema initialization from runtime startup, but do not remove the
    predecessor engine yet.
 
 If the project owns no application SQL, record that the plan ends at Kioku. Derive counts from the
@@ -150,3 +154,7 @@ This guidance synthesizes the pg-migrate deployment and testing runbooks at revi
 master plan 19 and ExecPlans 157 and 165–171 recorded at revision
 `d17fcad24bdbd69765849c07c692615c58450872`. The application names, database URLs, and literal
 counts in those plans are intentionally not reproduced here.
+
+The structure and configuration steps follow `architecture-vertical-slice-modules`,
+`architecture-test-layout`, `config-settei-service-standard`, and
+`config-kubernetes-deployment` in the `shinzui/keiro-runtime-patterns` Mori project.
