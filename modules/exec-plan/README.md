@@ -83,7 +83,6 @@ Author-declared migrations applied via `seihou migrate exec-plan`:
   - `run mkdir -p .claude/skills .agents/skills`
   - `run ln -sfn ../../agents/skills/exec-plan .claude/skills/exec-plan`
   - `run ln -sfn ../../agents/skills/exec-plan .agents/skills/exec-plan`
-
 - **`0.7.0` → `0.8.0`** — installs and runs the adaptive
   `adopt-architecture-decisions` blueprint from `okf-profiles`. Repositories with
   existing ADRs are reconciled to the shared profile, stable handles, validation,
@@ -91,7 +90,9 @@ Author-declared migrations applied via `seihou migrate exec-plan`:
   no-op. The blueprint runs through the configured Seihou agent provider and adapts
   to repository-local history and check conventions. It uses Seihou's
   non-interactive blueprint batch mode and therefore requires a Seihou release
-  that supports `seihou agent run --batch`.
+  that supports `seihou agent run --batch`. The migration independently
+  type-checks the installed profile and runs strict profile/log validation when
+  ADR records exist, so a partial agent run cannot advance the module version.
 
 ## Removal
 
