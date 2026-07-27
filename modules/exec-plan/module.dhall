@@ -107,7 +107,7 @@ in  S.Module::{
         , ops =
           [ S.MigrationOp.RunCommand
               { run =
-                  "seihou install https://github.com/shinzui/okf-profiles.git --module adopt-architecture-decisions && seihou agent run adopt-architecture-decisions \"Reconcile existing ADRs during the exec-plan 0.8.0 upgrade. Preserve repository-specific history and conventions while enforcing the shared profile. Do not stop until strict profile and log validation passes.\" --batch && if [ -d docs/adr ] && [ -n \"$(find docs/adr -type f -name '*.md' ! -name index.md ! -name log.md -print -quit)\" ]; then test -f docs/adr/profile.dhall && dhall type --file docs/adr/profile.dhall >/dev/null && okf validate docs/adr --strict --profile docs/adr/profile.dhall --profile-enforce --log-enforce; fi"
+                  "if [ -d docs/adr ] && [ -n \"$(find docs/adr -type f -name '*.md' ! -name index.md ! -name log.md -print -quit)\" ]; then seihou install https://github.com/shinzui/okf-profiles.git --module adopt-architecture-decisions && seihou agent run adopt-architecture-decisions \"Reconcile existing ADRs during the exec-plan 0.8.0 upgrade. Preserve repository-specific history and conventions while enforcing the shared profile. Do not stop until strict profile and log validation passes.\" --batch --provider claude-cli --model claude-sonnet-5 && test -f docs/adr/profile.dhall && dhall type --file docs/adr/profile.dhall >/dev/null && okf validate docs/adr --strict --profile docs/adr/profile.dhall --profile-enforce --log-enforce; fi"
               , workDir = None Text
               }
           ]
