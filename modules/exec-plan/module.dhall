@@ -4,7 +4,7 @@ let S =
 
 in  S.Module::{
     , name = "exec-plan"
-    , version = Some "0.7.0"
+    , version = Some "0.8.0"
     , description = Some
         "Claude skill for creating, implementing, and managing execution plans (ExecPlans) — self-contained design documents that guide implementation of features and system changes."
     , vars =
@@ -42,6 +42,11 @@ in  S.Module::{
         , strategy = "copy"
         , src = "PLANS.md"
         , dest = "agents/skills/{{skill.name}}/PLANS.md"
+        }
+      , S.Step::{
+        , strategy = "copy"
+        , src = "ADR.md"
+        , dest = "agents/skills/{{skill.name}}/ADR.md"
         }
       , S.Step::{
         , strategy = "copy"
@@ -92,6 +97,17 @@ in  S.Module::{
           , S.MigrationOp.RunCommand
               { run =
                   "ln -sfn ../../agents/skills/exec-plan .agents/skills/exec-plan"
+              , workDir = None Text
+              }
+          ]
+        }
+      , S.Migration::{
+        , from = "0.7.0"
+        , to = "0.8.0"
+        , ops =
+          [ S.MigrationOp.RunCommand
+              { run =
+                  "seihou install https://github.com/shinzui/okf-profiles.git --module adopt-architecture-decisions && seihou agent run adopt-architecture-decisions \"Reconcile existing ADRs during the exec-plan 0.8.0 upgrade. Preserve repository-specific history and conventions while enforcing the shared profile.\" --batch"
               , workDir = None Text
               }
           ]

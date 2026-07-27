@@ -4,14 +4,16 @@
 > documents that decompose large initiatives into multiple ExecPlans with dependencies
 > and integration points.
 
-**Version:** `0.7.0`
+**Version:** `0.8.0`
 
 ## Overview
 
 Installs a `master-plan` skill into the project's `agents/skills/` tree, pairing it with
 an `exec-plan` skill (pulled in as a dependency). The `link-skill` dependency exposes
 both skills under `.claude/skills/` (for Claude Code) and `.agents/skills/` (for other
-agent harnesses) via relative symlinks.
+agent harnesses) via relative symlinks. MasterPlans use the exec-plan dependency's
+shared `ADR.md` contract for profiled OKF bundles and canonical cross-repository Mori
+references.
 
 ## Variables
 

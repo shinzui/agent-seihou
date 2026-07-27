@@ -4,7 +4,7 @@
 > self-contained design documents that guide implementation of features and system
 > changes.
 
-**Version:** `0.7.0`
+**Version:** `0.8.0`
 
 ## Overview
 
@@ -50,6 +50,7 @@ When run, this module writes:
 
 - `agents/skills/{{skill.name}}/SKILL.md` — strategy: `template`
 - `agents/skills/{{skill.name}}/PLANS.md` — strategy: `copy`
+- `agents/skills/{{skill.name}}/ADR.md` — strategy: `copy`
 - `agents/skills/{{skill.name}}/init-plan.ts` — strategy: `copy`
 - `agents/skills/{{skill.name}}/SKILL.md` — strategy: `copy`
   - Applied when: `Eq intentions.enabled true`
@@ -59,6 +60,11 @@ When run, this module writes:
 `init-plan.ts` script is invoked by the skill at plan-creation time (via Bun) to
 deterministically pick the next sequential number, slugify the title, and emit the
 plan file with YAML frontmatter and the canonical skeleton.
+
+`ADR.md` is the shared ADR contract used by both planning skills. It preserves the
+repository's existing convention when no profile is configured; for a profiled OKF
+bundle it governs stable handle allocation, strict validation, and canonical Mori
+references across repositories.
 
 ## Migrations
 
@@ -77,6 +83,15 @@ Author-declared migrations applied via `seihou migrate exec-plan`:
   - `run mkdir -p .claude/skills .agents/skills`
   - `run ln -sfn ../../agents/skills/exec-plan .claude/skills/exec-plan`
   - `run ln -sfn ../../agents/skills/exec-plan .agents/skills/exec-plan`
+
+- **`0.7.0` → `0.8.0`** — installs and runs the adaptive
+  `adopt-architecture-decisions` blueprint from `okf-profiles`. Repositories with
+  existing ADRs are reconciled to the shared profile, stable handles, validation,
+  and Mori registration; repositories without ADRs complete this migration as a
+  no-op. The blueprint runs through the configured Seihou agent provider and adapts
+  to repository-local history and check conventions. It uses Seihou's
+  non-interactive blueprint batch mode and therefore requires a Seihou release
+  that supports `seihou agent run --batch`.
 
 ## Removal
 
