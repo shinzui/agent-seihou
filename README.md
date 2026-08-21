@@ -29,7 +29,11 @@ tailor the result to the target repository. Run them with `seihou agent run`, no
 | Blueprint | Version | Description |
 |-----------|---------|-------------|
 | [`hackage-release`](blueprints/hackage-release) | `0.1.0` | Generate a project-specific `release` skill that publishes Haskell packages to Hackage (PVP versioning, changelogs, dependency-ordered publishing, GitHub releases), tailored to the repo's actual package layout and linked into both `.claude/skills` and `.agents/skills` |
+| [`docs-sync`](blueprints/docs-sync) | `0.1.0` | Discover local docs, CLI help, embedded agent context, and confirmed sibling kit/docs repositories, then audit stale surfaces against code with a baseline-SHA ledger |
 | [`migrate-keiro-stack`](blueprints/migrate-keiro-stack) | `0.2.0` | Migrate a Haskell/PostgreSQL project to the current runtime cohort, adopting shared haskell-nix when active, the fleet vertical structure, and Settei configuration before a guarded disposable or restored-clone persistent database cutover |
+
+Use `docs-sync` for adaptive, multi-surface audits. The deterministic `update-docs` module remains
+available for projects that only need a preconfigured single-repository skill scaffold.
 
 ## Usage
 
@@ -59,6 +63,7 @@ Run a blueprint (launches an agent in the current project):
 
 ```sh
 seihou agent run hackage-release
+seihou agent run docs-sync
 seihou agent run migrate-keiro-stack
 seihou agent run migrate-keiro-stack --var database.policy=disposable
 seihou agent run migrate-keiro-stack --var database.policy=preserve

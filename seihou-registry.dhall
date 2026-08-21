@@ -65,6 +65,12 @@
     , description = Some "Agent-driven blueprint that generates a project-specific 'release' skill for publishing Haskell packages to Hackage (PVP versioning, changelog updates, dependency-ordered publishing, GitHub release), tailored to the repo's actual package layout and linked into both .claude/skills and .agents/skills"
     , tags = [ "haskell", "hackage", "release", "skill", "claude", "agents" ]
     }
+  , { name = "docs-sync"
+    , version = Some "0.1.0"
+    , path = "blueprints/docs-sync"
+    , description = Some "Discover a project's local and sibling documentation/agent-context surfaces, then audit and repair stale surfaces against authoritative code using a baseline-SHA ledger"
+    , tags = [ "documentation", "docs", "cli", "agents", "skills", "drift", "audit" ]
+    }
   , { name = "migrate-keiro-stack"
     , version = Some "0.2.0"
     , path = "blueprints/migrate-keiro-stack"
