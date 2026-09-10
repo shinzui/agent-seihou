@@ -4,7 +4,7 @@ let S =
 
 in  S.Module::{
     , name = "master-plan"
-    , version = Some "0.9.0"
+    , version = Some "0.10.0"
     , description = Some
         "Claude skill for creating and managing master plans (MasterPlans) — coordination documents that decompose large initiatives into multiple ExecPlans with dependencies and integration points."
     , vars =
@@ -53,7 +53,7 @@ in  S.Module::{
         , dest = "agents/skills/{{mp.skill.name}}/MASTERPLAN.md"
         }
       , S.Step::{
-        , strategy = "copy"
+        , strategy = "template"
         , src = "init-masterplan.ts"
         , dest = "agents/skills/{{mp.skill.name}}/init-masterplan.ts"
         }

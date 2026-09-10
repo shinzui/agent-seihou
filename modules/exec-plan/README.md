@@ -4,7 +4,7 @@
 > self-contained design documents that guide implementation of features and system
 > changes.
 
-**Version:** `0.9.0`
+**Version:** `0.10.0`
 
 ## Overview
 
@@ -57,6 +57,8 @@ When run, this module writes:
 - `agents/skills/{{skill.name}}/ADR.md` — strategy: `copy`
 - `agents/skills/{{skill.name}}/init-plan.ts` — strategy: `copy`
 - `agents/skills/{{skill.name}}/record-provenance.ts` — strategy: `copy`
+- `agents/skills/{{skill.name}}/provenance-model.ts` — strategy: `copy`
+- `agents/skills/{{skill.name}}/PROVENANCE.md` — strategy: `copy`
 - `agents/skills/{{skill.name}}/SKILL.md` — strategy: `copy`
   - Applied when: `Eq intentions.enabled true`
   - Patch mode: `append-section`
@@ -74,6 +76,16 @@ records, and it is shared with the `master-plan` skill, which records MasterPlan
 provenance through this same script. Plans written before `0.9.0` have no `provenance`
 block; the script adds one holding just the new entry and never fabricates a
 `created_by` record.
+
+Since `0.10.0`, both initializers and the revision/review writer require a verified
+model ID or explicit current-session metadata. The shared helper supports Codex
+and Claude Code transcripts, checks session/agent identity, and refuses stale
+models after a switch or a new turn without model metadata. `unknown` requires
+`--allow-unknown --unknown-reason "<why discovery failed>"`; the reason is recorded
+in the entry's note. `PROVENANCE.md` documents discovery and historical corrections.
+Explicit IDs continue to support other harnesses.
+
+Run the upstream regression suite with `bun test tests/provenance.test.ts`.
 
 `ADR.md` is the shared ADR contract used by both planning skills. It preserves the
 repository's existing convention when no profile is configured; for a profiled OKF
@@ -112,6 +124,11 @@ No migration is declared for `0.8.0` → `0.9.0`. Plan provenance is additive an
 optional: existing plans keep parsing unchanged with no `provenance` key, and each model
 records its own entries as it touches a plan. Re-run `seihou run exec-plan` to pick up
 the new `record-provenance.ts` script and the refreshed `SKILL.md` and `PLANS.md`.
+
+No data migration is needed for `0.9.0` → `0.10.0`: existing provenance remains
+unchanged. Re-run the module to install the shared helper and discovery guide with
+the updated scripts. New initializer invocations must now supply identity; scripts
+that passed `unknown` must also supply the explicit fallback flag and reason.
 
 ## Removal
 

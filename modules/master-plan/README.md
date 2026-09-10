@@ -4,7 +4,7 @@
 > documents that decompose large initiatives into multiple ExecPlans with dependencies
 > and integration points.
 
-**Version:** `0.9.0`
+**Version:** `0.10.0`
 
 ## Overview
 
@@ -60,7 +60,7 @@ When run, this module writes:
 
 - `agents/skills/{{mp.skill.name}}/SKILL.md` — strategy: `template`
 - `agents/skills/{{mp.skill.name}}/MASTERPLAN.md` — strategy: `template`
-- `agents/skills/{{mp.skill.name}}/init-masterplan.ts` — strategy: `copy`
+- `agents/skills/{{mp.skill.name}}/init-masterplan.ts` — strategy: `template`
 - `agents/skills/{{mp.skill.name}}/SKILL.md` — strategy: `copy`
   - Applied when: `Eq intentions.enabled true`
   - Patch mode: `append-section`
@@ -75,6 +75,12 @@ Child ExecPlans are created via the exec-plan skill's own `init-plan.ts`.
 This module installs no provenance script of its own: reviews and revisions of a
 MasterPlan are recorded with `agents/skills/{{exec-plan.skill.name}}/record-provenance.ts`,
 installed by the exec-plan dependency.
+
+Since `0.10.0`, the initializer also imports the dependency's `provenance-model.ts`.
+Its import is templated using `exec-plan.skill.name`, including custom skill names.
+All writers require verified identity, support explicit Codex and Claude Code
+session files, and guard `unknown` behind an opt-in flag and a recorded reason.
+Follow the dependency's shared `PROVENANCE.md` discovery procedure.
 
 ## Migrations
 
@@ -98,6 +104,11 @@ No migration is declared for `0.8.0` → `0.9.0`. Plan provenance is additive an
 optional: existing MasterPlans keep parsing unchanged with no `provenance` key. Re-run
 `seihou run master-plan` to pick up the refreshed `SKILL.md` and `MASTERPLAN.md`, and
 `record-provenance.ts` through the exec-plan dependency.
+
+For `0.9.0` → `0.10.0`, re-run `master-plan` together with its `exec-plan` dependency
+to install the helper and guide alongside the updated scripts. Existing plans need
+no migration. New initializer invocations must supply identity; an unknown model
+also requires `--allow-unknown --unknown-reason "<why discovery failed>"`.
 
 ## Removal
 

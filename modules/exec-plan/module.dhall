@@ -4,7 +4,7 @@ let S =
 
 in  S.Module::{
     , name = "exec-plan"
-    , version = Some "0.9.0"
+    , version = Some "0.10.0"
     , description = Some
         "Claude skill for creating, implementing, and managing execution plans (ExecPlans) — self-contained design documents that guide implementation of features and system changes."
     , vars =
@@ -57,6 +57,16 @@ in  S.Module::{
         , strategy = "copy"
         , src = "record-provenance.ts"
         , dest = "agents/skills/{{skill.name}}/record-provenance.ts"
+        }
+      , S.Step::{
+        , strategy = "copy"
+        , src = "provenance-model.ts"
+        , dest = "agents/skills/{{skill.name}}/provenance-model.ts"
+        }
+      , S.Step::{
+        , strategy = "copy"
+        , src = "PROVENANCE.md"
+        , dest = "agents/skills/{{skill.name}}/PROVENANCE.md"
         }
       , S.Step::{
         , strategy = "copy"
