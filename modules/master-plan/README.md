@@ -4,7 +4,7 @@
 > documents that decompose large initiatives into multiple ExecPlans with dependencies
 > and integration points.
 
-**Version:** `0.10.0`
+**Version:** `0.11.0`
 
 ## Overview
 
@@ -19,6 +19,11 @@ Since `0.9.0` MasterPlans and their child ExecPlans track provenance — which m
 authored the document, which models revised it, and which models reviewed it — in YAML
 frontmatter, and the skill gains a `review` mode that audits a decomposition and records
 its verdict. Entries are written by the exec-plan dependency's `record-provenance.ts`.
+
+Since `0.11.0`, the Exec-Plan Registry owns child-plan status and each child ExecPlan
+owns its milestones. MasterPlan Progress summarizes the initiative and any independent
+integration gates without copying child checklists. Decomposition follows actual
+coordination boundaries instead of a target child-plan count.
 
 ## Variables
 

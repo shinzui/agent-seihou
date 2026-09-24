@@ -57,48 +57,23 @@ in  Schema.Project::{
         }
       , Schema.SeihouTemplate::{
         , name = "exec-plan"
-        , version = Some "0.1.3"
+        , version = Some "0.11.0"
         , description = Some
             "Claude skill for creating and managing execution plans (ExecPlans) — self-contained design documents that guide implementation of features and system changes."
         , modulePath = "modules/exec-plan"
         , tags = [ "claude", "skill", "planning" ]
-        , dependencies = [ "claude-skill-link" ]
+        , dependencies = [ "agent-gitignore", "link-skill" ]
         , requiredVars = [ "skill.name" ]
         }
       , Schema.SeihouTemplate::{
         , name = "master-plan"
-        , version = Some "0.1.0"
+        , version = Some "0.11.0"
         , description = Some
             "Claude skill for creating and managing master plans (MasterPlans) — coordination documents that decompose large initiatives into multiple ExecPlans."
         , modulePath = "modules/master-plan"
         , tags = [ "claude", "skill", "planning" ]
-        , dependencies = [ "exec-plan", "claude-skill-link" ]
+        , dependencies = [ "agent-gitignore", "exec-plan", "link-skill" ]
         , requiredVars = [ "mp.skill.name", "exec-plan.skill.name" ]
-        }
-      , Schema.SeihouTemplate::{
-        , name = "exec-plan-digest"
-        , version = Some "0.1.0"
-        , description = Some
-            "Claude skill that produces a standardized JSON digest of ExecPlans — extracts status, progress, discoveries, decisions, and outcomes; cross-references git commit trailers; and surfaces issues a human skimming the plan would miss."
-        , modulePath = "modules/exec-plan-digest"
-        , tags = [ "claude", "skill", "planning", "digest" ]
-        , dependencies = [ "exec-plan", "claude-skill-link" ]
-        , requiredVars = [ "digest.skill.name", "exec-plan.skill.name" ]
-        }
-      , Schema.SeihouTemplate::{
-        , name = "master-plan-digest"
-        , version = Some "0.1.0"
-        , description = Some
-            "Claude skill that emits a standardized JSON digest of MasterPlans — parses the Exec-Plan Registry, computes the dependency graph, embeds per-child exec-plan-digest output, cross-references git commit trailers, and surfaces coordination issues."
-        , modulePath = "modules/master-plan-digest"
-        , tags = [ "claude", "skill", "planning", "digest" ]
-        , dependencies =
-          [ "master-plan", "exec-plan-digest", "claude-skill-link" ]
-        , requiredVars =
-          [ "mp-digest.skill.name"
-          , "master-plan.skill.name"
-          , "exec-plan-digest.skill.name"
-          ]
         }
       ]
     }

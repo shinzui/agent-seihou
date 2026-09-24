@@ -17,10 +17,8 @@ every time. Run them with `seihou run`.
 | [`claude-skill-link`](modules/claude-skill-link) | `0.1.0` | Symlink a Claude skill from `claude/skills/` into `.claude/skills/` |
 | [`link-skill`](modules/link-skill) | `0.2.0` | Symlink a skill from `claude/skills/` into both `.claude/skills/` and `.agents/skills/` |
 | [`update-docs`](modules/update-docs) | `0.1.0` | Claude skill that keeps project documentation in sync with code changes |
-| [`exec-plan`](modules/exec-plan) | `0.10.0` | Claude skill for creating and managing execution plans (ExecPlans) |
-| [`exec-plan-digest`](modules/exec-plan-digest) | `0.1.0` | Claude skill that emits a standardized JSON digest of ExecPlans |
-| [`master-plan`](modules/master-plan) | `0.10.0` | Claude skill for creating and managing master plans (MasterPlans) |
-| [`master-plan-digest`](modules/master-plan-digest) | `0.1.0` | Claude skill that emits a standardized JSON digest of MasterPlans |
+| [`exec-plan`](modules/exec-plan) | `0.11.0` | Claude skill for creating and managing execution plans (ExecPlans) |
+| [`master-plan`](modules/master-plan) | `0.11.0` | Claude skill for creating and managing master plans (MasterPlans) |
 
 Each module directory contains its own `README.md` with full variable, prompt,
 dependency, and generated-file reference. `module.dhall` is the authoritative source.

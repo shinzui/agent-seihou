@@ -4,7 +4,7 @@
 > self-contained design documents that guide implementation of features and system
 > changes.
 
-**Version:** `0.10.0`
+**Version:** `0.11.0`
 
 ## Overview
 
@@ -17,6 +17,11 @@ dependency exposes the skill under `.claude/skills/` (for Claude Code) and
 Since `0.9.0` the skill also tracks plan provenance — which model authored a plan, which
 models revised it, and which models reviewed it — in the plan's YAML frontmatter, and
 adds a `review` mode that audits a plan against `PLANS.md` and records its verdict.
+
+Since `0.11.0`, Progress checkboxes represent verifiable milestones or substantial
+deliverables. The skill updates plans at milestone completion, material changes, or
+handoff, and avoids checkboxes for routine actions. Status reports describe milestone
+state rather than treating checkbox counts as a measure of effort.
 
 ## Variables
 

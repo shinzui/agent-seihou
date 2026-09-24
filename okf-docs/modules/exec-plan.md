@@ -10,14 +10,14 @@ tags:
 status: stable
 generated:
   by: seihou-okf-extension/0.8.0.0
-version: 0.10.0
+version: 0.11.0
 ---
 
 # exec-plan
 
 Claude skill for creating and managing execution plans (ExecPlans)
 
-**Version:** 0.10.0
+**Version:** 0.11.0
 
 ## Dependencies
 

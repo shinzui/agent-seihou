@@ -26,8 +26,6 @@ Every artifact below is published by the `agent-seihou` registry and documented 
 - [update-docs](/modules/update-docs.md)
 - [exec-plan](/modules/exec-plan.md)
 - [master-plan](/modules/master-plan.md)
-- [exec-plan-digest](/modules/exec-plan-digest.md)
-- [master-plan-digest](/modules/master-plan-digest.md)
 
 ## Blueprints
 
