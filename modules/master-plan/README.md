@@ -4,7 +4,7 @@
 > documents that decompose large initiatives into multiple ExecPlans with dependencies
 > and integration points.
 
-**Version:** `0.11.0`
+**Version:** `0.12.0`
 
 ## Overview
 
@@ -24,6 +24,11 @@ Since `0.11.0`, the Exec-Plan Registry owns child-plan status and each child Exe
 owns its milestones. MasterPlan Progress summarizes the initiative and any independent
 integration gates without copying child checklists. Decomposition follows actual
 coordination boundaries instead of a target child-plan count.
+
+Since `0.12.0`, hard dependencies may explicitly name an accepted child milestone.
+A MasterPlan can schedule interleaved milestones when integration requires it, while
+simple initiatives keep child-by-child execution. Whole-child dependencies and completion
+criteria remain binding, and uncertain shared behavior is checked before expanding variants.
 
 ## Variables
 

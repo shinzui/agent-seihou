@@ -4,7 +4,7 @@
 > self-contained design documents that guide implementation of features and system
 > changes.
 
-**Version:** `0.11.0`
+**Version:** `0.12.0`
 
 ## Overview
 
@@ -22,6 +22,11 @@ Since `0.11.0`, Progress checkboxes represent verifiable milestones or substanti
 deliverables. The skill updates plans at milestone completion, material changes, or
 handoff, and avoids checkboxes for routine actions. Status reports describe milestone
 state rather than treating checkbox counts as a measure of effort.
+
+Since `0.12.0`, implementation follows accepted outcomes through cohesive changes and
+proportionate validation. Uncertain interfaces receive an early interaction check when
+needed; new requirements remain explicit scope decisions. Existing acceptance and
+applicable evidence are preserved.
 
 ## Variables
 

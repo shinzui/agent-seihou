@@ -57,7 +57,7 @@ in  Schema.Project::{
         }
       , Schema.SeihouTemplate::{
         , name = "exec-plan"
-        , version = Some "0.11.0"
+        , version = Some "0.12.0"
         , description = Some
             "Claude skill for creating and managing execution plans (ExecPlans) — self-contained design documents that guide implementation of features and system changes."
         , modulePath = "modules/exec-plan"
@@ -67,7 +67,7 @@ in  Schema.Project::{
         }
       , Schema.SeihouTemplate::{
         , name = "master-plan"
-        , version = Some "0.11.0"
+        , version = Some "0.12.0"
         , description = Some
             "Claude skill for creating and managing master plans (MasterPlans) — coordination documents that decompose large initiatives into multiple ExecPlans."
         , modulePath = "modules/master-plan"

@@ -10,15 +10,15 @@ tags:
 - planning
 status: stable
 generated:
-  by: seihou-okf-extension/0.8.0.0
-version: 0.11.0
+  by: seihou-okf-extension/0.9.0.0
+version: 0.12.0
 ---
 
 # master-plan
 
 Claude skill for creating and managing master plans (MasterPlans) — coordination documents that decompose large initiatives into multiple ExecPlans
 
-**Version:** 0.11.0
+**Version:** 0.12.0
 
 ## Dependencies
 
