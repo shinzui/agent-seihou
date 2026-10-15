@@ -12,6 +12,30 @@ reviewed commit (tracked in a changelog file) and identifies documentation gaps 
 user-facing and developer-facing doc directories. Pulls in `claude-skill-link` to wire
 the skill into `.claude/skills/`.
 
+## Checkout links and adoption
+
+With claude-skill-link 0.2.0, discovery links are manifest-owned checkout declarations.
+Requires Seihou **0.10.0.0** or newer. Sources remain in `claude/skills/` and are
+generated in the same application; link creation also works under `--no-commands`.
+Real objects occupying discovery destinations cause safe refusal.
+
+For a first application, install the registry modules and run `seihou run update-docs`.
+For an existing recorded application, install the new producers and preserve its
+saved variables with:
+
+```bash
+seihou update update-docs --dry-run --json --no-commands
+seihou update update-docs --json --no-commands
+```
+
+If this module belongs to a larger composition, update that recorded root target
+instead (for example master-plan when it includes exec-plan). Dependency-only
+updates are discovered without bumping this module's own version. Installation or
+manifest upgrade alone does not record links; a successful run/update must do so.
+Commit the manifest, ignore rules, and source files. Fresh clones then use
+`seihou sync --dry-run --json` followed by `seihou sync --json`, without installed
+producers or tracked changes. Repeating sync restores deleted or retargeted links.
+
 ## Variables
 
 | Name | Type | Default | Required | Validation | Description |

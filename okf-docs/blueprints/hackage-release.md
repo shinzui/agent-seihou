@@ -15,7 +15,7 @@ tags:
 - agents
 status: stable
 generated:
-  by: seihou-okf-extension/0.8.0.0
+  by: seihou-okf-extension/0.10.0.0
 version: 0.1.0
 ---
 

@@ -14,14 +14,61 @@ every time. Run them with `seihou run`.
 |--------|---------|-------------|
 | [`claude-gitignore`](modules/claude-gitignore) | `0.2.0` | Ensure `.claude/` and `CLAUDE.local.md` are in `.gitignore` |
 | [`agent-gitignore`](modules/agent-gitignore) | `0.1.0` | Ensure `.claude/`, `.agents/`, and `CLAUDE.local.md` are in `.gitignore` |
-| [`claude-skill-link`](modules/claude-skill-link) | `0.1.0` | Symlink a Claude skill from `claude/skills/` into `.claude/skills/` |
-| [`link-skill`](modules/link-skill) | `0.2.0` | Symlink a skill from `claude/skills/` into both `.claude/skills/` and `.agents/skills/` |
+| [`claude-skill-link`](modules/claude-skill-link) | `0.2.0` | Declare a checkout link from `claude/skills/` into `.claude/skills/` |
+| [`link-skill`](modules/link-skill) | `0.3.0` | Declare checkout links from `agents/skills/` into both `.claude/skills/` and `.agents/skills/` |
 | [`update-docs`](modules/update-docs) | `0.1.0` | Claude skill that keeps project documentation in sync with code changes |
 | [`exec-plan`](modules/exec-plan) | `0.12.0` | Claude skill for creating and managing execution plans (ExecPlans) |
 | [`master-plan`](modules/master-plan) | `0.12.0` | Claude skill for creating and managing master plans (MasterPlans) |
 
 Each module directory contains its own `README.md` with full variable, prompt,
 dependency, and generated-file reference. `module.dhall` is the authoritative source.
+
+## Skill links and fresh clones
+
+The checkout-link modules require **Seihou 0.10.0.0 or newer**, tested against the
+published 0.10.0.0 runtime. An older runtime rejects the unknown `symlink` strategy.
+Sources stay in `agents/skills/` for link-skill and `claude/skills/` for
+claude-skill-link/update-docs. They must be real directories. Occupied real files or
+directories are preserved with a refusal; ignored discovery destinations contain
+relative symlinks managed through the manifest.
+
+First install and apply (from the consuming project's root):
+
+```sh
+seihou install https://github.com/shinzui/agent-seihou.git --module master-plan --module exec-plan --module link-skill --module agent-gitignore --module claude-gitignore
+seihou run master-plan --var intentions.enabled=false --no-commands
+```
+
+For an existing master-plan application, preserve its saved variables by updating
+the recorded root target, even when master-plan/exec-plan versions are unchanged:
+
+```sh
+seihou install https://github.com/shinzui/agent-seihou.git --module master-plan --module exec-plan --module link-skill --module agent-gitignore --module claude-gitignore
+seihou update master-plan --dry-run --json --no-commands
+seihou update master-plan --json --no-commands
+```
+
+For a direct link-skill or an update-docs application, install its updated producers
+and update that recorded target instead. Preview and perform an explicit
+`seihou manifest upgrade` or `seihou manifest repair-origins` if the runtime directs
+you to resolve older metadata. Installing producers or upgrading only the manifest
+cannot create checkout intent: one successful application/update must record it.
+Historical source-move migrations remain in the parent modules; the current link
+producers have no setup shell commands.
+
+Commit `.seihou/manifest.json`, `.gitignore`, and the generated source skill files.
+Then every clone or linked worktree can use an empty producer cache:
+
+```sh
+seihou status
+seihou sync --dry-run --json
+seihou sync --json
+seihou sync --json  # unchanged; repeat after deleting or retargeting a link to repair it
+```
+
+Sync creates missing parents and links without installed modules or changes to
+tracked content or manifest bytes. `--no-commands` on run/update still establishes
+these declarations and their links.
 
 ## Blueprints
 
@@ -130,7 +177,7 @@ agent-seihou/
 ├── modules/<name>/
 │   ├── module.dhall        # module definition
 │   ├── README.md           # per-module reference
-│   └── files/              # template sources (omitted by command-only modules)
+│   └── files/              # template sources (omitted by link-only modules)
 ├── blueprints/<name>/
 │   ├── blueprint.dhall     # blueprint definition
 │   ├── prompt.md           # agent task prompt
@@ -147,10 +194,13 @@ agent-seihou/
 
 ## Development
 
-Run the test suite (covers the helper scripts modules ship in their `files/`):
+Run the suite with absolute paths to a supporting runtime and the released legacy
+0.9.0.0 runtime. Acceptance tests use the real producers and isolated temporary Git
+projects, including schema-6 upgrades, clean clones, and linked worktrees:
 
 ```sh
-bun test
+SEIHOU_TEST_BIN=/absolute/path/to/seihou-0.10.0.0 \
+SEIHOU_LEGACY_TEST_BIN=/absolute/path/to/seihou-0.9.0.0 bun test
 ```
 
 Validate an artifact before publishing it, and keep the generated bundle in step:

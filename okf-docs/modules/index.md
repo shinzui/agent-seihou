@@ -2,8 +2,9 @@
 
 - [agent-gitignore](agent-gitignore.md) - Ensure .claude/, .agents/, and CLAUDE.local.md are in .gitignore
 - [claude-gitignore](claude-gitignore.md) - Ensure .claude/ and CLAUDE.local.md are in .gitignore
-- [claude-skill-link](claude-skill-link.md) - Symlink a Claude skill from claude/skills/ into .claude/skills/
+- [claude-skill-link](claude-skill-link.md) - Declare a manifest-owned checkout link from claude/skills/ into .claude/skills/
 - [exec-plan](exec-plan.md) - Claude skill for creating and managing execution plans (ExecPlans)
-- [link-skill](link-skill.md) - Symlink a skill from claude/skills/ into both .claude/skills/ and .agents/skills/
+- [link-skill](link-skill.md) - Declare manifest-owned checkout links from agents/skills/ into both .claude/skills/ and .agents/skills/
 - [master-plan](master-plan.md) - Claude skill for creating and managing master plans (MasterPlans) — coordination documents that decompose large initiatives into multiple ExecPlans
 - [update-docs](update-docs.md) - Claude skill to update project documentation after code changes
+

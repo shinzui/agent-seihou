@@ -14,15 +14,15 @@
     , tags = [ "claude", "agents", "gitignore", "infrastructure" ]
     }
   , { name = "claude-skill-link"
-    , version = Some "0.1.0"
+    , version = Some "0.2.0"
     , path = "modules/claude-skill-link"
-    , description = Some "Symlink a Claude skill from claude/skills/ into .claude/skills/"
+    , description = Some "Declare a manifest-owned checkout link from claude/skills/ into .claude/skills/"
     , tags = [ "claude", "skill", "infrastructure" ]
     }
   , { name = "link-skill"
-    , version = Some "0.2.0"
+    , version = Some "0.3.0"
     , path = "modules/link-skill"
-    , description = Some "Symlink a skill from claude/skills/ into both .claude/skills/ and .agents/skills/"
+    , description = Some "Declare manifest-owned checkout links from agents/skills/ into both .claude/skills/ and .agents/skills/"
     , tags = [ "claude", "agents", "skill", "infrastructure" ]
     }
   , { name = "update-docs"

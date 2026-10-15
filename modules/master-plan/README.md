@@ -30,6 +30,30 @@ A MasterPlan can schedule interleaved milestones when integration requires it, w
 simple initiatives keep child-by-child execution. Whole-child dependencies and completion
 criteria remain binding, and uncertain shared behavior is checked before expanding variants.
 
+## Checkout links and adoption
+
+With link-skill 0.3.0, discovery links are manifest-owned checkout declarations.
+Requires Seihou **0.10.0.0** or newer. Sources remain in `agents/skills/` and are
+generated in the same application; link creation also works under `--no-commands`.
+Real objects occupying discovery destinations cause safe refusal.
+
+For a first application, install the registry modules and run `seihou run master-plan`.
+For an existing recorded application, install the new producers and preserve its
+saved variables with:
+
+```bash
+seihou update master-plan --dry-run --json --no-commands
+seihou update master-plan --json --no-commands
+```
+
+If this module belongs to a larger composition, update that recorded root target
+instead (for example master-plan when it includes exec-plan). Dependency-only
+updates are discovered without bumping this module's own version. Installation or
+manifest upgrade alone does not record links; a successful run/update must do so.
+Commit the manifest, ignore rules, and source files. Fresh clones then use
+`seihou sync --dry-run --json` followed by `seihou sync --json`, without installed
+producers or tracked changes. Repeating sync restores deleted or retargeted links.
+
 ## Variables
 
 | Name | Type | Default | Required | Validation | Description |
@@ -94,6 +118,10 @@ Follow the dependency's shared `PROVENANCE.md` discovery procedure.
 
 ## Migrations
 
+The shell link operations below belong to historical source moves. Current setup
+uses checkout declarations from link-skill; these migrations remain intact for
+older consumers and do not substitute for applying the new declarations.
+
 Author-declared migrations applied via `seihou migrate master-plan`:
 
 - **`0.1.0` → `0.2.0`** — moves the skill from `claude/skills/` to `agents/skills/`,
@@ -105,7 +133,7 @@ Author-declared migrations applied via `seihou migrate master-plan`:
   Operations:
   - `move-file claude/skills/master-plan/SKILL.md → agents/skills/master-plan/SKILL.md`
   - `move-file claude/skills/master-plan/MASTERPLAN.md → agents/skills/master-plan/MASTERPLAN.md`
-  - `run rm -f .claude/skills/master-plan`
+  - `run rm -rf .claude/skills/master-plan claude/skills/master-plan`
   - `run mkdir -p .claude/skills .agents/skills`
   - `run ln -sfn ../../agents/skills/master-plan .claude/skills/master-plan`
   - `run ln -sfn ../../agents/skills/master-plan .agents/skills/master-plan`

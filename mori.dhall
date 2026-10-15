@@ -29,11 +29,21 @@ in  Schema.Project::{
         }
       , Schema.SeihouTemplate::{
         , name = "claude-skill-link"
-        , version = Some "0.1.0"
+        , version = Some "0.2.0"
         , description = Some
-            "Symlink a Claude skill from claude/skills/ into .claude/skills/ so it's discoverable by Claude Code."
+            "Declare a manifest-owned checkout link from claude/skills/ into .claude/skills/ so it's discoverable by Claude Code."
         , modulePath = "modules/claude-skill-link"
         , tags = [ "claude", "skill", "infrastructure" ]
+        , dependencies = [ "claude-gitignore" ]
+        , requiredVars = [ "skill.name" ]
+        }
+      , Schema.SeihouTemplate::{
+        , name = "link-skill"
+        , version = Some "0.3.0"
+        , description = Some
+            "Declare manifest-owned checkout links from agents/skills/ into .claude/skills/ and .agents/skills/. Requires Seihou 0.10.0.0."
+        , modulePath = "modules/link-skill"
+        , tags = [ "claude", "agents", "skill", "infrastructure" ]
         , dependencies = [ "claude-gitignore" ]
         , requiredVars = [ "skill.name" ]
         }

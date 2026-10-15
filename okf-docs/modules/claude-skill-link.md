@@ -1,7 +1,7 @@
 ---
 type: SeihouModule
 title: claude-skill-link
-description: Symlink a Claude skill from claude/skills/ into .claude/skills/
+description: Declare a manifest-owned checkout link from claude/skills/ into .claude/skills/
 resource: seihou://agent-seihou/modules/claude-skill-link
 tags:
 - claude
@@ -9,15 +9,15 @@ tags:
 - infrastructure
 status: stable
 generated:
-  by: seihou-okf-extension/0.8.0.0
-version: 0.1.0
+  by: seihou-okf-extension/0.10.0.0
+version: 0.2.0
 ---
 
 # claude-skill-link
 
-Symlink a Claude skill from claude/skills/ into .claude/skills/
+Declare a manifest-owned checkout link from claude/skills/ into .claude/skills/
 
-**Version:** 0.1.0
+**Version:** 0.2.0
 
 ## Dependencies
 
@@ -35,7 +35,6 @@ No exports declared.
 
 - `skill.name` — What is the skill directory name?
 
-## Commands
+## Generation steps
 
-- `mkdir -p .claude/skills`
-- `ln -sfn ../../claude/skills/{{skill.name}} .claude/skills/{{skill.name}}`
+- `Symlink` `claude/skills/{{skill.name}}` → `.claude/skills/{{skill.name}}`

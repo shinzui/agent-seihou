@@ -1,12 +1,12 @@
 let S =
-      https://raw.githubusercontent.com/shinzui/seihou-schema/b83079d377f22c77292ad5ccf88d1061a58f0c1c/package.dhall
-        sha256:1d46697ed3e7ca1b0d9922020e2da034ae6e33f7b482ee454c68d94b536e8c2a
+      https://raw.githubusercontent.com/shinzui/seihou-schema/367b0a1390ac1ed3dda6e2cacfdf3e72b1f624df/package.dhall
+        sha256:ef20d62c240dfe0e1126e05534d58c467188af4198307ad3c2a4a713bcd93505
 
 in  S.Module::{
     , name = "link-skill"
-    , version = Some "0.2.0"
+    , version = Some "0.3.0"
     , description = Some
-        "Symlink a skill from agents/skills/ into both .claude/skills/ and .agents/skills/. Ensures the target directories exist and creates relative symlinks so the skill is discoverable by Claude Code and other agent harnesses that read .agents/skills/."
+        "Symlink a skill from agents/skills/ into both .claude/skills/ and .agents/skills/. Records manifest-owned checkout links, restored by seihou sync in every clone (Seihou 0.10.0.0 or newer)."
     , vars =
       [ S.VarDecl::{
         , name = "skill.name"
@@ -30,17 +30,17 @@ in  S.Module::{
         , dest = ".gitignore"
         , patch = Some "append-line-if-absent"
         }
-      ]
-    , commands =
-      [ S.Command::{ run = "mkdir -p .claude/skills" }
-      , S.Command::{
-        , run =
-            "ln -sfn ../../agents/skills/{{skill.name}} .claude/skills/{{skill.name}}"
+      , S.Step::{
+        , strategy = "symlink"
+        , lifecycle = Some "checkout"
+        , src = "agents/skills/{{skill.name}}"
+        , dest = ".claude/skills/{{skill.name}}"
         }
-      , S.Command::{ run = "mkdir -p .agents/skills" }
-      , S.Command::{
-        , run =
-            "ln -sfn ../../agents/skills/{{skill.name}} .agents/skills/{{skill.name}}"
+      , S.Step::{
+        , strategy = "symlink"
+        , lifecycle = Some "checkout"
+        , src = "agents/skills/{{skill.name}}"
+        , dest = ".agents/skills/{{skill.name}}"
         }
       ]
     , dependencies = [ S.Dependency::{ module = "claude-gitignore" } ]
