@@ -25,50 +25,43 @@ dependency, and generated-file reference. `module.dhall` is the authoritative so
 
 ## Skill links and fresh clones
 
-The checkout-link modules require **Seihou 0.10.0.0 or newer**, tested against the
-published 0.10.0.0 runtime. An older runtime rejects the unknown `symlink` strategy.
-Sources stay in `agents/skills/` for link-skill and `claude/skills/` for
-claude-skill-link/update-docs. They must be real directories. Occupied real files or
-directories are preserved with a refusal; ignored discovery destinations contain
-relative symlinks managed through the manifest.
+Discovery links are recorded in the manifest for `.claude/skills/`,
+`.codex/skills/`, and `.agents/skills/`. Source files stay in `agents/skills/`.
+The complete adoption workflow is verified with source revision
+`c3cbd9bd202e87d6fd7fc0ede1d997d2c2140e0b` of `mori://shinzui/seihou`.
+These runtime changes have not yet been published as a versioned Hackage release;
+0.11.0.0 is proposed. The older 0.10.1.0 release does not include them.
 
-First install and apply (from the consuming project's root):
-
-```sh
-seihou install https://github.com/shinzui/agent-seihou.git --module master-plan --module exec-plan --module link-skill --module agent-gitignore --module claude-gitignore
-seihou run master-plan --var intentions.enabled=false --no-commands
-```
-
-For an existing master-plan application, preserve its saved variables by updating
-the recorded root target, even when master-plan/exec-plan versions are unchanged:
+First install and apply from the consuming project's root:
 
 ```sh
-seihou install https://github.com/shinzui/agent-seihou.git --module master-plan --module exec-plan --module link-skill --module agent-gitignore --module claude-gitignore
-seihou update master-plan --dry-run --json --no-commands
-seihou update master-plan --json --no-commands
+seihou install https://github.com/shinzui/agent-seihou.git --all
+seihou run master-plan --var intentions.enabled=false
 ```
 
-For a direct link-skill or an update-docs application, install its updated producers
-and update that recorded target instead. Preview and perform an explicit
-`seihou manifest upgrade` or `seihou manifest repair-origins` if the runtime directs
-you to resolve older metadata. Installing producers or upgrading only the manifest
-cannot create checkout intent: one successful application/update must record it.
-Historical source-move migrations remain in the parent modules; the current link
-producers have no setup shell commands.
-
-Commit `.seihou/manifest.json`, `.gitignore`, and the generated source skill files.
-Then every clone or linked worktree can use an empty producer cache:
+For an existing master-plan application, update its recorded root:
 
 ```sh
-seihou status
-seihou sync --dry-run --json
-seihou sync --json
-seihou sync --json  # unchanged; repeat after deleting or retargeting a link to repair it
+seihou update master-plan
 ```
 
-Sync creates missing parents and links without installed modules or changes to
-tracked content or manifest bytes. `--no-commands` on run/update still establishes
-these declarations and their links.
+Review and accept the ordinary preview. Update fetches the source and dependencies,
+reuses saved variables, prepares older schemas, and previews eligible tracked-link
+adoption. There is no prerequisite installation list, manual manifest edit or index
+operation. For another applied root, use its recorded name instead. Updating only
+the installed producer cache does not change the project's accepted declarations.
+
+Commit the manifest, baselines, ignore rules and generated source files through
+normal Git collaboration. A teammate receives that commit and runs:
+
+```sh
+seihou sync
+```
+
+Sync restores the recorded links without installed producers, changing tracked
+content or rewriting the manifest. Run it again to repair deleted or retargeted
+links. It preserves occupied real files and directories with a refusal.
+`--no-commands` on run/update still records declarative links.
 
 ## Blueprints
 

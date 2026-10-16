@@ -34,7 +34,10 @@ criteria remain binding, and uncertain shared behavior is checked before expandi
 Discovery links are manifest-owned checkout declarations. Sources remain in
 `agents/skills/` and are generated in the same application; links also work under
 `--no-commands`. Real objects at destinations cause safe refusal. The complete
-adoption workflow requires Seihou 0.11.0.0 or newer (runtime release pending).
+adoption workflow is verified with source revision
+`c3cbd9bd202e87d6fd7fc0ede1d997d2c2140e0b` of `mori://shinzui/seihou`.
+The supporting runtime changes are not yet available as a versioned Hackage release;
+0.11.0.0 is proposed. The older 0.10.1.0 release does not include those changes.
 
 A maintainer of an existing project uses the recorded root application:
 
