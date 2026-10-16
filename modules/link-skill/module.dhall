@@ -4,9 +4,9 @@ let S =
 
 in  S.Module::{
     , name = "link-skill"
-    , version = Some "0.3.0"
+    , version = Some "0.4.0"
     , description = Some
-        "Symlink a skill from agents/skills/ into both .claude/skills/ and .agents/skills/. Records manifest-owned checkout links, restored by seihou sync in every clone (Seihou 0.10.0.0 or newer)."
+        "Symlink a skill from agents/skills/ into .claude/skills/, .codex/skills/ and .agents/skills/. Records manifest-owned checkout links, restored by seihou sync in every clone (Seihou 0.11.0.0 or newer)."
     , vars =
       [ S.VarDecl::{
         , name = "skill.name"
@@ -41,6 +41,12 @@ in  S.Module::{
         , lifecycle = Some "checkout"
         , src = "agents/skills/{{skill.name}}"
         , dest = ".agents/skills/{{skill.name}}"
+        }
+      , S.Step::{
+        , strategy = "symlink"
+        , lifecycle = Some "checkout"
+        , src = "agents/skills/{{skill.name}}"
+        , dest = ".codex/skills/{{skill.name}}"
         }
       ]
     , dependencies = [ S.Dependency::{ module = "claude-gitignore" } ]

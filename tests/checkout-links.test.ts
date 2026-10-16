@@ -8,7 +8,7 @@ const producer = resolve(import.meta.dir, "..");
 const legacyCommit = "4e0a1d711fcb0373dc3733175830dbbbd334ce67";
 const binary = process.env.SEIHOU_TEST_BIN;
 const legacy = process.env.SEIHOU_LEGACY_TEST_BIN;
-if (!binary || !legacy) throw new Error("Set SEIHOU_TEST_BIN (released supporting runtime) and SEIHOU_LEGACY_TEST_BIN (Seihou 0.9.0.0); checkout acceptance must not be skipped.");
+if (!binary || !legacy) throw new Error("Set SEIHOU_TEST_BIN (supporting candidate or released runtime) and SEIHOU_LEGACY_TEST_BIN (Seihou 0.9.0.0); checkout acceptance must not be skipped.");
 for (const [key, path] of [["SEIHOU_TEST_BIN", binary], ["SEIHOU_LEGACY_TEST_BIN", legacy]]) {
   if (!path!.startsWith("/") || !existsSync(path!)) throw new Error(`${key} must name an existing absolute executable path; got ${path}`);
 }
@@ -50,8 +50,8 @@ function source(cwd: string, path: string) {
   mkdirSync(join(cwd, path), { recursive: true });
   writeFileSync(join(cwd, path, "SKILL.md"), "source sentinel\n");
 }
-function links(cwd: string, name: string, base = "agents") {
-  const destinations = base === "agents" ? [`.claude/skills/${name}`, `.agents/skills/${name}`] : [`.claude/skills/${name}`];
+function links(cwd: string, name: string, base = "agents", includeCodex = true) {
+  const destinations = base === "agents" ? [`.claude/skills/${name}`, `.agents/skills/${name}`, ...(includeCodex ? [`.codex/skills/${name}`] : [])] : [`.claude/skills/${name}`];
   for (const dest of destinations) {
     expect(lstatSync(join(cwd, dest)).isSymbolicLink()).toBe(true);
     expect(readlinkSync(join(cwd, dest))).toBe(`../../${base}/skills/${name}`);
@@ -60,7 +60,7 @@ function links(cwd: string, name: string, base = "agents") {
 }
 function declarations(cwd: string, name: string, base = "agents") {
   const m = manifest(cwd);
-  const destinations = base === "agents" ? [`.claude/skills/${name}`, `.agents/skills/${name}`] : [`.claude/skills/${name}`];
+  const destinations = base === "agents" ? [`.claude/skills/${name}`, `.codex/skills/${name}`, `.agents/skills/${name}`] : [`.claude/skills/${name}`];
   expect(m.version).toBeGreaterThanOrEqual(9);
   for (const dest of destinations) {
     expect(m.checkoutOutputs[dest]).toBeDefined();
@@ -91,7 +91,7 @@ test("real schema-6 command application upgrades to declarations, adopting or cr
   const receipts = JSON.stringify(before.applications[0].commandReceipts);
   expect(receipts).toContain("mkdir -p");
   expect(receipts).toContain("ln -sfn");
-  links(original, "release");
+  links(original, "release", "agents", false);
   for (const missing of [false, true]) {
     const cwd = join(area, missing ? "legacy-missing" : "legacy-correct");
     cpSync(original, cwd, { recursive: true, verbatimSymlinks: true });
@@ -99,7 +99,7 @@ test("real schema-6 command application upgrades to declarations, adopting or cr
     modules(cwd);
     const result = run(cwd, ["update", "link-skill", "--no-commands", "--json"]);
     declarations(cwd, "release");
-    expect(Object.keys(manifest(cwd).checkoutOutputs)).toHaveLength(2);
+    expect(Object.keys(manifest(cwd).checkoutOutputs)).toHaveLength(3);
     // Receipts are historical evidence; their timestamps must never be replayed.
     const remaining = manifest(cwd).applications[0].commandReceipts || {};
     for (const [key, value] of Object.entries(remaining)) expect(value).toEqual(before.applications[0].commandReceipts[key]);
@@ -107,13 +107,14 @@ test("real schema-6 command application upgrades to declarations, adopting or cr
     if (missing) cloneProof(cwd, "release", {
       ".claude/skills/release": "../../agents/skills/release",
       ".agents/skills/release": "../../agents/skills/release",
+      ".codex/skills/release": "../../agents/skills/release",
     });
   }
 }, 120_000);
 
 function snapshot(cwd: string) {
   const paths = git(cwd, "ls-files", "-z").split("\0").filter(Boolean);
-  return { index: git(cwd, "ls-files", "--stage", "-z"), bytes: paths.map(path => [path, readFileSync(join(cwd, path)).toString("base64")]) };
+  return { index: git(cwd, "ls-files", "--stage", "-z"), bytes: paths.map(path => [path, (lstatSync(join(cwd, path)).isSymbolicLink() ? Buffer.from(readlinkSync(join(cwd, path))) : readFileSync(join(cwd, path))).toString("base64")]) };
 }
 function commit(cwd: string) {
   git(cwd, "add", ".");
@@ -171,23 +172,23 @@ function cloneProof(original: string, name: string, expected: Record<string, str
   git(original, "worktree", "remove", worktree);
 }
 
-test("master-plan generates both real skill sources and four portable declarations", () => {
+test("master-plan generates both real skill sources and six portable declarations", () => {
   const cwd = project("master");
   modules(cwd);
   run(cwd, ["run", "master-plan", "--no-commands", "--no-save-prompted", "--var", "intentions.enabled=false"]);
   declarations(cwd, "exec-plan");
   declarations(cwd, "master-plan");
   const m = manifest(cwd);
-  expect(Object.keys(m.checkoutOutputs)).toHaveLength(4);
+  expect(Object.keys(m.checkoutOutputs)).toHaveLength(6);
   const application = m.applications[0];
   for (const [path, output] of Object.entries<any>(m.checkoutOutputs)) {
     expect(Object.keys(output.owners)).toEqual([application.applicationId]);
     expect(output.owners[application.applicationId]).toHaveLength(1);
-    expect(output.owners[application.applicationId][0]).toMatch(/^link-skill#/);
+    expect(output.owners[application.applicationId][0]).toMatch(/^(exec-plan#|master-plan$)/);
     expect(Object.keys(m.files)).not.toContain(path);
   }
   cloneProof(cwd, "master", Object.fromEntries(["exec-plan", "master-plan"].flatMap(name =>
-    [".claude", ".agents"].map(harness => [`${harness}/skills/${name}`, `../../agents/skills/${name}`]))));
+    [".claude", ".codex", ".agents"].map(harness => [`${harness}/skills/${name}`, `../../agents/skills/${name}`]))));
 }, 120_000);
 
 test("update-docs keeps claude/skills sources and composes the real legacy link module", () => {
@@ -272,4 +273,16 @@ test("legacy claude-skill-link command receipts become a declaration without mov
   expect(Object.keys(manifest(cwd).checkoutOutputs)).toHaveLength(1);
   expect(readFileSync(join(cwd, "claude/skills/release/SKILL.md"), "utf8")).toBe("source sentinel\n");
   expect(existsSync(join(cwd, "agents/skills/release"))).toBe(false);
+}, 120_000);
+
+
+test("planning compositions link custom source names at all three tool destinations", () => {
+  const cwd = project("custom-planning");
+  modules(cwd);
+  run(cwd, ["run", "master-plan", "--no-commands", "--no-save-prompted", "--var", "intentions.enabled=false", "--var", "mp.skill.name=roadmap", "--var", "skill.name=execution", "--var", "exec-plan.skill.name=execution"]);
+  declarations(cwd, "roadmap");
+  declarations(cwd, "execution");
+  expect(Object.keys(manifest(cwd).checkoutOutputs)).toHaveLength(6);
+  cloneProof(cwd, "custom", Object.fromEntries(["roadmap", "execution"].flatMap(name =>
+    [".claude", ".codex", ".agents"].map(tool => [`${tool}/skills/${name}`, `../../agents/skills/${name}`]))));
 }, 120_000);

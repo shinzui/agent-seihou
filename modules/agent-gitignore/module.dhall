@@ -4,9 +4,9 @@ let S =
 
 in  S.Module::{
     , name = "agent-gitignore"
-    , version = Some "0.1.0"
+    , version = Some "0.2.0"
     , description = Some
-        "Ensure .claude/, .agents/, and CLAUDE.local.md are in .gitignore. Shared base module for skill modules that publish into both .claude/ and .agents/."
+        "Ensure .claude/, .codex/, .agents/, and CLAUDE.local.md are in .gitignore. Shared base module for skill modules that publish into all three discovery directories."
     , steps =
       [ S.Step::{
         , strategy = "template"

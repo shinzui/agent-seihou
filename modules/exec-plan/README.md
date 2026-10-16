@@ -4,15 +4,15 @@
 > self-contained design documents that guide implementation of features and system
 > changes.
 
-**Version:** `0.12.0`
+**Version:** `0.13.0`
 
 ## Overview
 
-Installs an `exec-plan` skill into the project's `agents/skills/` tree. The `link-skill`
-dependency exposes the skill under `.claude/skills/` (for Claude Code) and
-`.agents/skills/` (for other agent harnesses) via relative symlinks. When
-`intentions.enabled` is true, appends an intention-tracking section to the skill's
-`SKILL.md` so ExecPlans carry `Intention:` trailers in their commits.
+Installs an `exec-plan` skill into `agents/skills/{{skill.name}}/`. Each source-generating
+module declares its own relative discovery links under `.claude/skills/`,
+`.codex/skills/` and `.agents/skills/`, using the same resolved source-name variable.
+The default composition exposes both planning skills at all six destinations.
+Intention tracking remains optional and preserves the existing planning workflow.
 
 Since `0.9.0` the skill also tracks plan provenance — which model authored a plan, which
 models revised it, and which models reviewed it — in the plan's YAML frontmatter, and
@@ -30,27 +30,30 @@ applicable evidence are preserved.
 
 ## Checkout links and adoption
 
-With link-skill 0.3.0, discovery links are manifest-owned checkout declarations.
-Requires Seihou **0.10.0.0** or newer. Sources remain in `agents/skills/` and are
-generated in the same application; link creation also works under `--no-commands`.
-Real objects occupying discovery destinations cause safe refusal.
+Discovery links are manifest-owned checkout declarations. Sources remain in
+`agents/skills/` and are generated in the same application; links also work under
+`--no-commands`. Real objects at destinations cause safe refusal. The complete
+adoption workflow requires Seihou 0.11.0.0 or newer (runtime release pending).
 
-For a first application, install the registry modules and run `seihou run exec-plan`.
-For an existing recorded application, install the new producers and preserve its
-saved variables with:
+A maintainer of an existing project uses the recorded root application:
 
-```bash
-seihou update exec-plan --dry-run --json --no-commands
-seihou update exec-plan --json --no-commands
+```sh
+seihou update exec-plan
 ```
 
-If this module belongs to a larger composition, update that recorded root target
-instead (for example master-plan when it includes exec-plan). Dependency-only
-updates are discovered without bumping this module's own version. Installation or
-manifest upgrade alone does not record links; a successful run/update must do so.
-Commit the manifest, ignore rules, and source files. Fresh clones then use
-`seihou sync --dry-run --json` followed by `seihou sync --json`, without installed
-producers or tracked changes. Repeating sync restores deleted or retargeted links.
+Review and accept the ordinary preview. Update fetches the recorded source and
+dependencies, reuses saved inputs, prepares older schemas and previews eligible
+tracked-link adoption. No prerequisite installation list or manual index edit is
+needed. If exec-plan belongs to master-plan, update master-plan as the root.
+Commit manifest, baselines, source assets and ignore rules. Teammates receive that
+commit and run one command, without producer installation or configuration:
+
+```sh
+seihou sync
+```
+
+Sync restores only the recorded declarations and does not fetch or upgrade modules.
+Repeating it repairs deleted or wrongly targeted links without changing shared state.
 
 ## Variables
 
@@ -69,12 +72,9 @@ The following values are asked interactively (unless supplied via `--var`):
 
 This module pulls in:
 
-- **`agent-gitignore`** — ensures `.claude/`, `.agents/`, and `CLAUDE.local.md` are
+- **`agent-gitignore`** — ensures `.claude/`, `.codex/`, `.agents/`, and `CLAUDE.local.md` are
   ignored. Replaces the older transitive `claude-gitignore` dep with a single
-  superset that covers both agent-harness directories.
-- **`link-skill`**
-  - Variable bindings:
-    - `skill.name` = `exec-plan`
+  superset that covers all three discovery directories.
 
 ## Exports
 
@@ -129,7 +129,7 @@ references across repositories.
 ## Migrations
 
 The shell link operations below belong to historical source moves. Current setup
-uses checkout declarations from link-skill; these migrations remain intact for
+uses its own checkout declarations; these migrations remain intact for
 older consumers and do not substitute for applying the new declarations.
 
 Author-declared migrations applied via `seihou migrate exec-plan`:
@@ -205,5 +205,5 @@ seihou migrate exec-plan             # apply
 - `module.dhall` — full module definition and authoritative source
 - `files/` — template sources
 - `master-plan` — coordination skill that depends on this module
-- `link-skill` — symlink infrastructure (transitive dependency)
+- `link-skill` — standalone module for exposing other project skill sources
 - `agent-gitignore` — gitignore rules for `.claude/` and `.agents/`

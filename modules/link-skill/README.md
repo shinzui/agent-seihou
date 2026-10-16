@@ -1,18 +1,18 @@
 # link-skill
 
-> Symlink a skill from `agents/skills/` into both `.claude/skills/` and `.agents/skills/`.
+> Symlink a skill from `agents/skills/` into `.claude/skills/`, `.codex/skills/` and `.agents/skills/`.
 > Ensures the target directories exist and creates relative symlinks so the skill is
 > discoverable by Claude Code and other agent harnesses that read `.agents/skills/`.
 
-**Version:** `0.3.0`
+**Version:** `0.4.0`
 
 ## Overview
 
 Infrastructure module for skill modules that want their `agents/skills/<name>/` content
 visible to both Claude Code (which reads `.claude/skills/`) and other agent harnesses
-(which read `.agents/skills/`). It records two manifest-owned checkout declarations and does not generate skill files.
-Requires Seihou **0.10.0.0** or newer (the minimum tested released runtime). Pulls in `claude-gitignore` so
-`.claude/` is ignored, and adds `.agents/` to `.gitignore` itself.
+(which read `.agents/skills/`). It records three manifest-owned checkout declarations and does not generate skill files.
+The complete adoption workflow requires Seihou **0.11.0.0** or newer (runtime release pending). Pulls in `claude-gitignore` so
+`.claude/` is ignored, and adds `.codex/` and `.agents/` to `.gitignore` itself.
 
 ## Variables
 
@@ -41,12 +41,13 @@ When run, this module writes:
 
 ## Checkout declarations
 
-Both steps use `strategy = "symlink"` and `lifecycle = Some "checkout"`:
+All three link steps use `strategy = "symlink"` and `lifecycle = Some "checkout"`:
 
 | Source | Discovery destination |
 |--------|-----------------------|
 | `agents/skills/{{skill.name}}` | `.claude/skills/{{skill.name}}` |
 | `agents/skills/{{skill.name}}` | `.agents/skills/{{skill.name}}` |
+| `agents/skills/{{skill.name}}` | `.codex/skills/{{skill.name}}` |
 
 The source must be a real project directory, either already present or generated in
 this composition. Destinations must be ignored and untracked for `seihou sync`.
@@ -78,36 +79,22 @@ Preview without writing files:
 seihou run link-skill --var skill.name=my-skill --dry-run
 ```
 
-Typically pulled in transitively by skill modules (e.g. `master-plan`, `exec-plan`)
-rather than applied directly.
+Use this standalone module for existing skill sources. Planning modules now own
+their links directly so custom source names and discovery names stay aligned.
 
 ## Existing projects and clones
 
-Install the new producer and update the application's root target once; for an
-existing master-plan composition:
+A maintainer updates the recorded application's root once, for example:
 
-```bash
-seihou install https://github.com/shinzui/agent-seihou.git --module master-plan --module exec-plan --module link-skill --module agent-gitignore --module claude-gitignore
-seihou update master-plan --dry-run --json --no-commands
-seihou update master-plan --json --no-commands
+```sh
+seihou update master-plan
 ```
 
-The parent module versions can stay unchanged: update discovers the new link-skill
-dependency. Commit `.seihou/manifest.json`, `.gitignore`, and the source skill tree.
-Installation or `seihou manifest upgrade` alone cannot infer declarations from old
-command receipts. Historical source-move migrations remain separate from current
-link declarations; `seihou update` includes applicable migrations.
-
-After cloning that committed state, use only:
-
-```bash
-seihou sync --dry-run --json
-seihou sync --json
-```
-
-Sync needs no producer installation, performs no upgrades, and leaves tracked files
-and manifest bytes unchanged. It restores deleted links and repairs wrong symlinks.
-The source content must be committed too; an empty directory is not retained by Git.
+Review and accept its preview, then commit manifest, baselines, ignore rules and
+source assets. Update owns fetching and saved inputs. Teammates receive that commit
+and run plain `seihou sync`; no producers, flags, configuration prompts or project
+state changes are required for restoration. The source content must be committed:
+Git does not retain empty directories.
 
 ## See Also
 

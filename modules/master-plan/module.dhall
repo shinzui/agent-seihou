@@ -1,10 +1,10 @@
 let S =
-      https://raw.githubusercontent.com/shinzui/seihou-schema/b83079d377f22c77292ad5ccf88d1061a58f0c1c/package.dhall
-        sha256:1d46697ed3e7ca1b0d9922020e2da034ae6e33f7b482ee454c68d94b536e8c2a
+      https://raw.githubusercontent.com/shinzui/seihou-schema/367b0a1390ac1ed3dda6e2cacfdf3e72b1f624df/package.dhall
+        sha256:ef20d62c240dfe0e1126e05534d58c467188af4198307ad3c2a4a713bcd93505
 
 in  S.Module::{
     , name = "master-plan"
-    , version = Some "0.12.0"
+    , version = Some "0.13.0"
     , description = Some
         "Claude skill for creating and managing master plans (MasterPlans) — coordination documents that decompose large initiatives into multiple ExecPlans with dependencies and integration points."
     , vars =
@@ -64,6 +64,24 @@ in  S.Module::{
         , when = Some "Eq intentions.enabled true"
         , patch = Some "append-section"
         }
+      , S.Step::{
+        , strategy = "symlink"
+        , lifecycle = Some "checkout"
+        , src = "agents/skills/{{mp.skill.name}}"
+        , dest = ".claude/skills/{{mp.skill.name}}"
+        }
+      , S.Step::{
+        , strategy = "symlink"
+        , lifecycle = Some "checkout"
+        , src = "agents/skills/{{mp.skill.name}}"
+        , dest = ".codex/skills/{{mp.skill.name}}"
+        }
+      , S.Step::{
+        , strategy = "symlink"
+        , lifecycle = Some "checkout"
+        , src = "agents/skills/{{mp.skill.name}}"
+        , dest = ".agents/skills/{{mp.skill.name}}"
+        }
       ]
     , dependencies =
       [ S.Dependency::{ module = "agent-gitignore" }
@@ -71,10 +89,7 @@ in  S.Module::{
         , module = "exec-plan"
         , vars = [ { name = "skill.name", value = "exec-plan" } ]
         }
-      , S.Dependency::{
-        , module = "link-skill"
-        , vars = [ { name = "skill.name", value = "master-plan" } ]
-        }
+
       ]
     , migrations =
       [ S.Migration::{

@@ -1,9 +1,9 @@
 # agent-gitignore
 
-> Ensure `.claude/`, `.agents/`, and `CLAUDE.local.md` are in `.gitignore`. Shared
+> Ensure `.claude/`, `.codex/`, `.agents/`, and `CLAUDE.local.md` are in `.gitignore`. Shared
 > base module for skill modules that publish into both `.claude/` and `.agents/`.
 
-**Version:** `0.1.0`
+**Version:** `0.2.0`
 
 ## Overview
 

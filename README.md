@@ -13,12 +13,12 @@ every time. Run them with `seihou run`.
 | Module | Version | Description |
 |--------|---------|-------------|
 | [`claude-gitignore`](modules/claude-gitignore) | `0.2.0` | Ensure `.claude/` and `CLAUDE.local.md` are in `.gitignore` |
-| [`agent-gitignore`](modules/agent-gitignore) | `0.1.0` | Ensure `.claude/`, `.agents/`, and `CLAUDE.local.md` are in `.gitignore` |
+| [`agent-gitignore`](modules/agent-gitignore) | `0.2.0` | Ensure `.claude/`, `.codex/`, `.agents/`, and `CLAUDE.local.md` are in `.gitignore` |
 | [`claude-skill-link`](modules/claude-skill-link) | `0.2.0` | Declare a checkout link from `claude/skills/` into `.claude/skills/` |
-| [`link-skill`](modules/link-skill) | `0.3.0` | Declare checkout links from `agents/skills/` into both `.claude/skills/` and `.agents/skills/` |
+| [`link-skill`](modules/link-skill) | `0.4.0` | Declare checkout links from `agents/skills/` into `.claude/skills/`, `.codex/skills/` and `.agents/skills/` |
 | [`update-docs`](modules/update-docs) | `0.1.0` | Claude skill that keeps project documentation in sync with code changes |
-| [`exec-plan`](modules/exec-plan) | `0.12.0` | Claude skill for creating and managing execution plans (ExecPlans) |
-| [`master-plan`](modules/master-plan) | `0.12.0` | Claude skill for creating and managing master plans (MasterPlans) |
+| [`exec-plan`](modules/exec-plan) | `0.13.0` | Claude skill for creating and managing execution plans (ExecPlans) |
+| [`master-plan`](modules/master-plan) | `0.13.0` | Claude skill for creating and managing master plans (MasterPlans) |
 
 Each module directory contains its own `README.md` with full variable, prompt,
 dependency, and generated-file reference. `module.dhall` is the authoritative source.
