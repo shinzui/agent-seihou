@@ -4,7 +4,7 @@
 > documents that decompose large initiatives into multiple ExecPlans with dependencies
 > and integration points.
 
-**Version:** `0.13.0`
+**Version:** `0.14.0`
 
 ## Overview
 
@@ -28,6 +28,13 @@ Since `0.12.0`, hard dependencies may explicitly name an accepted child mileston
 A MasterPlan can schedule interleaved milestones when integration requires it, while
 simple initiatives keep child-by-child execution. Whole-child dependencies and completion
 criteria remain binding, and uncertain shared behavior is checked before expanding variants.
+
+Since `0.14.0`, friction met while implementing a child plan is recorded as it occurs in the
+repository's friction-log bundle through the exec-plan dependency's `record-friction.ts`,
+naming the child plan, and triaged when the child completes. The MasterPlan's Surprises &
+Discoveries records friction with the same surface recurring across children, by `FRIC-N`
+handle, and its retrospective cites only recurring or initiative-level friction. The shared
+contract is the dependency's `FRICTION.md`.
 
 ## Checkout links and adoption
 
@@ -110,7 +117,8 @@ Child ExecPlans are created via the exec-plan skill's own `init-plan.ts`.
 
 This module installs no provenance script of its own: reviews and revisions of a
 MasterPlan are recorded with `agents/skills/{{exec-plan.skill.name}}/record-provenance.ts`,
-installed by the exec-plan dependency.
+installed by the exec-plan dependency. Friction is likewise recorded with the dependency's
+`record-friction.ts` and governed by its `FRICTION.md`.
 
 Since `0.10.0`, the initializer also imports the dependency's `provenance-model.ts`.
 Its import is templated using `exec-plan.skill.name`, including custom skill names.

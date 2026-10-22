@@ -1,7 +1,7 @@
 ---
 type: SeihouModule
 title: agent-gitignore
-description: Ensure .claude/, .agents/, and CLAUDE.local.md are in .gitignore
+description: Ensure .claude/, .codex/, .agents/, and CLAUDE.local.md are in .gitignore
 resource: seihou://agent-seihou/modules/agent-gitignore
 tags:
 - claude
@@ -10,15 +10,15 @@ tags:
 - infrastructure
 status: stable
 generated:
-  by: seihou-okf-extension/0.10.0.0
-version: 0.1.0
+  by: seihou-okf-extension/0.10.1.0
+version: 0.2.0
 ---
 
 # agent-gitignore
 
-Ensure .claude/, .agents/, and CLAUDE.local.md are in .gitignore
+Ensure .claude/, .codex/, .agents/, and CLAUDE.local.md are in .gitignore
 
-**Version:** 0.1.0
+**Version:** 0.2.0
 
 ## Dependencies
 

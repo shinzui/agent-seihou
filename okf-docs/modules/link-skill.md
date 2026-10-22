@@ -1,8 +1,8 @@
 ---
 type: SeihouModule
 title: link-skill
-description: Declare manifest-owned checkout links from agents/skills/ into both .claude/skills/
-  and .agents/skills/
+description: Declare manifest-owned checkout links from agents/skills/ into .claude/skills/,
+  .codex/skills/ and .agents/skills/
 resource: seihou://agent-seihou/modules/link-skill
 tags:
 - claude
@@ -11,15 +11,15 @@ tags:
 - infrastructure
 status: stable
 generated:
-  by: seihou-okf-extension/0.10.0.0
-version: 0.3.0
+  by: seihou-okf-extension/0.10.1.0
+version: 0.4.0
 ---
 
 # link-skill
 
-Declare manifest-owned checkout links from agents/skills/ into both .claude/skills/ and .agents/skills/
+Declare manifest-owned checkout links from agents/skills/ into .claude/skills/, .codex/skills/ and .agents/skills/
 
-**Version:** 0.3.0
+**Version:** 0.4.0
 
 ## Dependencies
 
@@ -42,3 +42,4 @@ No exports declared.
 - `Template` `gitignore.tpl` → `.gitignore` (appends one line to a file another module owns, if absent)
 - `Symlink` `agents/skills/{{skill.name}}` → `.claude/skills/{{skill.name}}`
 - `Symlink` `agents/skills/{{skill.name}}` → `.agents/skills/{{skill.name}}`
+- `Symlink` `agents/skills/{{skill.name}}` → `.codex/skills/{{skill.name}}`

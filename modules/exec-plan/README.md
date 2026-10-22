@@ -4,7 +4,7 @@
 > self-contained design documents that guide implementation of features and system
 > changes.
 
-**Version:** `0.13.0`
+**Version:** `0.14.0`
 
 ## Overview
 
@@ -27,6 +27,13 @@ Since `0.12.0`, implementation follows accepted outcomes through cohesive change
 proportionate validation. Uncertain interfaces receive an early interaction check when
 needed; new requirements remain explicit scope decisions. Existing acceptance and
 applicable evidence are preserved.
+
+Since `0.14.0`, implementation records friction — the cost of doing the work: a document,
+interface, tool, environment, or house process that cost material effort — as it occurs,
+in a `docs/friction-log/` OKF bundle governed by `coordination.frictionLog` from
+`mori://shinzui/okf-profiles`, through the bundled `record-friction.ts` script, and
+triages the entries at completion. `FRICTION.md` is the shared contract, and the
+master-plan skill follows it for child plans.
 
 ## Checkout links and adoption
 
@@ -96,6 +103,8 @@ When run, this module writes:
 - `agents/skills/{{skill.name}}/record-provenance.ts` — strategy: `copy`
 - `agents/skills/{{skill.name}}/provenance-model.ts` — strategy: `copy`
 - `agents/skills/{{skill.name}}/PROVENANCE.md` — strategy: `copy`
+- `agents/skills/{{skill.name}}/FRICTION.md` — strategy: `copy`
+- `agents/skills/{{skill.name}}/record-friction.ts` — strategy: `copy`
 - `agents/skills/{{skill.name}}/SKILL.md` — strategy: `copy`
   - Applied when: `Eq intentions.enabled true`
   - Patch mode: `append-section`
@@ -122,12 +131,29 @@ models after a switch or a new turn without model metadata. `unknown` requires
 in the entry's note. `PROVENANCE.md` documents discovery and historical corrections.
 Explicit IDs continue to support other harnesses.
 
-Run the upstream regression suite with `bun test tests/provenance.test.ts`.
+Run the upstream regression suite with `bun test`. The provenance suite is self-contained;
+the friction suite spawns `okf` and bootstraps a bundle from an okf-profiles checkout, which
+it finds through `OKF_PROFILES_PACKAGE` or `mori path mori://shinzui/okf-profiles`, and
+reports itself skipped when either is unavailable.
 
 `ADR.md` is the shared ADR contract used by both planning skills. It preserves the
 repository's existing convention when no profile is configured; for a profiled OKF
 bundle it governs stable handle allocation, strict validation, and canonical Mori
 references across repositories.
+
+`FRICTION.md` is the shared friction-log contract used by both planning skills: what
+counts as friction and what does not, the threshold for recording it, how it differs from
+Surprises & Discoveries, bug reports, and improvement requests, and how entries are
+triaged and cited. `record-friction.ts` is the only writer. On first use it bootstraps
+the bundle with `okf profile init`, pinning `coordination.frictionLog` from okf-profiles
+`v0.23.0`, the first release that exports the profile; before that tag is published, pass
+`--registry <okf-profiles-checkout>/package.dhall` and repin afterwards. Each `log` call
+allocates the next `FRIC-N` handle with `okf id next`, writes the entry, appends to the
+bundle's `log.md`, regenerates `index.md`, and validates strictly; each `update` call
+changes the triage status, appends an `amended` record so `generated` keeps who observed
+the friction, and validates again. The script derives `origin` from `mori.dhall` through
+`mori show --json` and accepts the same identity options as the provenance scripts. It
+requires `okf` 0.10.0.0 or later for `okf profile init`.
 
 ## Migrations
 
@@ -170,6 +196,11 @@ No data migration is needed for `0.9.0` → `0.10.0`: existing provenance remain
 unchanged. Re-run the module to install the shared helper and discovery guide with
 the updated scripts. New initializer invocations must now supply identity; scripts
 that passed `unknown` must also supply the explicit fallback flag and reason.
+
+No migration is declared for `0.13.0` → `0.14.0`. The friction-log bundle is created
+on first use by `record-friction.ts`, so existing repositories gain it the first time an
+implementation records friction. Re-run the module to install `FRICTION.md` and the
+script, and add the bundle to `mori.dhall` when it appears, as `FRICTION.md` describes.
 
 ## Removal
 

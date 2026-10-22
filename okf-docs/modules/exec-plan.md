@@ -9,20 +9,19 @@ tags:
 - planning
 status: stable
 generated:
-  by: seihou-okf-extension/0.10.0.0
-version: 0.12.0
+  by: seihou-okf-extension/0.10.1.0
+version: 0.14.0
 ---
 
 # exec-plan
 
 Claude skill for creating and managing execution plans (ExecPlans)
 
-**Version:** 0.12.0
+**Version:** 0.14.0
 
 ## Dependencies
 
 - [agent-gitignore](/modules/agent-gitignore.md)
-- [link-skill](/modules/link-skill.md) (with `skill.name` = `exec-plan`)
 
 ## Variables
 
@@ -46,7 +45,12 @@ Claude skill for creating and managing execution plans (ExecPlans)
 - `Copy` `record-provenance.ts` → `agents/skills/{{skill.name}}/record-provenance.ts`
 - `Copy` `provenance-model.ts` → `agents/skills/{{skill.name}}/provenance-model.ts`
 - `Copy` `PROVENANCE.md` → `agents/skills/{{skill.name}}/PROVENANCE.md`
+- `Copy` `FRICTION.md` → `agents/skills/{{skill.name}}/FRICTION.md`
+- `Copy` `record-friction.ts` → `agents/skills/{{skill.name}}/record-friction.ts`
 - `Copy` `INTENTIONS-SECTION.md` → `agents/skills/{{skill.name}}/SKILL.md` (appends a marked section to a file another module owns) — when `Eq intentions.enabled true`
+- `Symlink` `agents/skills/{{skill.name}}` → `.claude/skills/{{skill.name}}`
+- `Symlink` `agents/skills/{{skill.name}}` → `.codex/skills/{{skill.name}}`
+- `Symlink` `agents/skills/{{skill.name}}` → `.agents/skills/{{skill.name}}`
 
 ## Migrations
 
