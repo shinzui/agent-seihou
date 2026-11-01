@@ -45,7 +45,13 @@
     }
   ]
 , recipes =
-  [] : List { name : Text, version : Optional Text, path : Text, description : Optional Text, tags : List Text }
+  [ { name = "haskell-cli-app-with-agents"
+    , version = Some "0.1.0"
+    , path = "recipes/haskell-cli-app-with-agents"
+    , description = Some "Extend the Haskell CLI repository recipe with agent ignore rules"
+    , tags = [ "haskell", "agents", "recipe" ]
+    }
+  ]
 , blueprints =
   [ { name = "hackage-release"
     , version = Some "0.1.0"
