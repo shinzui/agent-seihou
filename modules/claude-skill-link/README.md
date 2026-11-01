@@ -11,6 +11,8 @@
 Infrastructure module used by update-docs and other skills that keep their source in
 `claude/skills/<name>/`. It records one manifest-owned checkout link to
 `.claude/skills/<name>` without generating source files or running setup commands.
+The link is restored by `seihou sync` in fresh clones and worktrees without the
+installed module present.
 Requires Seihou **0.10.0.0** or newer (the minimum tested released runtime). Pulling in
 `claude-gitignore` ensures `.claude/` stays out of version control.
 
@@ -26,11 +28,17 @@ The following values are asked interactively (unless supplied via `--var`):
 
 - **`skill.name`** — What is the skill directory name?
 
+## Steps
+
+- **symlink** (`lifecycle = checkout`) — links `claude/skills/{{skill.name}}` →
+  `.claude/skills/{{skill.name}}`.
+
 ## Dependencies
 
 This module pulls in:
 
-- **`claude-gitignore`**
+- **`claude-gitignore`** — ensures `.claude/` is ignored so the link destination
+  stays untracked.
 
 ## Checkout declaration
 
@@ -94,5 +102,6 @@ unchanged, restores deleted links, and repairs incorrectly targeted symlinks.
 
 ## See Also
 
+- `link-skill` — successor that links into `.claude/skills/`, `.codex/skills/`, and
+  `.agents/skills/` for harnesses beyond Claude Code
 - `module.dhall` — full module definition and authoritative source
-- `files/` — template sources
