@@ -7,6 +7,7 @@ okf_version: "0.2"
 - [blueprints/](blueprints/index.md)
 - [modules/](modules/index.md)
 - [prompts/](prompts/index.md)
+- [recipes/](recipes/index.md)
 - [registry/](registry/index.md)
 
 # Files
