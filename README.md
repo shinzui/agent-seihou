@@ -1,6 +1,6 @@
 # agent-seihou
 
-A [Seihou](https://github.com/shinzui/seihou) registry of modules, blueprints, and
+A [Seihou](mori://shinzui/seihou) registry of modules, blueprints, and
 agent-session prompts for scaffolding Claude skills and agent recipes.
 
 `seihou-registry.dhall` is the authoritative index of everything published here.
@@ -23,14 +23,31 @@ every time. Run them with `seihou run`.
 Each module directory contains its own `README.md` with full variable, prompt,
 dependency, and generated-file reference. `module.dhall` is the authoritative source.
 
+## Recipes
+
+| Recipe | Version | Description |
+|--------|---------|-------------|
+| [`haskell-cli-app-with-agents`](recipes/haskell-cli-app-with-agents) | `0.1.0` | Extend the shared Haskell CLI repository recipe with agent ignore rules and a GitHub owner preset |
+
+Install the derived root and run it from a fresh project directory. Seihou acquires
+its inherited base and all member modules automatically:
+
+```sh
+seihou install https://github.com/shinzui/agent-seihou.git --module haskell-cli-app-with-agents
+seihou run haskell-cli-app-with-agents
+```
+
+Recipe inheritance requires Seihou 0.14.0.0 or newer; update the runtime
+before adopting this descriptor. Existing applications use
+`seihou update haskell-cli-app-with-agents`, including fresh clones with empty
+artifact caches. See the recipe README for source, interval and override rules.
+
 ## Skill links and fresh clones
 
 Discovery links are recorded in the manifest for `.claude/skills/`,
 `.codex/skills/`, and `.agents/skills/`. Source files stay in `agents/skills/`.
-The complete adoption workflow is verified with source revision
-`c3cbd9bd202e87d6fd7fc0ede1d997d2c2140e0b` of `mori://shinzui/seihou`.
-These runtime changes have not yet been published as a versioned Hackage release;
-0.11.0.0 is proposed. The older 0.10.1.0 release does not include them.
+Use a current published Seihou release for adoption and fresh-clone setup.
+No runtime source checkout is required.
 
 First install and apply from the consuming project's root:
 
@@ -100,7 +117,7 @@ seihou browse https://github.com/shinzui/agent-seihou.git
 Install:
 
 ```sh
-# Every module, blueprint, and prompt in the registry
+# Every module, recipe, blueprint, and prompt in the registry
 seihou install https://github.com/shinzui/agent-seihou.git --all
 
 # A specific artifact (repeat --module for several)
