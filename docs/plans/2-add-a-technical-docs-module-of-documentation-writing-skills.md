@@ -45,13 +45,15 @@ To see it working, apply the module to a scratch Git project and observe six ski
 - [x] Milestone 2 (2026-11-09): The shared writing rules and the `tech-docs` entry skill are complete and pass the generation test (7 of 7).
 - [x] Milestone 3 (2026-11-09): The tutorial, how-to, reference, and explanation skills are complete and pass the generation test (7 of 7).
 - [x] Milestone 4 (2026-11-09): The code-walkthrough skill is complete and passes the generation test (7 of 7).
-- [ ] Milestone 5: Seven routing trials and two drafting trials in a disposable clone meet the criteria in Validation and Acceptance. Partial (2026-11-09): all seven routing trials pass in fresh sessions; the two drafting trials are not yet evaluated.
+- [x] Milestone 5 (2026-11-09): Seven routing trials and two drafting trials in a disposable clone meet the criteria in Validation and Acceptance. All seven routing answers selected the expected form. A separate session ran all 16 tutorial command blocks as written and every output matched. All 12 walkthrough excerpts match the named files byte for byte at the pinned commit, and the two pages link to each other. No skill text needed changing.
 - [x] Milestone 6 (2026-11-09): The module is published in the registry, `mori.dhall`, `README.md`, and the regenerated `okf-docs/` bundle, and all publication checks pass (8 modules in sync, 14 concepts, `mori.dhall` type-checks, and the `okf-docs/` diff is only the generator-version line plus `technical-docs` entries).
 
 
 ## Surprises & Discoveries
 
-- The clone made by Concrete Steps contains this plan, which lists the expected trial answers, and at least one routing session read it. Its `origin` also points at the main checkout, so a trial could push there. The routing trials were rerun after removing the plan from the clone and deleting the remote, and those are the results recorded in Progress. Drafting trials ran in copies of that cleaned clone, with `XDG_CONFIG_HOME` and `XDG_CACHE_HOME` isolated.
+- The clone made by Concrete Steps contains this plan, which lists the expected trial answers, and at least one routing session read it. Its `origin` also points at the main checkout, so a trial could push there. The routing trials were rerun after removing the plan from the clone and deleting the remote, and those are the results recorded in Progress. Drafting trials ran in copies of that cleaned clone, with `XDG_CONFIG_HOME` and `XDG_CACHE_HOME` isolated. Anyone repeating Milestone 5 should make the same two changes to the clone first.
+
+- The rule to put editable values under commented variables can conflict with the rule that commands paste and run unchanged, because interactive zsh does not accept a pasted `#` line by default. The tutorial trial's agent noticed this, explained the value in prose instead, and reported the departure. No trial failed, so the rule is unchanged.
 
 
 ## Decision Log
@@ -99,7 +101,13 @@ To see it working, apply the module to a scratch Git project and observe six ski
 
 ## Outcomes & Retrospective
 
-(To be filled during and after implementation.)
+The plan's purpose is met. `seihou run technical-docs` generates six linked skills, the module is published in the registry and generated documentation, and agents following those skills chose the right form for all seven requests and produced a tutorial and a walkthrough that passed independent checks.
+
+The tutorial uses "we" for its narration (30 lines). Two sentences outside the lesson steps address the reader as "you", in the cleanup note and the optional closing section. That was judged a pass, because they refer to the reader's own actions rather than the lesson's voice. The tutorial's closing section was not run, because it pushes to the public repository.
+
+The complete `bun test` suite was not run, because no legacy 0.9.0.0 binary was available, which this plan makes optional. Nothing in this plan changes the code those tests exercise.
+
+No friction entries were recorded under this plan. The clone's answer key and remote were defects in this plan's steps rather than friction in a surface, and are recorded under Surprises & Discoveries. No ADR was added, because the decisions here are specific to this module and are held in the Decision Log.
 
 
 ## Context and Orientation
