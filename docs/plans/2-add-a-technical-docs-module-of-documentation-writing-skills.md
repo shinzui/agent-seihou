@@ -45,13 +45,13 @@ To see it working, apply the module to a scratch Git project and observe six ski
 - [x] Milestone 2 (2026-11-09): The shared writing rules and the `tech-docs` entry skill are complete and pass the generation test (7 of 7).
 - [x] Milestone 3 (2026-11-09): The tutorial, how-to, reference, and explanation skills are complete and pass the generation test (7 of 7).
 - [x] Milestone 4 (2026-11-09): The code-walkthrough skill is complete and passes the generation test (7 of 7).
-- [ ] Milestone 5: Seven routing trials and two drafting trials in a disposable clone meet the criteria in Validation and Acceptance.
-- [ ] Milestone 6: The module is published in the registry, `mori.dhall`, `README.md`, and the regenerated `okf-docs/` bundle, and all publication checks pass.
+- [ ] Milestone 5: Seven routing trials and two drafting trials in a disposable clone meet the criteria in Validation and Acceptance. Partial (2026-11-09): all seven routing trials pass in fresh sessions; the two drafting trials are not yet evaluated.
+- [x] Milestone 6 (2026-11-09): The module is published in the registry, `mori.dhall`, `README.md`, and the regenerated `okf-docs/` bundle, and all publication checks pass (8 modules in sync, 14 concepts, `mori.dhall` type-checks, and the `okf-docs/` diff is only the generator-version line plus `technical-docs` entries).
 
 
 ## Surprises & Discoveries
 
-(None yet.)
+- The clone made by Concrete Steps contains this plan, which lists the expected trial answers, and at least one routing session read it. Its `origin` also points at the main checkout, so a trial could push there. The routing trials were rerun after removing the plan from the clone and deleting the remote, and those are the results recorded in Progress. Drafting trials ran in copies of that cleaned clone, with `XDG_CONFIG_HOME` and `XDG_CACHE_HOME` isolated.
 
 
 ## Decision Log

@@ -8,7 +8,7 @@ tags:
 - seihou
 status: stable
 generated:
-  by: seihou-okf-extension/0.14.0.0
+  by: seihou-okf-extension/0.15.0.0
 ---
 
 # agent-seihou
@@ -26,6 +26,7 @@ Every artifact below is published by the `agent-seihou` registry and documented 
 - [update-docs](/modules/update-docs.md)
 - [exec-plan](/modules/exec-plan.md)
 - [master-plan](/modules/master-plan.md)
+- [technical-docs](/modules/technical-docs.md)
 
 ## Recipes
 

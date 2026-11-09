@@ -19,6 +19,7 @@ every time. Run them with `seihou run`.
 | [`update-docs`](modules/update-docs) | `0.1.0` | Claude skill that keeps project documentation in sync with code changes |
 | [`exec-plan`](modules/exec-plan) | `0.14.0` | Claude skill for creating and managing execution plans (ExecPlans) |
 | [`master-plan`](modules/master-plan) | `0.14.0` | Claude skill for creating and managing master plans (MasterPlans) |
+| [`technical-docs`](modules/technical-docs) | `0.1.0` | Agent skills for writing tutorials, how-to guides, reference, explanations, and code walkthroughs |
 
 Each module directory contains its own `README.md` with full variable, prompt,
 dependency, and generated-file reference. `module.dhall` is the authoritative source.

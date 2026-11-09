@@ -85,5 +85,14 @@ in  Schema.Project::{
         , dependencies = [ "agent-gitignore", "exec-plan", "link-skill" ]
         , requiredVars = [ "mp.skill.name", "exec-plan.skill.name" ]
         }
+      , Schema.SeihouTemplate::{
+        , name = "technical-docs"
+        , version = Some "0.1.0"
+        , description = Some
+            "Agent skills for writing tutorials, how-to guides, reference, explanations, and code walkthroughs."
+        , modulePath = "modules/technical-docs"
+        , tags = [ "claude", "agents", "skill", "docs" ]
+        , dependencies = [ "agent-gitignore" ]
+        }
       ]
     }

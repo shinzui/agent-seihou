@@ -43,6 +43,12 @@
     , description = Some "Claude skill for creating and managing master plans (MasterPlans) — coordination documents that decompose large initiatives into multiple ExecPlans"
     , tags = [ "claude", "skill", "planning" ]
     }
+  , { name = "technical-docs"
+    , version = Some "0.1.0"
+    , path = "modules/technical-docs"
+    , description = Some "Agent skills for writing tutorials, how-to guides, reference, explanations, and code walkthroughs"
+    , tags = [ "claude", "agents", "skill", "docs" ]
+    }
   ]
 , recipes =
   [ { name = "haskell-cli-app-with-agents"
