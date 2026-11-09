@@ -4,3 +4,4 @@
 CLAUDE.local.md
 # --- /seihou:claude-gitignore ---
 .agents/
+.codex/
