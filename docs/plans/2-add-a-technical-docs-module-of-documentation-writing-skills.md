@@ -44,7 +44,7 @@ To see it working, apply the module to a scratch Git project and observe six ski
 - [x] Milestone 1 (2026-11-09): `modules/technical-docs` generates six linked skills, with default and custom prefixes, proven by `tests/technical-docs.test.ts`. The test passed 0 of 7 before the module existed and 7 of 7 after; `seihou validate-module --lint` reports no warnings.
 - [x] Milestone 2 (2026-11-09): The shared writing rules and the `tech-docs` entry skill are complete and pass the generation test (7 of 7).
 - [x] Milestone 3 (2026-11-09): The tutorial, how-to, reference, and explanation skills are complete and pass the generation test (7 of 7).
-- [ ] Milestone 4: The code-walkthrough skill is complete and passes the generation test.
+- [x] Milestone 4 (2026-11-09): The code-walkthrough skill is complete and passes the generation test (7 of 7).
 - [ ] Milestone 5: Seven routing trials and two drafting trials in a disposable clone meet the criteria in Validation and Acceptance.
 - [ ] Milestone 6: The module is published in the registry, `mori.dhall`, `README.md`, and the regenerated `okf-docs/` bundle, and all publication checks pass.
 
