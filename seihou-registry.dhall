@@ -77,6 +77,12 @@
     , description = Some "Agent-driven workflow that migrates a Haskell/PostgreSQL project to a coherent pg-migrate, PGMQ, Kiroku, Keiro, Kioku, and Shibuya cohort, adopts the shared haskell-nix package set when the target already uses Nix, and selects a guarded disposable reset or a backup-and-restored-clone persistent cutover from database evidence"
     , tags = [ "haskell", "postgresql", "pg-migrate", "keiro", "kiroku", "kioku", "shibuya", "pgmq", "nix" ]
     }
+  , { name = "adopt-seihou-catalog"
+    , version = Some "0.1.0"
+    , path = "blueprints/adopt-seihou-catalog"
+    , description = Some "Adopt or refresh Mori's typed Seihou catalog, regenerate OKF documentation, and verify feature links in the local registry"
+    , tags = [ "seihou", "mori", "okf", "registry", "migration" ]
+    }
   ]
 , prompts =
   [ { name = "fix-prelude-import-conflicts"

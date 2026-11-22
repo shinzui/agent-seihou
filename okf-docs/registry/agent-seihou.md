@@ -37,6 +37,7 @@ Every artifact below is published by the `agent-seihou` registry and documented 
 - [hackage-release](/blueprints/hackage-release.md)
 - [docs-sync](/blueprints/docs-sync.md)
 - [migrate-keiro-stack](/blueprints/migrate-keiro-stack.md)
+- [adopt-seihou-catalog](/blueprints/adopt-seihou-catalog.md)
 
 ## Prompts
 
