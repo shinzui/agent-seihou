@@ -8,14 +8,14 @@ tags:
 - seihou
 status: stable
 generated:
-  by: seihou-okf-extension/0.15.0.0
+  by: seihou-okf-extension/0.16.0.2
 ---
 
 # agent-seihou
 
 Seihou modules for Claude skills and agent recipes
 
-Every artifact below is published by the `agent-seihou` registry and documented in its own concept.
+Every artifact below is published by the `agent-seihou` registry and documented in its own concept. Modules, recipes, blueprints, prompts and judgements are read from declarations; generation never executes their commands or reviews.
 
 ## Modules
 

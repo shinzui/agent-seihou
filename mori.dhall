@@ -1,6 +1,6 @@
 let Schema =
-      https://raw.githubusercontent.com/shinzui/mori-schema/a3c59033a08c2eaef2cfba4a3c99fc9c192ca6d7/package.dhall
-        sha256:18258ef583580a897f4af3e7c86db0342afb42fb40efc535b217ba1089230141
+      https://raw.githubusercontent.com/shinzui/mori-schema/1ed7527a9132dd3f4f2251c2ab7891fadb7006e8/package.dhall
+        sha256:30f64b8cbeb90ab5afa76a523b05da707006bc31e886eec0aeb79e36f8b0afa1
 
 in  Schema.Project::{
     , project = Schema.ProjectIdentity::{
@@ -12,6 +12,61 @@ in  Schema.Project::{
       , description = Some
           "Seihou registry of modules for scaffolding Claude skills and agent recipes"
       }
+    , seihouCatalog = Some Schema.SeihouCatalog::{
+      , documentationBundle = Some "seihou-docs"
+      , artifacts =
+        [ Schema.SeihouArtifact::{
+          , kind = Schema.SeihouArtifactKind.Module
+          , name = "claude-gitignore"
+          , sourcePath = "modules/claude-gitignore"
+          , description = Some
+              "Ensure .claude/ and CLAUDE.local.md are in .gitignore. Shared base module for Claude-related modules."
+          }
+        , Schema.SeihouArtifact::{
+          , kind = Schema.SeihouArtifactKind.Module
+          , name = "claude-skill-link"
+          , sourcePath = "modules/claude-skill-link"
+          , description = Some
+              "Declare a manifest-owned checkout link from claude/skills/ into .claude/skills/ so it's discoverable by Claude Code."
+          }
+        , Schema.SeihouArtifact::{
+          , kind = Schema.SeihouArtifactKind.Module
+          , name = "update-docs"
+          , sourcePath = "modules/update-docs"
+          , description = Some
+              "Claude skill that analyzes commits since the last documentation review and keeps project docs in sync."
+          }
+        , Schema.SeihouArtifact::{
+          , kind = Schema.SeihouArtifactKind.Module
+          , name = "exec-plan"
+          , sourcePath = "modules/exec-plan"
+          , description = Some
+              "Claude skill for creating and managing execution plans (ExecPlans) — self-contained design documents that guide implementation of features and system changes."
+          }
+        , Schema.SeihouArtifact::{
+          , kind = Schema.SeihouArtifactKind.Module
+          , name = "master-plan"
+          , sourcePath = "modules/master-plan"
+          , description = Some
+              "Claude skill for creating and managing master plans (MasterPlans) — coordination documents that decompose large initiatives into multiple ExecPlans."
+          }
+        , Schema.SeihouArtifact::{
+          , kind = Schema.SeihouArtifactKind.Module
+          , name = "technical-docs"
+          , sourcePath = "modules/technical-docs"
+          , description = Some
+              "Agent skills for writing tutorials, how-to guides, reference, explanations, and code walkthroughs."
+          }
+        ]
+      }
+    , okfBundles =
+      [ Schema.OkfBundle::{
+        , name = "seihou-docs"
+        , path = "okf-docs"
+        , okfVersion = "0.2"
+        , profile = Some "okf-docs/profile.dhall"
+        }
+      ]
     , repos =
       [ Schema.Repo::{
         , name = "agent-seihou"
@@ -39,9 +94,9 @@ in  Schema.Project::{
         }
       , Schema.SeihouTemplate::{
         , name = "link-skill"
-        , version = Some "0.3.0"
+        , version = Some "0.4.0"
         , description = Some
-            "Declare manifest-owned checkout links from agents/skills/ into .claude/skills/ and .agents/skills/. Requires Seihou 0.10.0.0."
+            "Symlink a skill from agents/skills/ into .claude/skills/, .codex/skills/ and .agents/skills/. Records manifest-owned checkout links, restored by seihou sync in every clone (Seihou 0.11.0.0 or newer)."
         , modulePath = "modules/link-skill"
         , tags = [ "claude", "agents", "skill", "infrastructure" ]
         , dependencies = [ "claude-gitignore" ]

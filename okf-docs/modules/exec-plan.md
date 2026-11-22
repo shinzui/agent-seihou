@@ -9,7 +9,14 @@ tags:
 - planning
 status: stable
 generated:
-  by: seihou-okf-extension/0.15.0.0
+  by: seihou-okf-extension/0.16.0.2
+seihouMigrationEdges:
+- anchor: migration-0_2e_1_2e_3-0_2e_2_2e_0
+  from: 0.1.3
+  to: 0.2.0
+- anchor: migration-0_2e_7_2e_0-0_2e_8_2e_0
+  from: 0.7.0
+  to: 0.8.0
 version: 0.14.0
 ---
 
@@ -19,9 +26,34 @@ Claude skill for creating and managing execution plans (ExecPlans)
 
 **Version:** 0.14.0
 
+## When to use
+
+Use this module to generate or manage the files listed under Generation steps.
+
+## How to use
+
+Run from the project directory. Supply the required Variables through Seihou configuration, its prompts or `--var KEY=VALUE`.
+
+If the artifact is not installed, set `REGISTRY_GIT_URL` to the Git URL of its publishing registry and run:
+
+```bash
+seihou install "$REGISTRY_GIT_URL" --module exec-plan
+```
+
+```bash
+seihou run exec-plan --dry-run
+seihou run exec-plan
+```
+
+Review the planned files and commands in the preview. Applying the plan writes the files, runs the declared commands and records the application in the project manifest.
+
+## Declaration metadata
+
+- description: `Claude skill for creating, implementing, and managing execution plans (ExecPlans) — self-contained design documents that guide implementation of features and system changes.`
+
 ## Dependencies
 
-- [agent-gitignore](/modules/agent-gitignore.md)
+- [agent-gitignore](/modules/agent-gitignore.md) (declaring registry)
 
 ## Variables
 
@@ -34,27 +66,35 @@ Claude skill for creating and managing execution plans (ExecPlans)
 
 ## Prompts
 
-- `intentions.enabled` — Enable intention tracking for commits?
+- `intentions.enabled` — `Enable intention tracking for commits?`
 
 ## Generation steps
 
-- `Template` `SKILL.md` → `agents/skills/{{skill.name}}/SKILL.md`
-- `Copy` `PLANS.md` → `agents/skills/{{skill.name}}/PLANS.md`
-- `Copy` `ADR.md` → `agents/skills/{{skill.name}}/ADR.md`
-- `Copy` `init-plan.ts` → `agents/skills/{{skill.name}}/init-plan.ts`
-- `Copy` `record-provenance.ts` → `agents/skills/{{skill.name}}/record-provenance.ts`
-- `Copy` `provenance-model.ts` → `agents/skills/{{skill.name}}/provenance-model.ts`
-- `Copy` `PROVENANCE.md` → `agents/skills/{{skill.name}}/PROVENANCE.md`
-- `Copy` `FRICTION.md` → `agents/skills/{{skill.name}}/FRICTION.md`
-- `Copy` `record-friction.ts` → `agents/skills/{{skill.name}}/record-friction.ts`
-- `Copy` `INTENTIONS-SECTION.md` → `agents/skills/{{skill.name}}/SKILL.md` (appends a marked section to a file another module owns) — when `Eq intentions.enabled true`
-- `Symlink` `agents/skills/{{skill.name}}` → `.claude/skills/{{skill.name}}`
-- `Symlink` `agents/skills/{{skill.name}}` → `.codex/skills/{{skill.name}}`
-- `Symlink` `agents/skills/{{skill.name}}` → `.agents/skills/{{skill.name}}`
+- `Template` `SKILL.md` → `agents/skills/{{skill.name}}/SKILL.md` — Managed: owned and reconciled by Seihou updates
+- `Copy` `PLANS.md` → `agents/skills/{{skill.name}}/PLANS.md` — Managed: owned and reconciled by Seihou updates
+- `Copy` `ADR.md` → `agents/skills/{{skill.name}}/ADR.md` — Managed: owned and reconciled by Seihou updates
+- `Copy` `init-plan.ts` → `agents/skills/{{skill.name}}/init-plan.ts` — Managed: owned and reconciled by Seihou updates
+- `Copy` `record-provenance.ts` → `agents/skills/{{skill.name}}/record-provenance.ts` — Managed: owned and reconciled by Seihou updates
+- `Copy` `provenance-model.ts` → `agents/skills/{{skill.name}}/provenance-model.ts` — Managed: owned and reconciled by Seihou updates
+- `Copy` `PROVENANCE.md` → `agents/skills/{{skill.name}}/PROVENANCE.md` — Managed: owned and reconciled by Seihou updates
+- `Copy` `FRICTION.md` → `agents/skills/{{skill.name}}/FRICTION.md` — Managed: owned and reconciled by Seihou updates
+- `Copy` `record-friction.ts` → `agents/skills/{{skill.name}}/record-friction.ts` — Managed: owned and reconciled by Seihou updates
+- `Copy` `INTENTIONS-SECTION.md` → `agents/skills/{{skill.name}}/SKILL.md` (appends a marked section to a file another module owns) — when `Eq intentions.enabled true` — Managed: owned and reconciled by Seihou updates
+- `Symlink` `agents/skills/{{skill.name}}` → `.claude/skills/{{skill.name}}` — Checkout: portable symlink restored by `seihou sync` in fresh clones and worktrees
+- `Symlink` `agents/skills/{{skill.name}}` → `.codex/skills/{{skill.name}}` — Checkout: portable symlink restored by `seihou sync` in fresh clones and worktrees
+- `Symlink` `agents/skills/{{skill.name}}` → `.agents/skills/{{skill.name}}` — Checkout: portable symlink restored by `seihou sync` in fresh clones and worktrees
 
 ## Migrations
 
+<a id="migration-0_2e_1_2e_3-0_2e_2_2e_0"></a>
+
 ### 0.1.3 → 0.2.0
+
+From a project with `exec-plan` applied at `0.1.3`, preview the migration to `0.2.0`. Remove `--dry-run` to apply the operations below and advance the recorded version.
+
+```bash
+seihou migrate exec-plan --to 0.2.0 --dry-run
+```
 
 - move `claude/skills/exec-plan/SKILL.md` → `agents/skills/exec-plan/SKILL.md`
 - move `claude/skills/exec-plan/PLANS.md` → `agents/skills/exec-plan/PLANS.md`
@@ -64,6 +104,14 @@ Claude skill for creating and managing execution plans (ExecPlans)
 - run `ln -sfn ../../agents/skills/exec-plan .agents/skills/exec-plan`
 
 
+<a id="migration-0_2e_7_2e_0-0_2e_8_2e_0"></a>
+
 ### 0.7.0 → 0.8.0
+
+From a project with `exec-plan` applied at `0.7.0`, preview the migration to `0.8.0`. Remove `--dry-run` to apply the operations below and advance the recorded version.
+
+```bash
+seihou migrate exec-plan --to 0.8.0 --dry-run
+```
 
 - run `if [ -d docs/adr ] && [ -n "$(find docs/adr -type f -name '*.md' ! -name index.md ! -name log.md -print -quit)" ]; then seihou install https://github.com/shinzui/okf-profiles.git --module adopt-architecture-decisions && seihou agent run adopt-architecture-decisions "Reconcile existing ADRs during the exec-plan 0.8.0 upgrade. Preserve repository-specific history and conventions while enforcing the shared profile. Do not stop until strict profile and log validation passes." --batch --provider claude-cli --model claude-sonnet-5 && test -f docs/adr/profile.dhall && dhall type --file docs/adr/profile.dhall >/dev/null && okf validate docs/adr --strict --profile docs/adr/profile.dhall --profile-enforce --log-enforce; fi`

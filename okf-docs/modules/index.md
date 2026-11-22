@@ -8,4 +8,3 @@
 - [master-plan](master-plan.md) - Claude skill for creating and managing master plans (MasterPlans) — coordination documents that decompose large initiatives into multiple ExecPlans
 - [technical-docs](technical-docs.md) - Agent skills for writing tutorials, how-to guides, reference, explanations, and code walkthroughs
 - [update-docs](update-docs.md) - Claude skill to update project documentation after code changes
-

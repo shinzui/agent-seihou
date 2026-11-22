@@ -9,7 +9,8 @@ tags:
 - docs
 status: stable
 generated:
-  by: seihou-okf-extension/0.15.0.0
+  by: seihou-okf-extension/0.16.0.2
+seihouMigrationEdges: []
 version: 0.1.0
 ---
 
@@ -19,9 +20,34 @@ Claude skill to update project documentation after code changes
 
 **Version:** 0.1.0
 
+## When to use
+
+Use this module to generate or manage the files listed under Generation steps.
+
+## How to use
+
+Run from the project directory. Supply the required Variables through Seihou configuration, its prompts or `--var KEY=VALUE`.
+
+If the artifact is not installed, set `REGISTRY_GIT_URL` to the Git URL of its publishing registry and run:
+
+```bash
+seihou install "$REGISTRY_GIT_URL" --module update-docs
+```
+
+```bash
+seihou run update-docs --dry-run
+seihou run update-docs
+```
+
+Review the planned files and commands in the preview. Applying the plan writes the files, runs the declared commands and records the application in the project manifest.
+
+## Declaration metadata
+
+- description: `Claude skill to update project documentation after code changes. Analyzes commits since last review and ensures docs stay in sync.`
+
 ## Dependencies
 
-- [claude-skill-link](/modules/claude-skill-link.md)
+- [claude-skill-link](/modules/claude-skill-link.md) (declaring registry)
 
 ## Variables
 
@@ -41,16 +67,16 @@ Claude skill to update project documentation after code changes
 
 ## Prompts
 
-- `project.name` — What is your project name?
-- `project.description` — Short description of the project?
-- `skill.name` — Skill directory name (e.g. myproject-update-docs)?
-- `changelog.path` — Path to changelog file?
-- `docs.user.dir` — User documentation directory?
-- `docs.dev.dir` — Developer documentation directory?
-- `source.dirs` — Source directories to watch (comma-separated)?
-- `cli.commands.dir` — CLI commands directory (leave empty if no CLI)?
-- `skills.dir` — Claude skills directory?
+- `project.name` — `What is your project name?`
+- `project.description` — `Short description of the project?`
+- `skill.name` — `Skill directory name (e.g. myproject-update-docs)?`
+- `changelog.path` — `Path to changelog file?`
+- `docs.user.dir` — `User documentation directory?`
+- `docs.dev.dir` — `Developer documentation directory?`
+- `source.dirs` — `Source directories to watch (comma-separated)?`
+- `cli.commands.dir` — `CLI commands directory (leave empty if no CLI)?`
+- `skills.dir` — `Claude skills directory?`
 
 ## Generation steps
 
-- `Template` `SKILL.md.tpl` → `claude/skills/{{skill.name}}/SKILL.md`
+- `Template` `SKILL.md.tpl` → `claude/skills/{{skill.name}}/SKILL.md` — Managed: owned and reconciled by Seihou updates

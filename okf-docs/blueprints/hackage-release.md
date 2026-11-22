@@ -15,7 +15,8 @@ tags:
 - agents
 status: stable
 generated:
-  by: seihou-okf-extension/0.15.0.0
+  by: seihou-okf-extension/0.16.0.2
+seihouMigrationEdges: []
 version: 0.1.0
 ---
 
@@ -25,15 +26,37 @@ Agent-driven blueprint that generates a project-specific 'release' skill for pub
 
 **Version:** 0.1.0
 
+## When to use
+
+Use this blueprint when you want an agent to carry out the task under Agent prompt.
+
+## How to use
+
+Run from the target project directory with an authenticated Seihou agent provider. Supply the declared variables and prompt answers. Review Base modules, Reference files and Tools before starting.
+
+If the artifact is not installed, set `REGISTRY_GIT_URL` to the Git URL of its publishing registry and run:
+
+```bash
+seihou install "$REGISTRY_GIT_URL" --module hackage-release
+```
+
+```bash
+seihou agent run hackage-release
+```
+
+Seihou applies the declared base modules, prepares the reference files and starts an agent session with the rendered task and tool permissions.
+
+## Declaration metadata
+
+- description: `Generate a project-specific 'release' skill that publishes Haskell packages to Hackage following PVP. An agent inspects the repo (cabal files, package layout, inter-package dependency order, publishable vs internal packages, changelog and git-tag conventions, nix/cabal check gates, GitHub release usage) and writes a tailored skill rather than a static one. The skill is written to agents/skills/<name> and wired into both .claude/skills and .agents/skills via the link-skill module (run by the agent); agent-gitignore is applied as a baseline.`
+
 ## Base modules
 
-- [agent-gitignore](/modules/agent-gitignore.md)
+- [agent-gitignore](/modules/agent-gitignore.md) (declaring registry)
 
 ## Agent prompt
 
-# Generate a project-specific Hackage release skill
-
-```text
+````text
 # Generate a project-specific Hackage release skill
 
 You are generating a **`release` skill** tailored to *this* Haskell
@@ -181,7 +204,7 @@ that reads `.agents/skills/`. The command is idempotent — safe to re-run.
 - When they're happy, offer to commit with a Conventional Commits message
   (e.g. `feat(release): add project-specific Hackage release skill`). Ask
   before committing; don't push or run the release itself.
-```
+````
 
 ## Variables
 
@@ -190,3 +213,9 @@ that reads `.agents/skills/`. The command is idempotent — safe to re-run.
 ## Reference files
 
 - `release-skill-reference.md` - Reference example: a complete multi-package Hackage release skill (adapted from the shibuya project). Use it as a structural template — adapt every project-specific detail (package names, directories, dependency order, publishable set) to THIS repository. Do not copy it verbatim.
+
+## Tools
+
+No additional tools declared.
+
+Blueprint runs also pre-approve Seihou setup tools.

@@ -26,6 +26,7 @@ let FieldFormat =
       | Integer
       | NonNegativeInteger
       | Boolean
+      | FiniteDecimal
       >
 
 let FieldCondition = { field : Text, hasValue : List Text }
@@ -51,8 +52,26 @@ let NestedFieldRule =
       , reference : Optional HandleReferenceRule
       }
 
+let ValueSelector = { field : Text, member : Optional Text }
+
+let PresenceConstraint =
+      { when : Optional FieldCondition
+      , whenAnyPresent : List ValueSelector
+      , requireAll : List ValueSelector
+      , requireAny : List ValueSelector
+      }
+
+let TimestampOrderConstraint = { before : Text, after : Text }
+
+let MembershipConstraint = { source : ValueSelector, target : ValueSelector }
+
+let UniqueValuesConstraint = { selectors : List ValueSelector }
+
 let NestedRules =
-      { required : List NestedFieldRule
+      { allowUnknownFields : Bool
+      , presenceConstraints : List PresenceConstraint
+      , timestampOrderConstraints : List TimestampOrderConstraint
+      , required : List NestedFieldRule
       , recommended : List NestedFieldRule
       , optional : List NestedFieldRule
       }
@@ -72,13 +91,18 @@ let FieldRule =
       }
 
 let FrontmatterRules =
-      { required : List FieldRule
+      { presenceConstraints : List PresenceConstraint
+      , timestampOrderConstraints : List TimestampOrderConstraint
+      , membershipConstraints : List MembershipConstraint
+      , uniqueValuesConstraints : List UniqueValuesConstraint
+      , required : List FieldRule
       , recommended : List FieldRule
       , optional : List FieldRule
       }
 
 let TypeRule =
-      { type : Text
+      { guidance : Optional Text
+      , type : Text
       , description : Optional Text
       , frontmatter : FrontmatterRules
       , pathPattern : Optional Text
@@ -90,9 +114,23 @@ let TypeRule =
 
 let emptyRules
     : FrontmatterRules
-    = { required = [] : List FieldRule
+    = { presenceConstraints = [] : List PresenceConstraint
+      , timestampOrderConstraints = [] : List TimestampOrderConstraint
+      , membershipConstraints = [] : List MembershipConstraint
+      , uniqueValuesConstraints = [] : List UniqueValuesConstraint
+      , required = [] : List FieldRule
       , recommended = [] : List FieldRule
       , optional = [] : List FieldRule
+      }
+
+let emptyNestedRules
+    : NestedRules
+    = { allowUnknownFields = True
+      , presenceConstraints = [] : List PresenceConstraint
+      , timestampOrderConstraints = [] : List TimestampOrderConstraint
+      , required = [] : List NestedFieldRule
+      , recommended = [] : List NestedFieldRule
+      , optional = [] : List NestedFieldRule
       }
 
 let nestedScalar =
@@ -130,18 +168,48 @@ let field =
 let scalar =
       \(name : Text) ->
       \(description : Text) ->
-        field name description Cardinality.Scalar (None FieldFormat) (None NestedRules)
+        field
+          name
+          description
+          Cardinality.Scalar
+          (None FieldFormat)
+          (None NestedRules)
 
 let versionRule =
       scalar
         "version"
         "The version the registry catalog records for this artifact. Optional rather than required, because `seihou-registry.dhall` itself declares `version : Optional Text`; a profile that demanded it would refuse a valid registry."
 
+let migrationEdgesRule =
+          field
+            "seihouMigrationEdges"
+            "The observed owner edges. An empty list records no edges; older pages may omit the field."
+            Cardinality.List
+            (None FieldFormat)
+            (None NestedRules)
+      //  { elementFields = Some
+              (     emptyNestedRules
+                //  { required =
+                      [ nestedScalar "from" "The starting version."
+                      , nestedScalar "to" "The destination version."
+                      , nestedScalar
+                          "anchor"
+                          "The fragment of the migration section in the owner page."
+                      ]
+                    }
+              )
+          , uniqueBy = Some "anchor"
+          }
+
+let migrationOwnerRules =
+      emptyRules // { optional = [ versionRule, migrationEdgesRule ] }
+
 let artifactType =
       \(name : Text) ->
       \(description : Text) ->
       \(directory : Text) ->
-        { type = name
+        { guidance = None Text
+        , type = name
         , description = Some description
         , frontmatter = emptyRules // { optional = [ versionRule ] }
         , pathPattern = Some "${directory}/*"
@@ -151,15 +219,20 @@ let artifactType =
         , idPrefix = None Text
         }
 
-in  { name = "seihou-registry-docs"
+in  { guidance = None Text
+    , name = "seihou-registry-docs"
     , description = Some
-        "Generated documentation for a Seihou registry: one concept per published module, recipe, blueprint and agent prompt, plus one describing the registry itself. Every concept names the registry artifact it was derived from through a `seihou://` resource and records the generator that produced it, so a reader can tell derived documentation from hand-written prose and can find the `.dhall` source it came from."
+        "Generated documentation for a Seihou registry: one concept per published module, recipe, blueprint, agent prompt and judgement, plus one describing the registry itself. Every concept names the registry artifact it was derived from through a `seihou://` resource and records the generator that produced it, so a reader can tell derived documentation from hand-written prose and can find the `.dhall` source it came from."
     , okfVersion = "0.2"
     , frontmatter =
             emptyRules
         //  { required =
-              [ scalar "type" "Which kind of Seihou artifact this concept documents."
-              , scalar "title" "The artifact's name, exactly as the registry publishes it."
+              [ scalar
+                  "type"
+                  "Which kind of Seihou artifact this concept documents."
+              , scalar
+                  "title"
+                  "The artifact's name, exactly as the registry publishes it."
               , scalar
                   "description"
                   "What the artifact is for. Taken from the registry catalog entry, else the artifact's own description, else synthesized."
@@ -175,7 +248,7 @@ in  { name = "seihou-registry-docs"
                   Cardinality.Any
                   (None FieldFormat)
                   ( Some
-                      (     emptyRules
+                      (     emptyNestedRules
                         //  { required =
                               [     nestedScalar
                                       "by"
@@ -192,16 +265,15 @@ in  { name = "seihou-registry-docs"
                       )
                   )
               ]
-            , recommended =
+            , recommended = [] : List FieldRule
+            , optional =
               [ field
                   "tags"
-                  "The tags the registry catalog records for this artifact."
+                  "Catalog tags, when nonempty. An empty tag list is a valid registry declaration; generation never invents tags to satisfy the profile."
                   Cardinality.List
                   (None FieldFormat)
                   (None NestedRules)
-              ]
-            , optional =
-              [ field
+              , field
                   "status"
                   "The concept's lifecycle status, per OKF specification section 5.4."
                   Cardinality.Scalar
@@ -214,22 +286,28 @@ in  { name = "seihou-registry-docs"
     , idField = None Text
     , requireBundleVersion = Some "0.2"
     , types =
-      [ artifactType
-          "SeihouModule"
-          "A deterministic file-generation template: variables, generation steps, shell commands, dependencies, an optional removal procedure and optional migration edges."
-          "modules"
+      [     artifactType
+              "SeihouModule"
+              "A deterministic file-generation template: variables, generation steps, shell commands, dependencies, managed/seed/checkout ownership, an optional removal procedure, judgement references and optional migration edges."
+              "modules"
+        //  { frontmatter = migrationOwnerRules }
       , artifactType
           "SeihouRecipe"
-          "A named composition of modules with preset variable bindings."
+          "A declared composition of modules with sourced dependencies, preset variable bindings, an optional single base and explicit overrides."
           "recipes"
-      , artifactType
-          "SeihouBlueprint"
-          "An agent-driven scaffold: a prompt, optional base modules, reference files and optional agent-guided migration edges."
-          "blueprints"
+      ,     artifactType
+              "SeihouBlueprint"
+              "An agent-driven scaffold: a prompt, optional base modules, reference files and optional agent-guided migration edges."
+              "blueprints"
+        //  { frontmatter = migrationOwnerRules }
       , artifactType
           "SeihouPrompt"
           "A reusable agent-session template."
           "prompts"
+      , artifactType
+          "SeihouJudgement"
+          "Yes/no checks Seihou asks a model about staged changes or a commit range before a commit, with per-check thresholds and enforcement."
+          "judgements"
       ,     artifactType
               "SeihouRegistry"
               "The registry itself: the repository publishing these artifacts, linking each of them."

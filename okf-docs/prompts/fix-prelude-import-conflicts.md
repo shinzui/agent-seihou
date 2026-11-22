@@ -13,7 +13,7 @@ tags:
 - imports
 status: stable
 generated:
-  by: seihou-okf-extension/0.15.0.0
+  by: seihou-okf-extension/0.16.0.2
 version: 0.1.0
 ---
 
@@ -23,9 +23,31 @@ Reusable agent-session prompt that fixes custom-prelude import-conflict violatio
 
 **Version:** 0.1.0
 
-## Agent prompt
+## When to use
 
-# Fix custom-prelude import-conflict violations
+Use this prompt to start a reusable agent session for the task under Agent prompt.
+
+## How to use
+
+Run in the working directory for that task with an authenticated Seihou agent provider. Supply the declared variables and prompt answers. Review any command-derived inputs and allowed tools.
+
+If the artifact is not installed, set `REGISTRY_GIT_URL` to the Git URL of its publishing registry and run:
+
+```bash
+seihou install "$REGISTRY_GIT_URL" --module fix-prelude-import-conflicts
+```
+
+```bash
+seihou prompt run fix-prelude-import-conflicts
+```
+
+Seihou resolves inputs, prepares the reference files and launches the session with the rendered prompt and guidance.
+
+## Declaration metadata
+
+- description: `Fix custom-prelude import-conflict violations in a Haskell repo: hide clashing names from the prelude import (never the other import) and never qualify operators. Detects qualified operators, wrong-side hiding, and clash-avoiding qualified prelude imports, fixes them, and verifies with cabal. Adjust the guidance blocks per project.`
+
+## Agent prompt
 
 ```text
 # Fix custom-prelude import-conflict violations
@@ -106,4 +128,4 @@ No reference files declared.
 
 ## Tools
 
-No tool restrictions declared.
+No additional tools declared.

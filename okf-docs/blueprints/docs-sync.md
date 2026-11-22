@@ -15,7 +15,8 @@ tags:
 - audit
 status: stable
 generated:
-  by: seihou-okf-extension/0.15.0.0
+  by: seihou-okf-extension/0.16.0.2
+seihouMigrationEdges: []
 version: 0.1.0
 ---
 
@@ -25,13 +26,35 @@ Discover a project's local and sibling documentation/agent-context surfaces, the
 
 **Version:** 0.1.0
 
+## When to use
+
+Use this blueprint when you want an agent to carry out the task under Agent prompt.
+
+## How to use
+
+Run from the target project directory with an authenticated Seihou agent provider. Supply the declared variables and prompt answers. Review Base modules, Reference files and Tools before starting.
+
+If the artifact is not installed, set `REGISTRY_GIT_URL` to the Git URL of its publishing registry and run:
+
+```bash
+seihou install "$REGISTRY_GIT_URL" --module docs-sync
+```
+
+```bash
+seihou agent run docs-sync
+```
+
+Seihou applies the declared base modules, prepares the reference files and starts an agent session with the rendered task and tool permissions.
+
+## Declaration metadata
+
+- description: `Discover a project's documentation and agent-context surfaces, then audit and repair every stale surface against the code using a baseline-SHA ledger. The workflow adapts to local prose, embedded or runtime-loaded CLI help, embedded agent-assist context, and confirmed sibling kit or public-docs repositories instead of assuming a fixed project layout.`
+
 ## Base modules
 
 This blueprint declares no base modules.
 
 ## Agent prompt
-
-# Synchronize documentation and agent context
 
 ```text
 # Synchronize documentation and agent context
@@ -243,3 +266,9 @@ unresolved deterministic drift finding.
 
 - `capability-discovery.md` - Evidence rules for discovering local documentation, CLI help transport and reachability, embedded agent-assist context, and sibling kit/docs repositories without relying on project-specific names or language conventions.
 - `ledger-reference.md` - Portable docs/docs-sync.json shape, baseline invariants, staleness rules, and examples for local and cross-repository surfaces.
+
+## Tools
+
+No additional tools declared.
+
+Blueprint runs also pre-approve Seihou setup tools.

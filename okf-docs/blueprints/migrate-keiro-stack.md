@@ -19,7 +19,8 @@ tags:
 - nix
 status: stable
 generated:
-  by: seihou-okf-extension/0.15.0.0
+  by: seihou-okf-extension/0.16.0.2
+seihouMigrationEdges: []
 version: 0.2.0
 ---
 
@@ -29,15 +30,38 @@ Agent-driven workflow that migrates a Haskell/PostgreSQL project to a coherent p
 
 **Version:** 0.2.0
 
+## When to use
+
+Use this blueprint when you want an agent to carry out the task under Agent prompt.
+
+## How to use
+
+Run from the target project directory with an authenticated Seihou agent provider. Supply the declared variables and prompt answers. Review Base modules, Reference files and Tools before starting.
+
+If the artifact is not installed, set `REGISTRY_GIT_URL` to the Git URL of its publishing registry and run:
+
+```bash
+seihou install "$REGISTRY_GIT_URL" --module migrate-keiro-stack
+```
+
+```bash
+seihou agent run migrate-keiro-stack
+```
+
+Seihou applies the declared base modules, prepares the reference files and starts an agent session with the rendered task and tool permissions.
+
+## Declaration metadata
+
+- description: `Inspect a Haskell/PostgreSQL project and migrate it to the coherent pg-migrate, PGMQ, Kiroku, Keiro, Kioku, Shibuya, and Settei standards. The workflow aligns active Nix builds through the maintained haskell-nix package set, adapts runtime APIs, adopts the six-package vertical module structure and Settei configuration without behavior drift, then selects a guarded disposable reset or backup-and-restored-clone persistent cutover from evidence while keeping destructive actions operator-approved.`
+- tags: `haskell`, `postgresql`, `pg-migrate`, `keiro`, `kiroku`, `kioku`, `shibuya`, `pgmq`, `nix`, `settei`, `vertical-slice`
+
 ## Base modules
 
 This blueprint declares no base modules.
 
 ## Agent prompt
 
-# Migrate this project to the pg-migrate Keiro stack
-
-```text
+````text
 # Migrate this project to the pg-migrate Keiro stack
 
 Database policy: {{database.policy}}
@@ -502,7 +526,7 @@ Finish with a handoff that clearly distinguishes:
 
 Offer to create a Conventional Commit only when the target's applicable gates pass. Follow its
 commit trailers and other local rules. Do not push.
-```
+````
 
 ## Variables
 
@@ -516,3 +540,9 @@ commit trailers and other local rules. Do not push.
 - `persistent-database-cutover.md` - Fail-closed runbook for data-bearing databases: inventory, classification, backup, writer quiescence, restored-clone rehearsal, evidence-backed history import, verification, cutover, soak, and restore rollback.
 - `vertical-structure-refactor.md` - Behavior-preserving guide for moving an existing service into the six-package Generated/Holes vertical-slice structure, either by Keiro DSL re-scaffolding or concept-by-concept hand moves.
 - `settei-migration.md` - Behavior-preserving guide for replacing raw configuration wiring with inspectable Settei declarations, explicit file/Secret/environment precedence, redacted diagnostics, and the check-config rollout gate.
+
+## Tools
+
+No additional tools declared.
+
+Blueprint runs also pre-approve Seihou setup tools.
